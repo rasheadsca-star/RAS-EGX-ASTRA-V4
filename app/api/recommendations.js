@@ -1,3 +1,5 @@
+import { runRuntimePipeline } from '../../engine/runtime-pipeline.js';
+
 export function getRecommendations(snapshot = []) {
   return snapshot.map(stock => ({
     symbol: stock.symbol,
@@ -6,21 +8,35 @@ export function getRecommendations(snapshot = []) {
     target1: stock.target1 ?? null,
     target2: stock.target2 ?? null,
     stopLoss: stock.stopLoss ?? null,
-    confidence: stock.confidence ?? 0
+    confidence: stock.confidence ?? 0,
+    riskLevel: stock.riskLevel || 'UNKNOWN'
   }));
 }
 
 export default async function handler(req, res) {
-  const recommendations = getRecommendations([]);
-
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.setHeader('Pragma', 'no-cache');
+
+  const pipeline = await runRuntimePipeline();
+
+  if (!pipeline || pipeline.status !== 'READY') {
+    return res.status(200).json({
+      success: true,
+      market: 'EGX',
+      status: pipeline?.status || 'NO_LIVE_SNAPSHOT',
+      updatedAt: new Date().toISOString(),
+      count: 0,
+      recommendations: []
+    });
+  }
+
+  const recommendations = getRecommendations(pipeline.recommendations || []);
 
   res.status(200).json({
     success: true,
     market: 'EGX',
-    status: 'NO_LIVE_SNAPSHOT',
-    updatedAt: new Date().toISOString(),
+    status: 'LIVE',
+    updatedAt: pipeline.generatedAt,
     count: recommendations.length,
     recommendations
   });
