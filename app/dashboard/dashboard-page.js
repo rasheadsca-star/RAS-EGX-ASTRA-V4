@@ -5,6 +5,26 @@ import { buildDashboardState } from './dashboard-model.js';
 import { createStatusCard } from './components/status-card.js';
 import { createRecommendationCard } from './components/recommendation-card.js';
 
+function resolveEngineStatus(health = {}, dataHealth = {}) {
+  if (dataHealth?.status === 'WAITING' || dataHealth?.status === 'NO_LIVE_SNAPSHOT') {
+    return 'WAITING';
+  }
+
+  if (dataHealth?.stale === true) {
+    return 'DEGRADED';
+  }
+
+  if (health?.status === 'OFFLINE' || health?.success === false) {
+    return 'OFFLINE';
+  }
+
+  if (dataHealth?.live === true || dataHealth?.status === 'READY') {
+    return 'LIVE';
+  }
+
+  return 'UNKNOWN';
+}
+
 export async function loadDashboard() {
   const [healthResponse, recommendationsResponse, dataHealthResponse] = await Promise.all([
     fetch('/api/engine-status', { cache: 'no-store' }),
@@ -22,9 +42,13 @@ export async function loadDashboard() {
     dataHealth
   });
 
+  const engineStatus = resolveEngineStatus(health, dataHealth);
+
   return {
-    status: createStatusCard('ASTRA Engine', 'ONLINE', state.health),
+    status: createStatusCard('ASTRA Engine', engineStatus, state.health),
+    engineStatus,
     dataStatus: dataHealth,
-    recommendations: state.opportunities.map(createRecommendationCard)
+    recommendations: state.opportunities.map(createRecommendationCard),
+    updatedAt: dataHealth.lastUpdate || dataHealth.updatedAt || new Date().toISOString()
   };
 }
