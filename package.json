@@ -3,7 +3,7 @@
   "version": "4.0.0",
   "private": true,
   "scripts": {
-    "build": "echo 'ASTRA V4 static deployment ready'"
+    "build": "node scripts/build-check.js"
   },
   "engines": {
     "node": ">=20"
