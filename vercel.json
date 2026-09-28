@@ -1,14 +1,8 @@
 {
-  "version": 2,
-  "cleanUrls": true,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/app/dashboard/command-center.html"
+      "source": "/",
+      "destination": "/command-center.html"
     }
   ]
 }
