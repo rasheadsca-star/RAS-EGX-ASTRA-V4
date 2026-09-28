@@ -1,11 +1,8 @@
-// ASTRA V4 System Health Endpoint
-// Aggregates provider, pipeline, and recommendation health.
+const { runRuntimePipeline } = require('../../engine/runtime-pipeline.js');
+const { getMarketSnapshot } = require('../../data-engine/egx-adapter.js');
+const { egxLiveProvider } = require('../../data-engine/providers/egx-live-provider.js');
 
-import { runRuntimePipeline } from '../../engine/runtime-pipeline.js';
-import { getMarketSnapshot } from '../../data-engine/egx-adapter.js';
-import { egxLiveProvider } from '../../data-engine/providers/egx-live-provider.js';
-
-export default async function handler(req, res) {
+async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.setHeader('Pragma', 'no-cache');
 
@@ -14,7 +11,6 @@ export default async function handler(req, res) {
   try {
     const snapshot = await getMarketSnapshot(egxLiveProvider);
     const pipeline = await runRuntimePipeline();
-
     const hasQuotes = snapshot.quotes.some((q) => q.price > 0);
 
     return res.status(200).json({
@@ -37,3 +33,5 @@ export default async function handler(req, res) {
     });
   }
 }
+
+module.exports = handler;
