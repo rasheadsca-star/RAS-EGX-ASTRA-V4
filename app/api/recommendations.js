@@ -17,27 +17,39 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.setHeader('Pragma', 'no-cache');
 
-  const pipeline = await runRuntimePipeline();
+  try {
+    const pipeline = await runRuntimePipeline();
 
-  if (!pipeline || pipeline.status !== 'READY') {
+    if (!pipeline || pipeline.status !== 'READY') {
+      return res.status(200).json({
+        success: true,
+        market: 'EGX',
+        status: pipeline?.status || 'NO_LIVE_SNAPSHOT',
+        updatedAt: new Date().toISOString(),
+        count: 0,
+        recommendations: []
+      });
+    }
+
+    const recommendations = getRecommendations(pipeline.recommendations || []);
+
     return res.status(200).json({
       success: true,
       market: 'EGX',
-      status: pipeline?.status || 'NO_LIVE_SNAPSHOT',
+      status: 'LIVE',
+      updatedAt: pipeline.generatedAt,
+      count: recommendations.length,
+      recommendations
+    });
+  } catch (error) {
+    return res.status(200).json({
+      success: false,
+      market: 'EGX',
+      status: 'PIPELINE_ERROR',
       updatedAt: new Date().toISOString(),
       count: 0,
-      recommendations: []
+      recommendations: [],
+      error: error?.message || 'Unknown runtime error'
     });
   }
-
-  const recommendations = getRecommendations(pipeline.recommendations || []);
-
-  res.status(200).json({
-    success: true,
-    market: 'EGX',
-    status: 'LIVE',
-    updatedAt: pipeline.generatedAt,
-    count: recommendations.length,
-    recommendations
-  });
 }
