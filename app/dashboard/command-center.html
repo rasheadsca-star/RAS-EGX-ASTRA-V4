@@ -3,10 +3,7 @@
 <head>
 <title>ASTRA V4 Command Center</title>
 <style>
-body{font-family:Arial;background:#0b1220;color:#fff;padding:30px}
-.card{background:#162033;border-radius:12px;padding:20px;margin:15px 0}
-.status{color:#4ade80}
-table{width:100%;border-collapse:collapse}td,th{padding:12px;border-bottom:1px solid #334155}
+body{font-family:Arial;background:#0b1220;color:#fff;padding:30px}.card{background:#162033;border-radius:12px;padding:20px;margin:15px 0}.status{color:#4ade80}.buy{color:#4ade80}.sell{color:#f87171}.hold{color:#facc15}table{width:100%;border-collapse:collapse}td,th{padding:12px;border-bottom:1px solid #334155}
 </style>
 </head>
 <body>
@@ -18,11 +15,22 @@ table{width:100%;border-collapse:collapse}td,th{padding:12px;border-bottom:1px s
 <p>Recommendation Engine: OK</p>
 </div>
 <div class="card">
-<h2>Latest Recommendations</h2>
+<h2>Market Signals</h2>
 <table>
-<tr><th>Symbol</th><th>Signal</th><th>Entry</th><th>Target</th><th>Stop</th><th>Confidence</th></tr>
-<tr><td colspan="6">Waiting for API data connection</td></tr>
+<thead><tr><th>Symbol</th><th>Signal</th><th>Entry</th><th>Target</th><th>Stop</th><th>Confidence</th><th>Risk</th></tr></thead>
+<tbody id="signals"><tr><td colspan="7">Loading ASTRA recommendations...</td></tr></tbody>
 </table>
 </div>
+<script>
+async function loadSignals(){
+ try{
+ const r=await fetch('/api/recommendations');
+ const data=await r.json();
+ const rows=(data.recommendations||data.signals||[]);
+ document.getElementById('signals').innerHTML=rows.length?rows.map(x=>`<tr><td>${x.symbol||'-'}</td><td class="${(x.signal||'').toLowerCase()}">${x.signal||'-'}</td><td>${x.entry||'-'}</td><td>${x.target||'-'}</td><td>${x.stop||'-'}</td><td>${x.confidence||'-'}</td><td>${x.risk||'-'}</td></tr>`).join(''):'<tr><td colspan="7">No live signals available</td></tr>';
+ }catch(e){document.getElementById('signals').innerHTML='<tr><td colspan="7">API waiting for runtime data</td></tr>'}
+}
+loadSignals();
+</script>
 </body>
 </html>
