@@ -3,18 +3,33 @@
 <head>
 <title>ASTRA V4 Command Center</title>
 <style>
-body{font-family:Arial;background:#070d18;color:#fff;padding:30px}.card{background:#162033;border-radius:14px;padding:22px;margin:16px 0}.status{color:#4ade80;font-weight:bold}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.metric{background:#101827;padding:15px;border-radius:10px}table{width:100%;border-collapse:collapse}td,th{padding:12px;border-bottom:1px solid #334155;text-align:left}.buy{color:#4ade80}.sell{color:#f87171}.hold{color:#facc15}</style>
+body{font-family:Arial;background:#070d18;color:#fff;padding:30px}.card{background:#162033;border-radius:14px;padding:22px;margin:16px 0}.status{color:#4ade80;font-weight:bold}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.metric{background:#101827;padding:15px;border-radius:10px}table{width:100%;border-collapse:collapse}td,th{padding:12px;border-bottom:1px solid #334155;text-align:left}.buy{color:#4ade80}.sell{color:#f87171}.hold{color:#facc15}
+</style>
 </head>
 <body>
 <h1>ASTRA V4 Command Center</h1>
-<div class="card"><h2>Engine Status</h2><div class="status">ONLINE</div><p>Runtime pipeline connected.</p></div>
+<div class="card"><h2>Engine Status</h2><div id="engine" class="status">Checking...</div><p id="health">Loading data health...</p></div>
 <div class="grid"><div class="metric"><b>Market</b><br>EGX</div><div class="metric"><b>Engine</b><br>ASTRA V4</div><div class="metric"><b>Last Update</b><br><span id="time">-</span></div></div>
 <div class="card"><h2>Live Recommendations</h2><table><thead><tr><th>Symbol</th><th>Signal</th><th>Entry</th><th>Target</th><th>Stop</th><th>Confidence</th><th>Risk</th></tr></thead><tbody id="signals"><tr><td colspan="7">Loading ASTRA recommendations...</td></tr></tbody></table></div>
 <script>
+async function api(path){return fetch(path,{cache:'no-store'}).then(r=>r.json())}
 async function loadSignals(){
  document.getElementById('time').innerText=new Date().toLocaleString();
- try{const r=await fetch('/api/recommendations');const data=await r.json();const rows=data.recommendations||data.signals||[];document.getElementById('signals').innerHTML=rows.length?rows.map(x=>`<tr><td>${x.symbol||'-'}</td><td class="${(x.signal||'').toLowerCase()}">${x.signal||'-'}</td><td>${x.entry||'-'}</td><td>${x.target||x.target1||'-'}</td><td>${x.stop||x.stopLoss||'-'}</td><td>${x.confidence||'-'}</td><td>${x.risk||'-'}</td></tr>`).join(''):'<tr><td colspan="7">No live signals available</td></tr>';}catch(e){document.getElementById('signals').innerHTML='<tr><td colspan="7">API waiting for runtime data</td></tr>'}}
+ try{
+  const data=await api('/api/recommendations');
+  const rows=data.recommendations||data.signals||[];
+  document.getElementById('signals').innerHTML=rows.length?rows.map(x=>`<tr><td>${x.symbol||'-'}</td><td class="${(x.signal||'').toLowerCase()}">${x.signal||'-'}</td><td>${x.entry||'-'}</td><td>${x.target||x.target1||'-'}</td><td>${x.stop||x.stopLoss||'-'}</td><td>${x.confidence||'-'}</td><td>${x.risk||'-'}</td></tr>`).join(''):'<tr><td colspan="7">No live signals available</td></tr>';
+  const h=await api('/api/data-health');
+  document.getElementById('health').innerText=h.message||h.status||'Data health checked';
+  document.getElementById('engine').innerText='ONLINE';
+ }catch(e){
+  document.getElementById('signals').innerHTML='<tr><td colspan="7">Runtime data unavailable</td></tr>';
+  document.getElementById('engine').innerText='DEGRADED';
+  document.getElementById('health').innerText='Waiting for API connection';
+ }
+}
 loadSignals();
+setInterval(loadSignals,60000);
 </script>
 </body>
 </html>
