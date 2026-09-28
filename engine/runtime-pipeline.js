@@ -1,10 +1,19 @@
 // ASTRA V4 Runtime Pipeline
-// Connects market snapshot -> analyzer -> recommendation engine.
+// Connects EGX data provider -> analyzer -> recommendation engine.
 
 const { analyze } = require('./analysis-engine/runtime-analyzer');
 const { generateRecommendation } = require('./recommendation-engine/runtime-recommender');
 
 async function loadSnapshot(){
+  try {
+    const provider = await import('../data-engine/providers/egx-data-provider.js');
+    const provided = await provider.getEGXSnapshot();
+
+    if (provided) return provided;
+  } catch(e) {
+    // fallback to local snapshot
+  }
+
   try {
     const source = require('../data/egx-snapshot.json');
     return source || { quotes: [] };
@@ -20,7 +29,8 @@ function buildRuntimeRecommendations(snapshot) {
     return {
       generatedAt: new Date().toISOString(),
       recommendations: [],
-      status: 'WAITING_FOR_MARKET_DATA'
+      status: 'WAITING_FOR_MARKET_DATA',
+      mode: snapshot?.mode || 'WAITING_FOR_DATA'
     };
   }
 
@@ -35,6 +45,7 @@ function buildRuntimeRecommendations(snapshot) {
 
   return {
     status: 'READY',
+    generatedAt: new Date().toISOString(),
     ...generateRecommendation(analysis)
   };
 }
