@@ -13,7 +13,7 @@ function getRecommendations(snapshot = []) {
   }));
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.setHeader('Pragma', 'no-cache');
 
@@ -53,3 +53,5 @@ export default async function handler(req, res) {
     });
   }
 }
+
+module.exports = handler;
