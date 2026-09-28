@@ -11,16 +11,23 @@ const snapshot = require(fixturePath);
 
 const analysis = analyze(snapshot);
 const recommendation = generateRecommendation(analysis);
+const recommendations = recommendation.recommendations || [];
 
 const result = {
   generatedAt: new Date().toISOString(),
   source: 'ASTRA-RUNTIME-ENGINE',
   market: snapshot.market,
-  analysis,
-  recommendations: recommendation.recommendations
+  summary: {
+    totalSignals: recommendations.length,
+    buySignals: recommendations.filter((r) => r.signal === 'BUY').length,
+    watchSignals: recommendations.filter((r) => r.signal === 'WATCH').length
+  },
+  recommendations,
+  analysis
 };
 
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, JSON.stringify(result, null, 2));
 
+console.log('ASTRA REPORT');
 console.log(JSON.stringify(result, null, 2));
