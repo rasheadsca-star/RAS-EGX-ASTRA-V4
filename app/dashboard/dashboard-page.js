@@ -5,7 +5,11 @@ import { buildDashboardState } from './dashboard-model.js';
 import { createStatusCard } from './components/status-card.js';
 import { createRecommendationCard } from './components/recommendation-card.js';
 
-function resolveEngineStatus(health = {}, dataHealth = {}) {
+function resolveEngineStatus(health = {}, dataHealth = {}, systemHealth = {}) {
+  if (systemHealth?.healthy === false) {
+    return 'OFFLINE';
+  }
+
   if (dataHealth?.status === 'WAITING' || dataHealth?.status === 'NO_LIVE_SNAPSHOT') {
     return 'WAITING';
   }
@@ -26,29 +30,33 @@ function resolveEngineStatus(health = {}, dataHealth = {}) {
 }
 
 export async function loadDashboard() {
-  const [healthResponse, recommendationsResponse, dataHealthResponse] = await Promise.all([
+  const [healthResponse, recommendationsResponse, dataHealthResponse, systemHealthResponse] = await Promise.all([
     fetch('/api/engine-status', { cache: 'no-store' }),
     fetch('/api/recommendations', { cache: 'no-store' }),
-    fetch('/api/data-health', { cache: 'no-store' })
+    fetch('/api/data-health', { cache: 'no-store' }),
+    fetch('/api/system-health', { cache: 'no-store' })
   ]);
 
   const health = await healthResponse.json();
   const recommendations = await recommendationsResponse.json();
   const dataHealth = await dataHealthResponse.json();
+  const systemHealth = await systemHealthResponse.json();
 
   const state = buildDashboardState({
     health,
     recommendations,
-    dataHealth
+    dataHealth,
+    systemHealth
   });
 
-  const engineStatus = resolveEngineStatus(health, dataHealth);
+  const engineStatus = resolveEngineStatus(health, dataHealth, systemHealth);
 
   return {
     status: createStatusCard('ASTRA Engine', engineStatus, state.health),
     engineStatus,
+    systemHealth,
     dataStatus: dataHealth,
     recommendations: state.opportunities.map(createRecommendationCard),
-    updatedAt: dataHealth.lastUpdate || dataHealth.updatedAt || new Date().toISOString()
+    updatedAt: dataHealth.lastUpdate || dataHealth.updatedAt || systemHealth.checkedAt || new Date().toISOString()
   };
 }
