@@ -1,16 +1,4 @@
-const fallbackSnapshot = [
-  {
-    symbol: 'EGX_SAMPLE',
-    signal: 'WATCH',
-    entry: null,
-    target1: null,
-    target2: null,
-    stopLoss: null,
-    confidence: 0
-  }
-];
-
-export function getRecommendations(snapshot = fallbackSnapshot) {
+export function getRecommendations(snapshot = []) {
   return snapshot.map(stock => ({
     symbol: stock.symbol,
     signal: stock.signal || 'WATCH',
@@ -23,7 +11,7 @@ export function getRecommendations(snapshot = fallbackSnapshot) {
 }
 
 export default async function handler(req, res) {
-  const recommendations = getRecommendations();
+  const recommendations = getRecommendations([]);
 
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.setHeader('Pragma', 'no-cache');
@@ -31,6 +19,7 @@ export default async function handler(req, res) {
   res.status(200).json({
     success: true,
     market: 'EGX',
+    status: 'NO_LIVE_SNAPSHOT',
     updatedAt: new Date().toISOString(),
     count: recommendations.length,
     recommendations
