@@ -1,17 +1,16 @@
 // ASTRA V4 Recommendation Runtime
 
 const { generateSignal } = require('./signal-generator');
-const { calculateTradePlan } = require('./trade-calculator-runtime');
+const { calculateTrade } = require('./trade-calculator-runtime');
 
 function generateRecommendation(analysis) {
   const ranked = (analysis?.results || []).map((item) => {
     const technicalScore = item.technicalScore || 0;
     const riskLevel = item.riskLevel || 'MEDIUM';
 
-    const tradePlan = calculateTradePlan({
+    const tradePlan = calculateTrade({
       price: item.price,
-      score: technicalScore,
-      riskLevel
+      confidence: technicalScore
     });
 
     const signal = generateSignal({
