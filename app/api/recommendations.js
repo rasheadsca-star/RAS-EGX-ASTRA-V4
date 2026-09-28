@@ -25,8 +25,12 @@ export function getRecommendations(snapshot = fallbackSnapshot) {
 export default async function handler(req, res) {
   const recommendations = getRecommendations();
 
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+
   res.status(200).json({
     success: true,
+    market: 'EGX',
     updatedAt: new Date().toISOString(),
     count: recommendations.length,
     recommendations
