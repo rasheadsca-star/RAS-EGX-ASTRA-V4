@@ -1,6 +1,6 @@
-import { runRuntimePipeline } from '../../engine/runtime-pipeline.js';
+const { runRuntimePipeline } = require('../../engine/runtime-pipeline.js');
 
-export function getRecommendations(snapshot = []) {
+function getRecommendations(snapshot = []) {
   return snapshot.map(stock => ({
     symbol: stock.symbol,
     signal: stock.signal || 'WATCH',
