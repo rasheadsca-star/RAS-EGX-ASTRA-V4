@@ -4,6 +4,8 @@ export function createStatusCard(title, status, details = {}) {
   return {
     title,
     status,
-    details
+    details,
+    dataState: details.dataState || details.status || 'UNKNOWN',
+    lastUpdate: details.lastUpdate || details.updatedAt || null
   };
 }
