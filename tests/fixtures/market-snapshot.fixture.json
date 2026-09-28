@@ -1,0 +1,15 @@
+{
+  "market": "EGX",
+  "timestamp": "2026-09-28T13:00:00Z",
+  "symbols": [
+    {
+      "symbol": "TEST",
+      "price": 100,
+      "volume": 1000000
+    }
+  ],
+  "quality": {
+    "validated": true,
+    "coverage": 1
+  }
+}
