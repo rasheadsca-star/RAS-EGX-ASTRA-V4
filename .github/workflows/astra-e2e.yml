@@ -24,3 +24,13 @@ jobs:
       - name: Run ASTRA Pipeline Test
         run: |
           node engine/pipeline/e2e-pipeline-test.js
+
+      - name: Generate ASTRA Signal Output
+        run: |
+          node scripts/astra-e2e-runner.js
+
+      - name: Upload ASTRA Result Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: astra-result
+          path: artifacts/astra-result.json
