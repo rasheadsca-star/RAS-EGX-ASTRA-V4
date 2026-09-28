@@ -8,6 +8,8 @@ export function createRecommendationCard(recommendation = {}) {
     target1: recommendation.target1 ?? null,
     target2: recommendation.target2 ?? null,
     stopLoss: recommendation.stopLoss ?? null,
-    confidence: recommendation.confidence ?? 0
+    confidence: recommendation.confidence ?? 0,
+    risk: recommendation.risk ?? recommendation.riskLevel ?? 'N/A',
+    timestamp: recommendation.timestamp ?? null
   };
 }
