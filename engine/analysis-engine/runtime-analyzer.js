@@ -19,10 +19,12 @@ function analyze(snapshot) {
 
     return {
       symbol: item.symbol,
+      price,
       momentum,
       liquidity,
       trend,
-      technicalScore
+      technicalScore,
+      riskLevel: technicalScore >= 80 ? 'LOW' : technicalScore >= 60 ? 'MEDIUM' : 'HIGH'
     };
   });
 
