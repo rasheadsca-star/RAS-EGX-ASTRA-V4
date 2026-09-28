@@ -15,9 +15,20 @@ function normalizeRecommendation(item = {}) {
   };
 }
 
-export function buildDashboardState({ health, recommendations }) {
+function normalizeDataHealth(data = {}) {
+  return {
+    status: data.status || 'UNKNOWN',
+    live: data.live ?? false,
+    stale: data.stale ?? false,
+    lastUpdate: data.lastUpdate || data.updatedAt || null,
+    message: data.message || null
+  };
+}
+
+export function buildDashboardState({ health, recommendations, dataHealth }) {
   return {
     health: health || {},
+    dataHealth: normalizeDataHealth(dataHealth),
     opportunities: Array.isArray(recommendations)
       ? recommendations.map(normalizeRecommendation)
       : [],
