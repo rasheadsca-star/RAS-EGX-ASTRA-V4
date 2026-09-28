@@ -1,7 +1,7 @@
 // ASTRA V4 EGX Data Adapter
 // Provider abstraction layer for live EGX market snapshots.
 
-export function normalizeQuote(quote = {}) {
+function normalizeQuote(quote = {}) {
   return {
     symbol: quote.symbol || null,
     price: Number(quote.price || 0),
@@ -13,7 +13,7 @@ export function normalizeQuote(quote = {}) {
   };
 }
 
-export async function getMarketSnapshot(provider) {
+async function getMarketSnapshot(provider) {
   if (!provider || typeof provider.fetchQuotes !== 'function') {
     return {
       status: 'OFFLINE',
@@ -32,3 +32,5 @@ export async function getMarketSnapshot(provider) {
     timestamp: new Date().toISOString()
   };
 }
+
+module.exports = { normalizeQuote, getMarketSnapshot };
