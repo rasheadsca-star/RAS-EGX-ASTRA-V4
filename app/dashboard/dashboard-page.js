@@ -52,7 +52,12 @@ export async function loadDashboard() {
   const engineStatus = resolveEngineStatus(health, dataHealth, systemHealth);
 
   return {
-    status: createStatusCard('ASTRA Engine', engineStatus, state.health),
+    status: createStatusCard('ASTRA Engine', engineStatus, {
+      ...state.health,
+      systemHealth,
+      dataState: dataHealth.status || 'UNKNOWN',
+      lastUpdate: dataHealth.lastUpdate || dataHealth.updatedAt || systemHealth.checkedAt || null
+    }),
     engineStatus,
     systemHealth,
     dataStatus: dataHealth,
