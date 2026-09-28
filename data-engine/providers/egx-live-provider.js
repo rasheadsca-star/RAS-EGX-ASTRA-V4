@@ -22,13 +22,12 @@ function createEmptyQuote(symbol) {
   };
 }
 
-export const egxLiveProvider = {
+const egxLiveProvider = {
   name: 'EGX_LIVE_PROVIDER',
 
   async fetchQuotes() {
-    // Live feed adapter point.
-    // Returning empty guarded quotes prevents invalid recommendations
-    // until a verified market source is connected.
     return WATCHLIST.map(createEmptyQuote);
   }
 };
+
+module.exports = { egxLiveProvider };
