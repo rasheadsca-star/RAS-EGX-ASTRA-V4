@@ -1,6 +1,7 @@
 // ASTRA V4 EGX Live Provider
-// Production-ready provider contract.
-// Replace fetch source with authenticated EGX market feed when available.
+// Free public-market-data fallback using Yahoo Finance chart data.
+// Yahoo's EGX feed is delayed, so the provider must be labeled as delayed
+// and must never fabricate prices when the upstream source is unavailable.
 
 const WATCHLIST = [
   'COMI',
@@ -10,7 +11,13 @@ const WATCHLIST = [
   'HRHO'
 ];
 
-function createEmptyQuote(symbol) {
+const YAHOO_SYMBOLS = Object.fromEntries(
+  WATCHLIST.map((symbol) => [symbol, `${symbol}.CA`])
+);
+
+const REQUEST_TIMEOUT_MS = 8000;
+
+function emptyQuote(symbol) {
   return {
     symbol,
     price: 0,
@@ -18,15 +25,82 @@ function createEmptyQuote(symbol) {
     volume: 0,
     high: 0,
     low: 0,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    source: 'YAHOO_FINANCE_DELAYED',
+    delayed: true
   };
 }
 
+async function fetchYahooQuote(symbol) {
+  const yahooSymbol = YAHOO_SYMBOLS[symbol] || `${symbol}.CA`;
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yahooSymbol)}?range=1d&interval=1m&includePrePost=false`;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(url, {
+      headers: { 'User-Agent': 'ASTRA-V4/1.0' },
+      signal: controller.signal
+    });
+
+    if (!response.ok) return emptyQuote(symbol);
+
+    const payload = await response.json();
+    const result = payload?.chart?.result?.[0];
+    const meta = result?.meta || {};
+    const timestamps = result?.timestamp || [];
+    const quote = result?.indicators?.quote?.[0] || {};
+    const closes = quote.close || [];
+    const highs = quote.high || [];
+    const lows = quote.low || [];
+    const volumes = quote.volume || [];
+
+    let lastIndex = -1;
+    for (let i = closes.length - 1; i >= 0; i -= 1) {
+      if (Number.isFinite(Number(closes[i]))) {
+        lastIndex = i;
+        break;
+      }
+    }
+
+    if (lastIndex < 0) return emptyQuote(symbol);
+
+    const price = Number(closes[lastIndex]);
+    const previousClose = Number(meta.previousClose || 0);
+    const change = previousClose ? price - previousClose : 0;
+
+    return {
+      symbol,
+      price,
+      change,
+      volume: Number(volumes[lastIndex] || 0),
+      high: Number(highs[lastIndex] || price),
+      low: Number(lows[lastIndex] || price),
+      timestamp: timestamps[lastIndex]
+        ? new Date(Number(timestamps[lastIndex]) * 1000).toISOString()
+        : new Date().toISOString(),
+      source: 'YAHOO_FINANCE_DELAYED',
+      delayed: true
+    };
+  } catch (_) {
+    return emptyQuote(symbol);
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 const egxLiveProvider = {
-  name: 'EGX_LIVE_PROVIDER',
+  name: 'YAHOO_FINANCE_DELAYED',
 
   async fetchQuotes() {
-    return WATCHLIST.map(createEmptyQuote);
+    const quotes = await Promise.all(WATCHLIST.map(fetchYahooQuote));
+    const validQuotes = quotes.filter((quote) => quote.price > 0);
+    return validQuotes.length ? validQuotes : [];
+  },
+
+  // Compatibility with the live connector contract.
+  async getQuotes() {
+    return this.fetchQuotes();
   }
 };
 
