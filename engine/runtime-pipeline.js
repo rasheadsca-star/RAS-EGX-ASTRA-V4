@@ -11,7 +11,9 @@ async function loadSnapshot() {
     const provided = await provider.getEGXSnapshot();
 
     if (provided) return provided;
-  } catch (e) {}
+  } catch (e) {
+    // fallback to local snapshot
+  }
 
   try {
     const source = require('../data/egx-snapshot.json');
@@ -30,7 +32,7 @@ function normalizeSymbols(quotes = []) {
   }));
 }
 
-async async function buildRuntimeRecommendations(snapshot) {
+async function buildRuntimeRecommendations(snapshot) {
   const quotes = snapshot?.quotes || [];
 
   const histories = await loadLegacyHistory();
@@ -59,6 +61,7 @@ async async function buildRuntimeRecommendations(snapshot) {
 
 async function runRuntimePipeline() {
   const snapshot = await loadSnapshot();
+
   return buildRuntimeRecommendations(snapshot);
 }
 
@@ -66,4 +69,3 @@ module.exports = {
   buildRuntimeRecommendations,
   runRuntimePipeline
 };
-const { loadLegacyHistory } = require('../data-engine/history/legacy-history-provider');
