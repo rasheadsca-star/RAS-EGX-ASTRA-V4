@@ -11,7 +11,9 @@ const CACHE = new Map();
 
 const REQUEST_TIMEOUT_MS = 8000;
 
+
 async function fetchHistory(symbol) {
+
   if (CACHE.has(symbol)) {
     return CACHE.get(symbol);
   }
@@ -23,7 +25,9 @@ async function fetchHistory(symbol) {
     REQUEST_TIMEOUT_MS
   );
 
+
   try {
+
     const url = `${LEGACY_REPO}/${symbol}.json`;
 
     const response = await fetch(url, {
@@ -33,7 +37,9 @@ async function fetchHistory(symbol) {
       signal: controller.signal
     });
 
+
     if (!response.ok) {
+
       console.log(
         'ASTRA HISTORY FETCH FAILED',
         symbol,
@@ -41,16 +47,21 @@ async function fetchHistory(symbol) {
       );
 
       CACHE.set(symbol, []);
+
       return [];
     }
 
+
     const payload = await response.json();
+
 
     const rows = Array.isArray(payload?.sessions)
       ? payload.sessions
       : [];
 
+
     const normalized = rows
+
       .map((row) => ({
         date: row.date,
         open: Number(row.open || 0),
@@ -58,20 +69,26 @@ async function fetchHistory(symbol) {
         low: Number(row.low || 0),
         close: Number(row.close || 0),
         volume: Number(row.volume || 0),
+
         source:
           row.primarySource ||
           payload.primarySource ||
           'legacy-history'
       }))
+
+
       .filter(
         (row) =>
           row.date &&
           row.close > 0
       )
+
+
       .sort(
         (a, b) =>
           a.date.localeCompare(b.date)
       );
+
 
     console.log(
       'ASTRA HISTORY LOADED',
@@ -79,11 +96,14 @@ async function fetchHistory(symbol) {
       normalized.length
     );
 
+
     CACHE.set(symbol, normalized);
 
     return normalized;
 
+
   } catch (error) {
+
 
     console.log(
       'ASTRA HISTORY ERROR',
@@ -91,27 +111,34 @@ async function fetchHistory(symbol) {
       error?.message || 'unknown'
     );
 
+
     CACHE.set(symbol, []);
 
     return [];
+
 
   } finally {
 
     clearTimeout(timeout);
 
   }
+
 }
+
 
 
 async function loadLegacyHistory() {
 
+
   const entries = await Promise.all(
+
     WATCHLIST.map(
       async (symbol) => [
         symbol,
         await fetchHistory(symbol)
       ]
     )
+
   );
 
 
@@ -129,6 +156,7 @@ async function loadLegacyHistory() {
   return Object.fromEntries(entries);
 
 }
+
 
 
 module.exports = {
