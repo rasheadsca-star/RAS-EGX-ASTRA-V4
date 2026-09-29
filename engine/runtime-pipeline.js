@@ -30,7 +30,7 @@ function normalizeSymbols(quotes = []) {
   }));
 }
 
-async function buildRuntimeRecommendations(snapshot) {
+async async function buildRuntimeRecommendations(snapshot) {
   const quotes = snapshot?.quotes || [];
 
   const histories = await loadLegacyHistory();
@@ -66,3 +66,4 @@ module.exports = {
   buildRuntimeRecommendations,
   runRuntimePipeline
 };
+const { loadLegacyHistory } = require('../data-engine/history/legacy-history-provider');
