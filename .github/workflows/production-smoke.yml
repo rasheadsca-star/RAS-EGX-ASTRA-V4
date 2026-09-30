@@ -1,0 +1,84 @@
+name: ASTRA Production Smoke Test
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  production-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check production recommendations API
+        env:
+          ASTRA_PROD_URL: https://ras-egx-astra-v4-8nvrp022c-rasheed18.vercel.app
+        run: |
+          set -euo pipefail
+          URL="$ASTRA_PROD_URL/api/recommendations?smoke=$(date +%s)"
+          echo "Checking $URL"
+          BODY="$(curl -fsSL --retry 3 --retry-delay 2 --max-time 30 "$URL")"
+          echo "$BODY" | python -c '
+          import json,sys
+          x=json.load(sys.stdin)
+          assert x.get("success") is True, x
+          assert x.get("market") == "EGX", x
+          assert x.get("status") in {"LIVE_READY","HISTORICAL_READY","NO_DATA"}, x
+          assert isinstance(x.get("recommendations"), list), x
+          assert "updatedAt" in x, x
+          print(json.dumps({
+              "status": x.get("status"),
+              "mode": x.get("mode"),
+              "dataSource": x.get("dataSource"),
+              "count": x.get("count"),
+              "symbolsAnalyzed": x.get("symbolsAnalyzed"),
+              "updatedAt": x.get("updatedAt")
+          }, indent=2))
+          '
+
+      - name: Check production data health API
+        env:
+          ASTRA_PROD_URL: https://ras-egx-astra-v4-8nvrp022c-rasheed18.vercel.app
+        run: |
+          set -euo pipefail
+          URL="$ASTRA_PROD_URL/api/data-health?smoke=$(date +%s)"
+          echo "Checking $URL"
+          BODY="$(curl -fsSL --retry 3 --retry-delay 2 --max-time 30 "$URL")"
+          echo "$BODY" | python -c '
+          import json,sys
+          x=json.load(sys.stdin)
+          assert x.get("market") == "EGX", x
+          assert x.get("engineStatus") in {"LIVE_READY","HISTORICAL_READY","NO_DATA","ERROR"}, x
+          assert "checkedAt" in x, x
+          print(json.dumps({
+              "engineStatus": x.get("engineStatus"),
+              "liveFeed": x.get("liveFeed"),
+              "historicalData": x.get("historicalData"),
+              "quoteCount": x.get("quoteCount"),
+              "historyCount": x.get("historyCount"),
+              "symbolsAnalyzed": x.get("symbolsAnalyzed")
+          }, indent=2))
+          '
+
+      - name: Check production system health API
+        env:
+          ASTRA_PROD_URL: https://ras-egx-astra-v4-8nvrp022c-rasheed18.vercel.app
+        run: |
+          set -euo pipefail
+          URL="$ASTRA_PROD_URL/api/system-health?smoke=$(date +%s)"
+          echo "Checking $URL"
+          BODY="$(curl -fsSL --retry 3 --retry-delay 2 --max-time 30 "$URL")"
+          echo "$BODY" | python -c '
+          import json,sys
+          x=json.load(sys.stdin)
+          assert x.get("system") == "ASTRA_V4", x
+          assert "healthy" in x, x
+          assert "dataEngine" in x, x
+          print(json.dumps({
+              "healthy": x.get("healthy"),
+              "dataEngine": x.get("dataEngine"),
+              "liveFeed": x.get("liveFeed"),
+              "historicalData": x.get("historicalData"),
+              "recommendations": x.get("recommendations")
+          }, indent=2))
+          '
