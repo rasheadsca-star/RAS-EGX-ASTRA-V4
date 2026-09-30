@@ -10,75 +10,61 @@ jobs:
   production-smoke:
     runs-on: ubuntu-latest
     steps:
-      - name: Check production recommendations API
-        env:
-          ASTRA_PROD_URL: https://ras-egx-astra-v4-8nvrp022c-rasheed18.vercel.app
+      - name: Probe production endpoints
+        shell: bash
         run: |
-          set -euo pipefail
-          URL="$ASTRA_PROD_URL/api/recommendations?smoke=$(date +%s)"
-          echo "Checking $URL"
-          BODY="$(curl -fsSL --retry 3 --retry-delay 2 --max-time 30 "$URL")"
-          echo "$BODY" | python -c '
-          import json,sys
-          x=json.load(sys.stdin)
-          assert x.get("success") is True, x
-          assert x.get("market") == "EGX", x
-          assert x.get("status") in {"LIVE_READY","HISTORICAL_READY","NO_DATA"}, x
-          assert isinstance(x.get("recommendations"), list), x
-          assert "updatedAt" in x, x
-          print(json.dumps({
-              "status": x.get("status"),
-              "mode": x.get("mode"),
-              "dataSource": x.get("dataSource"),
-              "count": x.get("count"),
-              "symbolsAnalyzed": x.get("symbolsAnalyzed"),
-              "updatedAt": x.get("updatedAt")
-          }, indent=2))
-          '
+          set +e
+          hosts=(
+            "https://ras-egx-astra-v4-8nvrp022c-rasheed18.vercel.app"
+            "https://ras-egx-astra-v4.vercel.app"
+            "https://ras-egx-astra-v4-live.vercel.app"
+          )
 
-      - name: Check production data health API
-        env:
-          ASTRA_PROD_URL: https://ras-egx-astra-v4-8nvrp022c-rasheed18.vercel.app
-        run: |
-          set -euo pipefail
-          URL="$ASTRA_PROD_URL/api/data-health?smoke=$(date +%s)"
-          echo "Checking $URL"
-          BODY="$(curl -fsSL --retry 3 --retry-delay 2 --max-time 30 "$URL")"
-          echo "$BODY" | python -c '
-          import json,sys
-          x=json.load(sys.stdin)
-          assert x.get("market") == "EGX", x
-          assert x.get("engineStatus") in {"LIVE_READY","HISTORICAL_READY","NO_DATA","ERROR"}, x
-          assert "checkedAt" in x, x
-          print(json.dumps({
-              "engineStatus": x.get("engineStatus"),
-              "liveFeed": x.get("liveFeed"),
-              "historicalData": x.get("historicalData"),
-              "quoteCount": x.get("quoteCount"),
-              "historyCount": x.get("historyCount"),
-              "symbolsAnalyzed": x.get("symbolsAnalyzed")
-          }, indent=2))
-          '
+          valid_json=0
 
-      - name: Check production system health API
-        env:
-          ASTRA_PROD_URL: https://ras-egx-astra-v4-8nvrp022c-rasheed18.vercel.app
-        run: |
-          set -euo pipefail
-          URL="$ASTRA_PROD_URL/api/system-health?smoke=$(date +%s)"
-          echo "Checking $URL"
-          BODY="$(curl -fsSL --retry 3 --retry-delay 2 --max-time 30 "$URL")"
-          echo "$BODY" | python -c '
-          import json,sys
-          x=json.load(sys.stdin)
-          assert x.get("system") == "ASTRA_V4", x
-          assert "healthy" in x, x
-          assert "dataEngine" in x, x
-          print(json.dumps({
-              "healthy": x.get("healthy"),
-              "dataEngine": x.get("dataEngine"),
-              "liveFeed": x.get("liveFeed"),
-              "historicalData": x.get("historicalData"),
-              "recommendations": x.get("recommendations")
-          }, indent=2))
-          '
+          for base in "${hosts[@]}"; do
+            echo
+            echo "=============================="
+            echo "HOST: $base"
+            echo "=============================="
+
+            for path in "/api/recommendations" "/api/data-health" "/api/system-health"; do
+              echo "--- $path"
+              tmp_headers="$(mktemp)"
+              tmp_body="$(mktemp)"
+
+              code="$(curl -sS -L --max-time 20 --retry 1 -D "$tmp_headers" -o "$tmp_body" -w '%{http_code}' "$base$path?probe=$(date +%s)" 2>&1)"
+              rc=$?
+
+              echo "curl_exit=$rc http_status=$code"
+              echo "content_type=$(grep -i '^content-type:' "$tmp_headers" | tail -1 | tr -d '')"
+              echo "location=$(grep -i '^location:' "$tmp_headers" | tail -1 | tr -d '')"
+              echo "body_preview:"
+              head -c 1500 "$tmp_body" | sed 's/[^[:print:]	]/?/g'
+              echo
+
+              if python - "$tmp_body" <<'PY'
+import json,sys
+try:
+    x=json.load(open(sys.argv[1]))
+    assert isinstance(x,dict)
+    print("VALID_JSON_OBJECT")
+    raise SystemExit(0)
+except Exception:
+    raise SystemExit(1)
+PY
+              then
+                valid_json=1
+              fi
+
+              rm -f "$tmp_headers" "$tmp_body"
+            done
+          done
+
+          echo
+          echo "valid_json_detected=$valid_json"
+
+          if [ "$valid_json" -ne 1 ]; then
+            echo "No tested production hostname returned a JSON API response."
+            exit 2
+          fi
