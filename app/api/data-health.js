@@ -36,6 +36,7 @@ async function handler(req, res) {
       symbolsAnalyzed: Number(pipeline.symbolsAnalyzed || 0),
       checkedAt: now,
       snapshotTime: pipeline.generatedAt,
+      deploymentCommit: process.env.VERCEL_GIT_COMMIT_SHA || null,
       recommendationsReady:
         Array.isArray(pipeline.recommendations) &&
         pipeline.recommendations.length > 0,
@@ -58,6 +59,7 @@ async function handler(req, res) {
       quoteCount: 0,
       historyCount: 0,
       checkedAt: now,
+      deploymentCommit: process.env.VERCEL_GIT_COMMIT_SHA || null,
       recommendationsReady: false,
       message: 'ASTRA health check failed safely.',
       error: error?.message || 'Unknown runtime error'

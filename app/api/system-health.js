@@ -15,6 +15,7 @@ async function handler(req, res) {
       success: true,
       system: 'ASTRA_V4',
       checkedAt,
+      deploymentCommit: process.env.VERCEL_GIT_COMMIT_SHA || null,
       dataEngine: liveReady || historyReady ? 'READY' : 'NO_DATA',
       liveFeed: liveReady ? 'CONNECTED' : 'WAITING_FOR_SOURCE',
       historicalData: historyReady ? 'CONNECTED' : 'EMPTY',
@@ -28,6 +29,7 @@ async function handler(req, res) {
       success: false,
       system: 'ASTRA_V4',
       checkedAt,
+      deploymentCommit: process.env.VERCEL_GIT_COMMIT_SHA || null,
       healthy: false,
       error: error?.message || 'Unknown runtime error'
     });

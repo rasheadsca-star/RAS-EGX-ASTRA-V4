@@ -30,26 +30,46 @@ jobs:
       - name: Full ASTRA E2E validation
         run: node scripts/astra-e2e-runner.js
 
-      - name: Production endpoint probe
-        continue-on-error: true
+      - name: Production contract validation
         shell: bash
+        env:
+          ASTRA_PROD_URL: https://ras-egx-astra-v4.vercel.app
         run: |
-          set +e
-          for base in \
-            "https://ras-egx-astra-v4-8nvrp022c-rasheed18.vercel.app" \
-            "https://ras-egx-astra-v4.vercel.app" \
-            "https://ras-egx-astra-v4-live.vercel.app"
-          do
-            echo
-            echo "===== $base ====="
-            for path in "/api/recommendations" "/api/data-health" "/api/system-health"
-            do
-              echo "--- $path"
-              curl -sS -L --max-time 20 --retry 1 -D - "$base$path?probe=$(date +%s)" | head -c 2500
-              echo
-              echo "-----"
-            done
-          done
+          set -euo pipefail
+          body="$(mktemp)"
+          trap 'rm -f "$body"' EXIT
+
+          curl -fsSL --retry 3 --retry-delay 2 --max-time 30             "$ASTRA_PROD_URL/api/recommendations?ci=$GITHUB_SHA" > "$body"
+
+          python - "$body" "$GITHUB_SHA" <<'PY'
+import json, sys
+
+path, expected_commit = sys.argv[1], sys.argv[2]
+with open(path, encoding="utf-8") as f:
+    data = json.load(f)
+
+assert data.get("success") is True, data
+assert data.get("market") == "EGX", data
+assert data.get("status") in {"LIVE_READY", "HISTORICAL_READY"}, data
+assert isinstance(data.get("recommendations"), list), data
+assert data.get("count", 0) > 0, data
+
+deployment_commit = data.get("deploymentCommit")
+assert deployment_commit, "Production did not expose VERCEL_GIT_COMMIT_SHA"
+assert deployment_commit == expected_commit, {
+    "expected_commit": expected_commit,
+    "deployment_commit": deployment_commit
+}
+
+print(json.dumps({
+    "production_status": data.get("status"),
+    "mode": data.get("mode"),
+    "dataSource": data.get("dataSource"),
+    "count": data.get("count"),
+    "symbolsAnalyzed": data.get("symbolsAnalyzed"),
+    "deploymentCommit": deployment_commit
+}, indent=2))
+PY
 
       - name: Upload ASTRA Result Artifact
         uses: actions/upload-artifact@v4
