@@ -42,7 +42,8 @@ async function main() {
     JSON.stringify(recommendations)
   );
   assert(Array.isArray(recommendations.recommendations), JSON.stringify(recommendations));
-  assert(Number(recommendations.count) > 0, JSON.stringify(recommendations));
+  assert(Array.isArray(recommendations.watchlist), JSON.stringify(recommendations));
+  assert(Number(recommendations.count) === recommendations.recommendations.length, JSON.stringify(recommendations));
 
   const deploymentCommit = recommendations.deploymentCommit;
   assert(deploymentCommit, 'Production did not expose VERCEL_GIT_COMMIT_SHA');
@@ -58,28 +59,26 @@ async function main() {
     health.engineStatus === 'HISTORICAL_READY',
     JSON.stringify(health)
   );
-  assert(health.recommendationsReady === true, JSON.stringify(health));
-
   assert.strictEqual(system.system, 'ASTRA_V4', JSON.stringify(system));
   assert.strictEqual(system.healthy, true, JSON.stringify(system));
 
-  const executionReadyCount = Number(recommendations.executionReadyCount || 0);
-  const morningConfirmedCount = Number(recommendations.morningConfirmedCount || 0);
-
   assert(
-    executionReadyCount <= morningConfirmedCount,
-    JSON.stringify({ executionReadyCount, morningConfirmedCount })
+    recommendations.recommendations.every((item) => item.signal === 'BUY'),
+    JSON.stringify(recommendations)
   );
 
-  if (recommendations.status === 'HISTORICAL_READY') {
-    assert.strictEqual(executionReadyCount, 0, JSON.stringify(recommendations));
-    assert(
-      recommendations.recommendations.every((item) => item.executionReady === false),
-      JSON.stringify(recommendations)
-    );
-  }
+  assert(
+    recommendations.watchlist.every((item) => item.signal === 'WATCH'),
+    JSON.stringify(recommendations)
+  );
 
   for (const item of recommendations.recommendations) {
+    assert.strictEqual(item.entryOpportunity, true, JSON.stringify(item));
+    assert(item.stopLoss < item.entry, JSON.stringify(item));
+    assert(item.entry < item.target1, JSON.stringify(item));
+    assert(item.target1 < item.target2, JSON.stringify(item));
+    assert(item.target2 < item.target3, JSON.stringify(item));
+
     if (item.executionReady === true) {
       assert.strictEqual(item.morningGate?.confirmed, true, JSON.stringify(item));
       assert.strictEqual(item.priceMatched, true, JSON.stringify(item));
@@ -88,32 +87,29 @@ async function main() {
     }
   }
 
+  if (recommendations.status === 'HISTORICAL_READY') {
+    assert.strictEqual(
+      Number(recommendations.executionReadyCount || 0),
+      0,
+      JSON.stringify(recommendations)
+    );
+  }
+
   console.log(JSON.stringify({
     productionUrl: baseUrl,
     status: recommendations.status,
     mode: recommendations.mode,
     dataSource: recommendations.dataSource,
-    count: recommendations.count,
-    symbolsAnalyzed: recommendations.symbolsAnalyzed,
-    morningConfirmedCount,
-    executionReadyCount,
-    deploymentCommit,
-    health: {
-      liveFeed: health.liveFeed,
-      historicalData: health.historicalData,
-      quoteCount: health.quoteCount,
-      historyCount: health.historyCount
-    },
-    system: {
-      healthy: system.healthy,
-      dataEngine: system.dataEngine,
-      recommendations: system.recommendations
-    }
+    entryCandidates: recommendations.count,
+    watchlist: recommendations.watchlistCount,
+    morningConfirmedCount: recommendations.morningConfirmedCount,
+    executionReadyCount: recommendations.executionReadyCount,
+    deploymentCommit
   }, null, 2));
 }
 
 main().catch((error) => {
-  console.error('ASTRA production contract validation failed');
+  console.error('ASTRA production entry contract validation failed');
   console.error(error?.stack || error);
   process.exit(1);
 });

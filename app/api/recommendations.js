@@ -1,13 +1,20 @@
 const { runRuntimePipeline } = require('../../engine/runtime-pipeline.js');
 
-function getRecommendations(snapshot = []) {
-  return snapshot.map((stock) => ({
+function mapRecommendation(stock) {
+  return {
     symbol: stock.symbol,
-    signal: stock.signal || 'HOLD',
+    signal: stock.signal || 'WATCH',
+    entryOpportunity: stock.entryOpportunity === true,
     entry: stock.entry ?? null,
     target1: stock.target1 ?? null,
     target2: stock.target2 ?? null,
+    target3: stock.target3 ?? null,
     stopLoss: stock.stopLoss ?? null,
+    riskPerShare: stock.riskPerShare ?? null,
+    riskPercent: stock.riskPercent ?? null,
+    riskReward1: stock.riskReward1 ?? null,
+    riskReward2: stock.riskReward2 ?? null,
+    riskReward3: stock.riskReward3 ?? null,
     confidence: stock.confidence ?? 0,
     riskLevel: stock.riskLevel || 'UNKNOWN',
     executionReady: stock.executionReady === true,
@@ -19,7 +26,21 @@ function getRecommendations(snapshot = []) {
     morningEvidence: stock.morningEvidence || null,
     sessionPhase: stock.sessionPhase || null,
     analysis: stock.analysis || null
-  }));
+  };
+}
+
+function mapWatch(stock) {
+  return {
+    symbol: stock.symbol,
+    signal: 'WATCH',
+    confidence: stock.confidence ?? 0,
+    riskLevel: stock.riskLevel || 'UNKNOWN',
+    reason: stock.executionBlockers?.includes('ENTRY_SCORE_BELOW_THRESHOLD')
+      ? 'ENTRY_CRITERIA_NOT_MET'
+      : 'TRADE_PLAN_NOT_READY',
+    analysis: stock.analysis || null,
+    dataFreshness: stock.dataFreshness || null
+  };
 }
 
 async function handler(req, res) {
@@ -39,13 +60,13 @@ async function handler(req, res) {
         deploymentCommit: process.env.VERCEL_GIT_COMMIT_SHA || null,
         updatedAt: new Date().toISOString(),
         count: 0,
-        recommendations: []
+        recommendations: [],
+        watchlist: []
       });
     }
 
-    const recommendations = getRecommendations(
-      pipeline.recommendations || []
-    );
+    const recommendations = (pipeline.recommendations || []).map(mapRecommendation);
+    const watchlist = (pipeline.watchlist || []).map(mapWatch);
 
     const status = pipeline.liveQuoteCount > 0
       ? 'LIVE_READY'
@@ -60,10 +81,12 @@ async function handler(req, res) {
       deploymentCommit: process.env.VERCEL_GIT_COMMIT_SHA || null,
       updatedAt: pipeline.generatedAt,
       count: recommendations.length,
+      watchlistCount: watchlist.length,
       symbolsAnalyzed: pipeline.symbolsAnalyzed || 0,
       morningConfirmedCount: pipeline.morningConfirmedCount || 0,
       executionReadyCount: pipeline.executionReadyCount || 0,
-      recommendations
+      recommendations,
+      watchlist
     });
   } catch (error) {
     return res.status(200).json({
@@ -74,6 +97,7 @@ async function handler(req, res) {
       updatedAt: new Date().toISOString(),
       count: 0,
       recommendations: [],
+      watchlist: [],
       error: error?.message || 'Unknown runtime error'
     });
   }

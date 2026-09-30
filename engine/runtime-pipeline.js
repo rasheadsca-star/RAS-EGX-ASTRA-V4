@@ -211,7 +211,7 @@ async function buildRuntimeRecommendations(snapshot = {}) {
     morningConfirmedCount: analysis.results.filter(
       (item) => item.morningGate?.confirmed === true
     ).length,
-    executionReadyCount: recommendationList.filter(
+    watchlistCount: recommendationBundle.watchlist?.length || 0,\n    executionReadyCount: recommendationList.filter(
       (item) => item.executionReady === true
     ).length,
     liveSource: liveSnapshot?.source || 'NONE',

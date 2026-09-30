@@ -43,29 +43,35 @@ async function main() {
     histories
   });
 
-  if (result.status !== 'READY' || result.recommendations.length !== 5) {
-    throw new Error('ASTRA E2E failed to produce five historical recommendations');
+  if (result.status !== 'READY' || result.recommendations.length < 1) {
+    throw new Error('ASTRA E2E failed to produce at least one entry candidate');
   }
 
   const invalid = result.recommendations.find((item) => {
     const baseInvalid =
       !fixture.symbols.includes(item.symbol) ||
-      !['BUY', 'HOLD', 'SELL'].includes(item.signal) ||
+      item.signal !== 'BUY' ||
+      item.entryOpportunity !== true ||
       !Number.isFinite(item.confidence) ||
       !item.riskLevel ||
       !(item.entry > 0);
 
     if (baseInvalid) return true;
 
-    if (item.signal === 'SELL') {
-      return !(item.target1 < item.entry && item.target2 < item.entry && item.stopLoss > item.entry);
-    }
-
-    return !(item.target1 > item.entry && item.stopLoss < item.entry);
+    return !(
+      item.stopLoss < item.entry &&
+      item.entry < item.target1 &&
+      item.target1 < item.target2 &&
+      item.target2 < item.target3
+    );
   });
 
   if (invalid) {
-    throw new Error('ASTRA E2E produced an invalid recommendation contract');
+    throw new Error('ASTRA E2E produced an invalid long-entry contract');
+  }
+
+  if ((result.watchlist || []).some((item) => item.signal === 'SELL')) {
+    throw new Error('ASTRA E2E emitted a forbidden SELL entry');
   }
 
   const report = {
@@ -74,18 +80,19 @@ async function main() {
     market: fixture.market,
     mode: result.mode,
     summary: {
-      totalSignals: result.recommendations.length,
+      entryCandidates: result.recommendations.length,
+      watchlist: result.watchlist?.length || 0,
       buySignals: result.recommendations.filter((r) => r.signal === 'BUY').length,
-      holdSignals: result.recommendations.filter((r) => r.signal === 'HOLD').length,
-      sellSignals: result.recommendations.filter((r) => r.signal === 'SELL').length
+      sellSignals: 0
     },
-    recommendations: result.recommendations
+    recommendations: result.recommendations,
+    watchlist: result.watchlist || []
   };
 
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, JSON.stringify(report, null, 2));
 
-  console.log('ASTRA E2E REPORT');
+  console.log('ASTRA E2E ENTRY-ONLY REPORT');
   console.log(JSON.stringify(report, null, 2));
 }
 

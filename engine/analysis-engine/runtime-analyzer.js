@@ -1,5 +1,5 @@
 // ASTRA V4 Analysis Runtime
-// Uses current market data plus historical sessions to produce explainable scores.
+// Uses current market data plus historical sessions to produce explainable entry scores.
 
 function clamp(value, min = 0, max = 100) {
   return Math.max(min, Math.min(max, Number.isFinite(value) ? value : min));
@@ -22,14 +22,35 @@ function standardDeviation(values) {
   return Math.sqrt(average(valid.map((value) => (value - mean) ** 2)));
 }
 
+function calculateAtr(rows, period = 14) {
+  if (rows.length < 2) return 0;
+
+  const trueRanges = [];
+
+  for (let index = 0; index < rows.length; index += 1) {
+    const row = rows[index];
+    const previousClose = rows[index - 1]?.close || row.close;
+
+    trueRanges.push(
+      Math.max(
+        row.high - row.low,
+        Math.abs(row.high - previousClose),
+        Math.abs(row.low - previousClose)
+      )
+    );
+  }
+
+  return average(trueRanges.slice(-period));
+}
+
 function analyzeHistory(history = []) {
   const rows = history
     .filter((row) => Number(row?.close) > 0)
     .map((row) => ({
       date: row.date,
       open: Number(row.open || 0),
-      high: Number(row.high || 0),
-      low: Number(row.low || 0),
+      high: Number(row.high || row.close || 0),
+      low: Number(row.low || row.close || 0),
       close: Number(row.close || 0),
       volume: Number(row.volume || 0)
     }))
@@ -48,7 +69,10 @@ function analyzeHistory(history = []) {
       fiveDayChangePct: 0,
       twentyDayChangePct: 0,
       averageVolume20: 0,
-      latestVolume: 0
+      latestVolume: 0,
+      atr14: 0,
+      recentLow20: 0,
+      recentHigh20: 0
     };
   }
 
@@ -67,6 +91,7 @@ function analyzeHistory(history = []) {
     last5[0]?.close || latest.close,
     latest.close
   );
+
   const twentyDayChangePct = pctChange(
     last20[0]?.close || latest.close,
     latest.close
@@ -85,7 +110,6 @@ function analyzeHistory(history = []) {
   const momentum = clamp(50 + fiveDayChangePct * 8 + twentyDayChangePct * 2.5);
   const trend = clamp(50 + trendSpreadPct * 12 + twentyDayChangePct * 1.5);
   const volumeBehavior = clamp(50 + (volumeRatio - 1) * 40);
-
   const volatility = clamp(85 - volatilityPct * 12);
 
   return {
@@ -100,7 +124,10 @@ function analyzeHistory(history = []) {
     fiveDayChangePct,
     twentyDayChangePct,
     averageVolume20,
-    latestVolume: latest.volume
+    latestVolume: latest.volume,
+    atr14: calculateAtr(rows, 14),
+    recentLow20: Math.min(...last20.map((row) => row.low)),
+    recentHigh20: Math.max(...last20.map((row) => row.high))
   };
 }
 
@@ -113,6 +140,7 @@ function analyze(snapshot) {
     const historyAnalysis = analyzeHistory(histories[symbol] || []);
     const historyPrice = historyAnalysis.latestClose;
     const price = Number(item.price || historyPrice || 0);
+
     const dailyChangePercent = Number(
       item.changePercent ??
       (historyAnalysis.previousClose > 0
@@ -164,6 +192,9 @@ function analyze(snapshot) {
       historySessions: historyAnalysis.sessionsUsed,
       latestVolume: historyAnalysis.latestVolume,
       averageVolume20: historyAnalysis.averageVolume20,
+      atr14: Number(historyAnalysis.atr14.toFixed(4)),
+      recentLow20: Number(historyAnalysis.recentLow20.toFixed(4)),
+      recentHigh20: Number(historyAnalysis.recentHigh20.toFixed(4)),
       technicalScore,
       riskLevel,
       dataFreshness: item.dataFreshness || null,

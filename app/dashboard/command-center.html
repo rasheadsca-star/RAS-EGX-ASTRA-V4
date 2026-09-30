@@ -12,7 +12,7 @@ body{font-family:Arial,sans-serif;background:#070d18;color:#fff;padding:30px}
 .value{margin-top:7px;font-weight:700}
 .badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700}
 .ready{color:#4ade80}.blocked{color:#f87171}.warn{color:#facc15}.muted{color:#94a3b8}
-.buy{color:#4ade80}.sell{color:#f87171}.hold{color:#facc15}
+.buy{color:#4ade80}.watch{color:#facc15}
 table{width:100%;border-collapse:collapse;font-size:13px}
 td,th{padding:11px 8px;border-bottom:1px solid #334155;text-align:left}
 th{color:#94a3b8;font-size:11px;text-transform:uppercase}
@@ -36,12 +36,12 @@ th{color:#94a3b8;font-size:11px;text-transform:uppercase}
   <div class="metric"><div class="label">Engine</div><div class="value">ASTRA V4</div></div>
   <div class="metric"><div class="label">Data Mode</div><div class="value" id="mode">-</div></div>
   <div class="metric"><div class="label">Live Feed</div><div class="value" id="live">-</div></div>
-  <div class="metric"><div class="label">Morning Gate</div><div class="value" id="morning">-</div></div>
+  <div class="metric"><div class="label">Entry Opportunities</div><div class="value" id="entryCount">-</div></div>
   <div class="metric"><div class="label">Paper Ready</div><div class="value" id="paper">-</div></div>
 </div>
 
 <div class="card">
-  <h2>Recommendations</h2>
+  <h2>Entry Opportunities</h2>
   <div class="small" id="summary">Loading...</div>
   <table>
     <thead>
@@ -50,18 +50,24 @@ th{color:#94a3b8;font-size:11px;text-transform:uppercase}
         <th>Signal</th>
         <th>Entry</th>
         <th>Target 1</th>
+        <th>Target 2</th>
+        <th>Target 3</th>
         <th>Stop</th>
         <th>Confidence</th>
         <th>Risk</th>
-        <th>Data</th>
-        <th>Morning</th>
         <th>Paper</th>
       </tr>
     </thead>
     <tbody id="signals">
-      <tr><td colspan="10">Loading ASTRA recommendations...</td></tr>
+      <tr><td colspan="10">Loading ASTRA entry opportunities...</td></tr>
     </tbody>
   </table>
+</div>
+
+<div class="card">
+  <h2>Watchlist — No Entry</h2>
+  <div class="small">These symbols do not currently meet ASTRA's entry criteria. They are not short recommendations.</div>
+  <div id="watchlist">Loading watchlist...</div>
 </div>
 
 <script>
@@ -83,13 +89,6 @@ function paperCell(item){
   return '<span class="badge blocked">BLOCKED</span><div class="small">'+esc(blockers||'Validation required')+'</div>';
 }
 
-function morningCell(item){
-  const gate=item.morningGate||{};
-  if(gate.confirmed===true) return '<span class="badge ready">CONFIRMED</span>';
-  const reason=(gate.reasons||[])[0]||'NOT PUBLISHED';
-  return '<span class="badge warn">'+esc(reason)+'</span>';
-}
-
 async function loadSignals(){
   document.getElementById('deployment').innerText='Deployment: checking...';
 
@@ -100,38 +99,51 @@ async function loadSignals(){
     ]);
 
     const rows=data.recommendations||[];
-    const mode=data.mode||'-';
+    const watch=data.watchlist||[];
 
-    document.getElementById('mode').innerText=mode;
+    document.getElementById('mode').innerText=data.mode||'-';
     document.getElementById('live').innerText=h.liveFeed||'-';
-    document.getElementById('morning').innerText=
-      (data.morningConfirmedCount||0)+' / '+rows.length;
+    document.getElementById('entryCount').innerText=rows.length;
     document.getElementById('paper').innerText=
       (data.executionReadyCount||0)+' / '+rows.length;
+
     document.getElementById('summary').innerText=
-      (data.count||0)+' recommendations · '+
-      (data.dataSource||'-')+' · updated '+new Date(data.updatedAt||Date.now()).toLocaleString();
+      (rows.length||0)+' entry opportunities · '+
+      (data.dataSource||'-')+' · updated '+
+      new Date(data.updatedAt||Date.now()).toLocaleString();
 
     document.getElementById('signals').innerHTML=rows.length
       ? rows.map(x=>{
-          const signal=(x.signal||'HOLD').toLowerCase();
-          const fresh=x.dataFreshness?.status||'UNKNOWN';
           return '<tr>'+
             '<td><b>'+esc(x.symbol)+'</b></td>'+
-            '<td class="'+esc(signal)+'">'+esc(x.signal)+'</td>'+
+            '<td class="buy">'+esc(x.signal)+'</td>'+
             '<td>'+esc(x.entry)+'</td>'+
             '<td>'+esc(x.target1)+'</td>'+
+            '<td>'+esc(x.target2)+'</td>'+
+            '<td>'+esc(x.target3)+'</td>'+
             '<td>'+esc(x.stopLoss)+'</td>'+
             '<td>'+esc(x.confidence)+'</td>'+
             '<td>'+esc(x.riskLevel)+'</td>'+
-            '<td class="'+(fresh==='FRESH'?'ready':'warn')+'">'+esc(fresh)+'</td>'+
-            '<td>'+morningCell(x)+'</td>'+
             '<td>'+paperCell(x)+'</td>'+
           '</tr>';
         }).join('')
-      : '<tr><td colspan="10">No recommendations available</td></tr>';
+      : '<tr><td colspan="10">No entry opportunities currently. ASTRA is not converting bearish/weak setups into short entries.</td></tr>';
 
-    document.getElementById('health').innerText=h.message||h.engineStatus||'Data health checked';
+    document.getElementById('watchlist').innerHTML=watch.length
+      ? '<table><thead><tr><th>Symbol</th><th>Status</th><th>Confidence</th><th>Risk</th><th>Reason</th></tr></thead><tbody>'+
+        watch.map(x=>'<tr>'+
+          '<td><b>'+esc(x.symbol)+'</b></td>'+
+          '<td class="watch">WATCH</td>'+
+          '<td>'+esc(x.confidence)+'</td>'+
+          '<td>'+esc(x.riskLevel)+'</td>'+
+          '<td>'+esc(x.reason)+'</td>'+
+        '</tr>').join('')+
+        '</tbody></table>'
+      : '<div class="muted">No watchlist items.</div>';
+
+    document.getElementById('health').innerText=
+      h.message||h.engineStatus||'Data health checked';
+
     document.getElementById('engine').innerText=
       h.engineStatus==='LIVE_READY'?'LIVE READY':
       h.engineStatus==='HISTORICAL_READY'?'HISTORICAL READY':
@@ -147,6 +159,7 @@ async function loadSignals(){
   }catch(e){
     document.getElementById('signals').innerHTML=
       '<tr><td colspan="10">Runtime data unavailable</td></tr>';
+    document.getElementById('watchlist').innerText='Runtime data unavailable';
     document.getElementById('engine').innerText='DEGRADED';
     document.getElementById('engine').className='blocked';
     document.getElementById('health').innerText='Waiting for API connection';

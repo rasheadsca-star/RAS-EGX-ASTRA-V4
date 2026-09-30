@@ -1,54 +1,110 @@
 // ASTRA V4 Runtime Trade Calculator
-// Produces direction-aware entry, targets, stop loss and risk/reward data.
+// Entry-only long trade plan with a volatility/support stop and staggered profit targets.
+// ASTRA does not emit short-entry plans.
 
-function calculateTrade({ price, confidence = 0, direction = 'BUY' }) {
-  const numericPrice = Number(price);
+const MIN_STOP_PCT = 0.01;
+const MAX_STOP_PCT = 0.06;
+const ATR_MULTIPLIER = 1.5;
+const TARGET_R = Object.freeze([1.5, 2.5, 4.0]);
 
-  if (!Number.isFinite(numericPrice) || numericPrice <= 0) {
+function roundPrice(value) {
+  return Number(Number(value).toFixed(2));
+}
+
+function calculateTrade({
+  price,
+  confidence = 0,
+  direction = 'BUY',
+  atr14 = 0,
+  recentLow20 = 0
+}) {
+  const entry = Number(price);
+
+  if (!Number.isFinite(entry) || entry <= 0) {
     return {
       status: 'INVALID',
       reason: 'Invalid price input'
     };
   }
 
-  const riskPercent = confidence >= 80 ? 0.03 : confidence >= 60 ? 0.02 : 0.01;
-  const entry = Number(numericPrice.toFixed(2));
-
-  if (direction === 'SELL') {
-    const stopLoss = Number((entry * (1 + riskPercent)).toFixed(2));
-    const target1 = Number((entry * (1 - riskPercent * 2)).toFixed(2));
-    const target2 = Number((entry * (1 - riskPercent * 4)).toFixed(2));
-    const risk = stopLoss - entry;
-
+  if (direction !== 'BUY') {
     return {
-      status: 'READY',
-      direction: 'SELL',
-      entry,
-      target1,
-      target2,
-      stopLoss,
-      riskReward: risk > 0
-        ? Number(((entry - target1) / risk).toFixed(2))
-        : null
+      status: 'INVALID_DIRECTION',
+      reason: 'ASTRA entry engine is long-only'
     };
   }
 
-  const stopLoss = Number((entry * (1 - riskPercent)).toFixed(2));
-  const target1 = Number((entry * (1 + riskPercent * 2)).toFixed(2));
-  const target2 = Number((entry * (1 + riskPercent * 4)).toFixed(2));
-  const risk = entry - stopLoss;
+  const atr = Number(atr14);
+  const recentLow = Number(recentLow20);
+
+  const volatilityRiskDistance =
+    Number.isFinite(atr) && atr > 0
+      ? atr * ATR_MULTIPLIER
+      : entry * MIN_STOP_PCT;
+
+  const volatilityStop = entry - volatilityRiskDistance;
+
+  const supportStop =
+    Number.isFinite(recentLow) && recentLow > 0 && recentLow < entry
+      ? recentLow * 0.995
+      : volatilityStop;
+
+  let stopLoss = Math.min(volatilityStop, supportStop);
+  let riskPerShare = entry - stopLoss;
+
+  const minimumRisk = entry * MIN_STOP_PCT;
+  const maximumRisk = entry * MAX_STOP_PCT;
+
+  if (riskPerShare < minimumRisk) {
+    stopLoss = entry - minimumRisk;
+    riskPerShare = minimumRisk;
+  }
+
+  if (riskPerShare > maximumRisk) {
+    return {
+      status: 'INVALID_RISK',
+      reason: 'Stop distance exceeds maximum allowed risk',
+      direction: 'BUY',
+      entry: roundPrice(entry),
+      stopLoss: roundPrice(entry - maximumRisk),
+      riskPerShare: roundPrice(maximumRisk)
+    };
+  }
+
+  const riskPercent = riskPerShare / entry;
+
+  const target1 = entry + riskPerShare * TARGET_R[0];
+  const target2 = entry + riskPerShare * TARGET_R[1];
+  const target3 = entry + riskPerShare * TARGET_R[2];
+
+  if (!(stopLoss < entry && entry < target1 && target1 < target2 && target2 < target3)) {
+    return {
+      status: 'INVALID_LEVELS',
+      reason: 'Trade levels failed directional validation'
+    };
+  }
 
   return {
     status: 'READY',
     direction: 'BUY',
-    entry,
-    target1,
-    target2,
-    stopLoss,
-    riskReward: risk > 0
-      ? Number(((target1 - entry) / risk).toFixed(2))
-      : null
+    entry: roundPrice(entry),
+    stopLoss: roundPrice(stopLoss),
+    target1: roundPrice(target1),
+    target2: roundPrice(target2),
+    target3: roundPrice(target3),
+    riskPerShare: roundPrice(riskPerShare),
+    riskPercent: Number((riskPercent * 100).toFixed(2)),
+    riskReward1: TARGET_R[0],
+    riskReward2: TARGET_R[1],
+    riskReward3: TARGET_R[2],
+    confidence: Number(confidence)
   };
 }
 
-module.exports = { calculateTrade };
+module.exports = {
+  MIN_STOP_PCT,
+  MAX_STOP_PCT,
+  ATR_MULTIPLIER,
+  TARGET_R,
+  calculateTrade
+};
