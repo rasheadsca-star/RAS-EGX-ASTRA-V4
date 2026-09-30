@@ -47,15 +47,22 @@ async function main() {
     throw new Error('ASTRA E2E failed to produce five historical recommendations');
   }
 
-  const invalid = result.recommendations.find((item) =>
-    !fixture.symbols.includes(item.symbol) ||
-    !['BUY', 'HOLD', 'SELL'].includes(item.signal) ||
-    !Number.isFinite(item.confidence) ||
-    !item.riskLevel ||
-    !(item.entry > 0) ||
-    !(item.target1 > item.entry) ||
-    !(item.stopLoss < item.entry)
-  );
+  const invalid = result.recommendations.find((item) => {
+    const baseInvalid =
+      !fixture.symbols.includes(item.symbol) ||
+      !['BUY', 'HOLD', 'SELL'].includes(item.signal) ||
+      !Number.isFinite(item.confidence) ||
+      !item.riskLevel ||
+      !(item.entry > 0);
+
+    if (baseInvalid) return true;
+
+    if (item.signal === 'SELL') {
+      return !(item.target1 < item.entry && item.target2 < item.entry && item.stopLoss > item.entry);
+    }
+
+    return !(item.target1 > item.entry && item.stopLoss < item.entry);
+  });
 
   if (invalid) {
     throw new Error('ASTRA E2E produced an invalid recommendation contract');

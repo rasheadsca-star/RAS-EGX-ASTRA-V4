@@ -2,6 +2,7 @@ const assert = require('assert');
 const { buildRuntimeRecommendations } = require('../engine/runtime-pipeline');
 const { analyze } = require('../engine/analysis-engine/runtime-analyzer');
 const { generateSignal } = require('../engine/recommendation-engine/signal-generator');
+const { calculateTrade } = require('../engine/recommendation-engine/trade-calculator-runtime');
 
 function makeHistory({ symbol, start = 100, drift = 0.4, volume = 1000000 }) {
   return Array.from({ length: 25 }, (_, index) => {
@@ -41,9 +42,16 @@ async function main() {
     assert.ok(Number.isFinite(item.confidence));
     assert.ok(item.riskLevel);
     assert.ok(item.entry > 0);
-    assert.ok(item.target1 > item.entry);
-    assert.ok(item.stopLoss < item.entry);
     assert.ok(item.analysis.historySessions >= 25);
+
+    if (item.signal === 'SELL') {
+      assert.ok(item.target1 < item.entry);
+      assert.ok(item.target2 < item.entry);
+      assert.ok(item.stopLoss > item.entry);
+    } else {
+      assert.ok(item.target1 > item.entry);
+      assert.ok(item.stopLoss < item.entry);
+    }
   }
 
   const analysis = analyze({
@@ -67,18 +75,25 @@ async function main() {
     symbol: 'TEST',
     analysis: { technicalScore: 82, riskLevel: 'LOW' },
     risk: { level: 'LOW' },
-    trade: {
-      status: 'READY',
-      entry: 100,
-      target1: 106,
-      target2: 112,
-      stopLoss: 97
-    }
+    trade: calculateTrade({
+      price: 100,
+      confidence: 82,
+      direction: 'BUY'
+    })
   });
 
   assert.strictEqual(signal.signal, 'BUY');
   assert.strictEqual(signal.symbol, 'TEST');
   assert.strictEqual(signal.entry, 100);
+
+  const sellTrade = calculateTrade({
+    price: 100,
+    confidence: 30,
+    direction: 'SELL'
+  });
+
+  assert.ok(sellTrade.target1 < sellTrade.entry);
+  assert.ok(sellTrade.stopLoss > sellTrade.entry);
 
   console.log('ASTRA runtime validation passed');
   console.log(JSON.stringify({
@@ -88,7 +103,8 @@ async function main() {
       symbols: historicalResult.recommendations.map((item) => item.symbol)
     },
     noDataMode: noData.status,
-    signalContract: signal
+    signalContract: signal,
+    sellTradeContract: sellTrade
   }, null, 2));
 }
 

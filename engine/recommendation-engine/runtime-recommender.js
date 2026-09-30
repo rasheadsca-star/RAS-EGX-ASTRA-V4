@@ -4,15 +4,27 @@
 const { generateSignal } = require('./signal-generator');
 const { calculateTrade } = require('./trade-calculator-runtime');
 
+function classifySignal(analysis = {}) {
+  const score = Number(analysis.technicalScore || 0);
+  const riskLevel = analysis.riskLevel || 'UNKNOWN';
+
+  if (score >= 75 && riskLevel !== 'HIGH') return 'BUY';
+  if (score < 45) return 'SELL';
+  return 'HOLD';
+}
+
 function generateRecommendation(analysis) {
   const ranked = (analysis?.results || [])
     .map((item) => {
       const technicalScore = Number(item.technicalScore || 0);
       const riskLevel = item.riskLevel || 'MEDIUM';
+      const provisionalSignal = classifySignal(item);
+      const direction = provisionalSignal === 'SELL' ? 'SELL' : 'BUY';
 
       const tradePlan = calculateTrade({
         price: Number(item.price || 0),
-        confidence: technicalScore
+        confidence: technicalScore,
+        direction
       });
 
       const signal = generateSignal({
@@ -47,4 +59,4 @@ function generateRecommendation(analysis) {
   };
 }
 
-module.exports = { generateRecommendation };
+module.exports = { generateRecommendation, classifySignal };
