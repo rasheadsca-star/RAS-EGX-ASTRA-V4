@@ -1,5 +1,5 @@
 // ASTRA V4 Runtime Pipeline
-// Live EGX data with validated historical fallback -> normalized snapshot -> analyzer -> recommendations.
+// Live EGX data with validated historical fallback -> normalized snapshot -> entry recommendations.
 
 const { getMarketSnapshot } = require('../data-engine/egx-adapter');
 const { egxLiveProvider } = require('../data-engine/providers/egx-live-provider');
@@ -28,6 +28,7 @@ function normalizeLiveQuote(quote = {}, now = new Date()) {
   const ageSeconds = Number.isFinite(timestampMs)
     ? Math.max(0, (now.getTime() - timestampMs) / 1000)
     : Infinity;
+
   const freshnessStatus =
     ageSeconds <= FRESHNESS_LIMIT_SECONDS ? 'FRESH' : 'STALE';
 
@@ -127,6 +128,7 @@ function buildNormalizedSymbols(liveQuotes, histories, now = new Date()) {
   for (const [symbol, history] of Object.entries(histories || {})) {
     if (!bySymbol.has(symbol)) {
       const latest = getLatestHistory(history);
+
       if (latest) {
         latest.symbol = symbol;
         bySymbol.set(symbol, latest);
@@ -153,24 +155,32 @@ async function loadLiveSnapshot() {
 
 async function buildRuntimeRecommendations(snapshot = {}) {
   const now = new Date();
+
   const liveSnapshot = snapshot?.liveSnapshot || snapshot;
+
   const liveQuotes = Array.isArray(liveSnapshot?.quotes)
     ? liveSnapshot.quotes.filter((quote) => Number(quote?.price) > 0)
     : [];
 
-  const histories = snapshot?.histories || await loadLegacyHistory();
-  const normalizedSymbols = buildNormalizedSymbols(liveQuotes, histories, now);
+  const histories =
+    snapshot?.histories ||
+    await loadLegacyHistory();
+
+  const normalizedSymbols =
+    buildNormalizedSymbols(liveQuotes, histories, now);
 
   if (!normalizedSymbols.length) {
     return {
       generatedAt: now.toISOString(),
       recommendations: [],
+      watchlist: [],
       status: 'NO_DATA',
       mode: 'NO_DATA',
       dataSource: 'NONE',
       liveQuoteCount: 0,
       historyCount: 0,
       morningConfirmedCount: 0,
+      watchlistCount: 0,
       executionReadyCount: 0
     };
   }
@@ -180,48 +190,79 @@ async function buildRuntimeRecommendations(snapshot = {}) {
     histories
   });
 
-  const recommendationBundle = generateRecommendation(analysis);
-  const recommendationList = recommendationBundle.recommendations || [];
+  const recommendationBundle =
+    generateRecommendation(analysis);
 
-  const historyAvailable = Object.values(histories).some(
-    (rows) => Array.isArray(rows) && rows.length > 0
-  );
+  const recommendationList =
+    recommendationBundle.recommendations || [];
+
+  const historyAvailable =
+    Object.values(histories).some(
+      (rows) => Array.isArray(rows) && rows.length > 0
+    );
 
   const hasLive = liveQuotes.length > 0;
 
   return {
     status: 'READY',
     generatedAt: now.toISOString(),
-    mode: hasLive && historyAvailable
-      ? 'MIXED_MODE'
-      : hasLive
-        ? 'LIVE_MODE'
-        : 'HISTORY_MODE',
-    dataSource: hasLive
-      ? historyAvailable ? 'LIVE_PLUS_HISTORY' : 'LIVE'
-      : 'HISTORICAL',
+
+    mode:
+      hasLive && historyAvailable
+        ? 'MIXED_MODE'
+        : hasLive
+          ? 'LIVE_MODE'
+          : 'HISTORY_MODE',
+
+    dataSource:
+      hasLive
+        ? historyAvailable
+          ? 'LIVE_PLUS_HISTORY'
+          : 'LIVE'
+        : 'HISTORICAL',
+
     symbolsAnalyzed: normalizedSymbols.length,
     liveQuoteCount: liveQuotes.length,
-    historyCount: Object.values(histories).filter(
-      (rows) => Array.isArray(rows) && rows.length > 0
-    ).length,
-    historySymbols: Object.entries(histories)
-      .filter(([, rows]) => Array.isArray(rows) && rows.length > 0)
-      .map(([symbol]) => symbol),
-    morningConfirmedCount: analysis.results.filter(
-      (item) => item.morningGate?.confirmed === true
-    ).length,
-    watchlistCount: recommendationBundle.watchlist?.length || 0,\n    executionReadyCount: recommendationList.filter(
-      (item) => item.executionReady === true
-    ).length,
-    liveSource: liveSnapshot?.source || 'NONE',
+
+    historyCount:
+      Object.values(histories).filter(
+        (rows) => Array.isArray(rows) && rows.length > 0
+      ).length,
+
+    historySymbols:
+      Object.entries(histories)
+        .filter(
+          ([, rows]) =>
+            Array.isArray(rows) && rows.length > 0
+        )
+        .map(([symbol]) => symbol),
+
+    morningConfirmedCount:
+      analysis.results.filter(
+        (item) => item.morningGate?.confirmed === true
+      ).length,
+
+    watchlistCount:
+      recommendationBundle.watchlist?.length || 0,
+
+    executionReadyCount:
+      recommendationList.filter(
+        (item) => item.executionReady === true
+      ).length,
+
+    liveSource:
+      liveSnapshot?.source || 'NONE',
+
     ...recommendationBundle
   };
 }
 
 async function runRuntimePipeline() {
-  const liveSnapshot = await loadLiveSnapshot();
-  const histories = await loadLegacyHistory();
+  const liveSnapshot =
+    await loadLiveSnapshot();
+
+  const histories =
+    await loadLegacyHistory();
 
   return buildRuntimeRecommendations({
     liveSnapshot,
