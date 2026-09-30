@@ -3,13 +3,8 @@ const assert = require('assert');
 const baseUrl = process.env.ASTRA_PROD_URL || 'https://ras-egx-astra-v4.vercel.app';
 const expectedCommit = process.env.GITHUB_SHA;
 
-async function main() {
-  assert(expectedCommit, 'GITHUB_SHA is required');
-
-  const url = baseUrl.replace(/\/$/, '') +
-    '/api/recommendations?ci=' +
-    encodeURIComponent(expectedCommit);
-
+async function getJson(path) {
+  const url = baseUrl.replace(/\/$/, '') + path;
   const response = await fetch(url, {
     headers: {
       'Cache-Control': 'no-cache',
@@ -23,23 +18,33 @@ async function main() {
     throw new Error('Production API HTTP ' + response.status + ': ' + text.slice(0, 1000));
   }
 
-  let data;
   try {
-    data = JSON.parse(text);
-  } catch (error) {
+    return JSON.parse(text);
+  } catch (_) {
     throw new Error('Production API did not return JSON: ' + text.slice(0, 1000));
   }
+}
 
-  assert.strictEqual(data.success, true, JSON.stringify(data));
-  assert.strictEqual(data.market, 'EGX', JSON.stringify(data));
-  assert(
-    data.status === 'LIVE_READY' || data.status === 'HISTORICAL_READY',
-    JSON.stringify(data)
+async function main() {
+  assert(expectedCommit, 'GITHUB_SHA is required');
+
+  const recommendations = await getJson(
+    '/api/recommendations?ci=' + encodeURIComponent(expectedCommit)
   );
-  assert(Array.isArray(data.recommendations), JSON.stringify(data));
-  assert(Number(data.count) > 0, JSON.stringify(data));
+  const health = await getJson('/api/data-health?ci=' + encodeURIComponent(expectedCommit));
+  const system = await getJson('/api/system-health?ci=' + encodeURIComponent(expectedCommit));
 
-  const deploymentCommit = data.deploymentCommit;
+  assert.strictEqual(recommendations.success, true, JSON.stringify(recommendations));
+  assert.strictEqual(recommendations.market, 'EGX', JSON.stringify(recommendations));
+  assert(
+    recommendations.status === 'LIVE_READY' ||
+    recommendations.status === 'HISTORICAL_READY',
+    JSON.stringify(recommendations)
+  );
+  assert(Array.isArray(recommendations.recommendations), JSON.stringify(recommendations));
+  assert(Number(recommendations.count) > 0, JSON.stringify(recommendations));
+
+  const deploymentCommit = recommendations.deploymentCommit;
   assert(deploymentCommit, 'Production did not expose VERCEL_GIT_COMMIT_SHA');
   assert.strictEqual(
     deploymentCommit,
@@ -47,14 +52,63 @@ async function main() {
     JSON.stringify({ expectedCommit, deploymentCommit })
   );
 
+  assert.strictEqual(health.market, 'EGX', JSON.stringify(health));
+  assert(
+    health.engineStatus === 'LIVE_READY' ||
+    health.engineStatus === 'HISTORICAL_READY',
+    JSON.stringify(health)
+  );
+  assert(health.recommendationsReady === true, JSON.stringify(health));
+
+  assert.strictEqual(system.system, 'ASTRA_V4', JSON.stringify(system));
+  assert.strictEqual(system.healthy, true, JSON.stringify(system));
+
+  const executionReadyCount = Number(recommendations.executionReadyCount || 0);
+  const morningConfirmedCount = Number(recommendations.morningConfirmedCount || 0);
+
+  assert(
+    executionReadyCount <= morningConfirmedCount,
+    JSON.stringify({ executionReadyCount, morningConfirmedCount })
+  );
+
+  if (recommendations.status === 'HISTORICAL_READY') {
+    assert.strictEqual(executionReadyCount, 0, JSON.stringify(recommendations));
+    assert(
+      recommendations.recommendations.every((item) => item.executionReady === false),
+      JSON.stringify(recommendations)
+    );
+  }
+
+  for (const item of recommendations.recommendations) {
+    if (item.executionReady === true) {
+      assert.strictEqual(item.morningGate?.confirmed, true, JSON.stringify(item));
+      assert.strictEqual(item.priceMatched, true, JSON.stringify(item));
+      assert.strictEqual(item.dataFreshness?.status, 'FRESH', JSON.stringify(item));
+      assert.strictEqual(item.executionMode, 'PAPER_ONLY', JSON.stringify(item));
+    }
+  }
+
   console.log(JSON.stringify({
     productionUrl: baseUrl,
-    status: data.status,
-    mode: data.mode,
-    dataSource: data.dataSource,
-    count: data.count,
-    symbolsAnalyzed: data.symbolsAnalyzed,
-    deploymentCommit
+    status: recommendations.status,
+    mode: recommendations.mode,
+    dataSource: recommendations.dataSource,
+    count: recommendations.count,
+    symbolsAnalyzed: recommendations.symbolsAnalyzed,
+    morningConfirmedCount,
+    executionReadyCount,
+    deploymentCommit,
+    health: {
+      liveFeed: health.liveFeed,
+      historicalData: health.historicalData,
+      quoteCount: health.quoteCount,
+      historyCount: health.historyCount
+    },
+    system: {
+      healthy: system.healthy,
+      dataEngine: system.dataEngine,
+      recommendations: system.recommendations
+    }
   }, null, 2));
 }
 
