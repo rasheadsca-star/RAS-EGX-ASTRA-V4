@@ -3,31 +3,157 @@
 <head>
 <title>ASTRA V4 Command Center</title>
 <style>
-body{font-family:Arial;background:#070d18;color:#fff;padding:30px}.card{background:#162033;border-radius:14px;padding:22px;margin:16px 0}.status{color:#4ade80;font-weight:bold}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.metric{background:#101827;padding:15px;border-radius:10px}table{width:100%;border-collapse:collapse}td,th{padding:12px;border-bottom:1px solid #334155;text-align:left}.buy{color:#4ade80}.sell{color:#f87171}.hold{color:#facc15}
+body{font-family:Arial,sans-serif;background:#070d18;color:#fff;padding:30px}
+.card{background:#162033;border-radius:14px;padding:22px;margin:16px 0}
+.status{color:#4ade80;font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.metric{background:#101827;padding:15px;border-radius:10px;min-height:54px}
+.label{font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em}
+.value{margin-top:7px;font-weight:700}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700}
+.ready{color:#4ade80}.blocked{color:#f87171}.warn{color:#facc15}.muted{color:#94a3b8}
+.buy{color:#4ade80}.sell{color:#f87171}.hold{color:#facc15}
+table{width:100%;border-collapse:collapse;font-size:13px}
+td,th{padding:11px 8px;border-bottom:1px solid #334155;text-align:left}
+th{color:#94a3b8;font-size:11px;text-transform:uppercase}
+.small{font-size:11px;color:#94a3b8;margin-top:8px}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){body{padding:15px}.grid{grid-template-columns:repeat(2,1fr)}table{font-size:11px}.card{overflow:auto}}
 </style>
 </head>
 <body>
 <h1>ASTRA V4 Command Center</h1>
-<div class="card"><h2>Engine Status</h2><div id="engine" class="status">Checking...</div><p id="health">Loading data health...</p></div>
-<div class="grid"><div class="metric"><b>Market</b><br>EGX</div><div class="metric"><b>Engine</b><br>ASTRA V4</div><div class="metric"><b>Last Update</b><br><span id="time">-</span></div></div>
-<div class="card"><h2>Live Recommendations</h2><table><thead><tr><th>Symbol</th><th>Signal</th><th>Entry</th><th>Target</th><th>Stop</th><th>Confidence</th><th>Risk</th></tr></thead><tbody id="signals"><tr><td colspan="7">Loading ASTRA recommendations...</td></tr></tbody></table></div>
+
+<div class="card">
+  <h2>Engine Status</h2>
+  <div id="engine" class="status">Checking...</div>
+  <p id="health">Loading data health...</p>
+  <div class="small" id="deployment">Deployment: -</div>
+</div>
+
+<div class="grid">
+  <div class="metric"><div class="label">Market</div><div class="value">EGX</div></div>
+  <div class="metric"><div class="label">Engine</div><div class="value">ASTRA V4</div></div>
+  <div class="metric"><div class="label">Data Mode</div><div class="value" id="mode">-</div></div>
+  <div class="metric"><div class="label">Live Feed</div><div class="value" id="live">-</div></div>
+  <div class="metric"><div class="label">Morning Gate</div><div class="value" id="morning">-</div></div>
+  <div class="metric"><div class="label">Paper Ready</div><div class="value" id="paper">-</div></div>
+</div>
+
+<div class="card">
+  <h2>Recommendations</h2>
+  <div class="small" id="summary">Loading...</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Symbol</th>
+        <th>Signal</th>
+        <th>Entry</th>
+        <th>Target 1</th>
+        <th>Stop</th>
+        <th>Confidence</th>
+        <th>Risk</th>
+        <th>Data</th>
+        <th>Morning</th>
+        <th>Paper</th>
+      </tr>
+    </thead>
+    <tbody id="signals">
+      <tr><td colspan="10">Loading ASTRA recommendations...</td></tr>
+    </tbody>
+  </table>
+</div>
+
 <script>
-async function api(path){return fetch(path,{cache:'no-store'}).then(r=>r.json())}
-async function loadSignals(){
- document.getElementById('time').innerText=new Date().toLocaleString();
- try{
-  const data=await api('/api/recommendations');
-  const rows=data.recommendations||data.signals||[];
-  document.getElementById('signals').innerHTML=rows.length?rows.map(x=>`<tr><td>${x.symbol||'-'}</td><td class="${(x.signal||'').toLowerCase()}">${x.signal||'-'}</td><td>${x.entry||'-'}</td><td>${x.target||x.target1||'-'}</td><td>${x.stop||x.stopLoss||'-'}</td><td>${x.confidence||'-'}</td><td>${x.risk||'-'}</td></tr>`).join(''):'<tr><td colspan="7">No live signals available</td></tr>';
-  const h=await api('/api/data-health');
-  document.getElementById('health').innerText=h.message||h.status||'Data health checked';
-  document.getElementById('engine').innerText='ONLINE';
- }catch(e){
-  document.getElementById('signals').innerHTML='<tr><td colspan="7">Runtime data unavailable</td></tr>';
-  document.getElementById('engine').innerText='DEGRADED';
-  document.getElementById('health').innerText='Waiting for API connection';
- }
+async function api(path){
+  const response=await fetch(path,{cache:'no-store'});
+  if(!response.ok) throw new Error('HTTP '+response.status);
+  return response.json();
 }
+
+function esc(value){
+  return String(value??'-').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function paperCell(item){
+  if(item.executionReady===true){
+    return '<span class="badge ready">PAPER READY</span>';
+  }
+  const blockers=(item.executionBlockers||[]).slice(0,2).join(', ');
+  return '<span class="badge blocked">BLOCKED</span><div class="small">'+esc(blockers||'Validation required')+'</div>';
+}
+
+function morningCell(item){
+  const gate=item.morningGate||{};
+  if(gate.confirmed===true) return '<span class="badge ready">CONFIRMED</span>';
+  const reason=(gate.reasons||[])[0]||'NOT PUBLISHED';
+  return '<span class="badge warn">'+esc(reason)+'</span>';
+}
+
+async function loadSignals(){
+  document.getElementById('deployment').innerText='Deployment: checking...';
+
+  try{
+    const [data,h]=await Promise.all([
+      api('/api/recommendations'),
+      api('/api/data-health')
+    ]);
+
+    const rows=data.recommendations||[];
+    const mode=data.mode||'-';
+
+    document.getElementById('mode').innerText=mode;
+    document.getElementById('live').innerText=h.liveFeed||'-';
+    document.getElementById('morning').innerText=
+      (data.morningConfirmedCount||0)+' / '+rows.length;
+    document.getElementById('paper').innerText=
+      (data.executionReadyCount||0)+' / '+rows.length;
+    document.getElementById('summary').innerText=
+      (data.count||0)+' recommendations · '+
+      (data.dataSource||'-')+' · updated '+new Date(data.updatedAt||Date.now()).toLocaleString();
+
+    document.getElementById('signals').innerHTML=rows.length
+      ? rows.map(x=>{
+          const signal=(x.signal||'HOLD').toLowerCase();
+          const fresh=x.dataFreshness?.status||'UNKNOWN';
+          return '<tr>'+
+            '<td><b>'+esc(x.symbol)+'</b></td>'+
+            '<td class="'+esc(signal)+'">'+esc(x.signal)+'</td>'+
+            '<td>'+esc(x.entry)+'</td>'+
+            '<td>'+esc(x.target1)+'</td>'+
+            '<td>'+esc(x.stopLoss)+'</td>'+
+            '<td>'+esc(x.confidence)+'</td>'+
+            '<td>'+esc(x.riskLevel)+'</td>'+
+            '<td class="'+(fresh==='FRESH'?'ready':'warn')+'">'+esc(fresh)+'</td>'+
+            '<td>'+morningCell(x)+'</td>'+
+            '<td>'+paperCell(x)+'</td>'+
+          '</tr>';
+        }).join('')
+      : '<tr><td colspan="10">No recommendations available</td></tr>';
+
+    document.getElementById('health').innerText=h.message||h.engineStatus||'Data health checked';
+    document.getElementById('engine').innerText=
+      h.engineStatus==='LIVE_READY'?'LIVE READY':
+      h.engineStatus==='HISTORICAL_READY'?'HISTORICAL READY':
+      h.engineStatus||'DEGRADED';
+
+    document.getElementById('engine').className=
+      h.engineStatus==='LIVE_READY'||h.engineStatus==='HISTORICAL_READY'
+        ? 'status'
+        : 'blocked';
+
+    document.getElementById('deployment').innerText=
+      'Deployment: '+(data.deploymentCommit||'unknown');
+  }catch(e){
+    document.getElementById('signals').innerHTML=
+      '<tr><td colspan="10">Runtime data unavailable</td></tr>';
+    document.getElementById('engine').innerText='DEGRADED';
+    document.getElementById('engine').className='blocked';
+    document.getElementById('health').innerText='Waiting for API connection';
+    document.getElementById('deployment').innerText='Deployment: unavailable';
+  }
+}
+
 loadSignals();
 setInterval(loadSignals,60000);
 </script>
