@@ -1,6 +1,6 @@
 // ASTRA V4 EGX Live Provider
 // Free public-market-data fallback using Yahoo Finance chart data.
-// Yahoo's EGX feed is delayed; upstream availability is always explicit.
+// Yahoo is delayed and is never treated as authoritative live EGX data.
 
 const WATCHLIST = ['COMI', 'SWDY', 'FWRY', 'TMGH', 'HRHO'];
 const YAHOO_SYMBOLS = Object.fromEntries(
@@ -8,7 +8,7 @@ const YAHOO_SYMBOLS = Object.fromEntries(
 );
 const REQUEST_TIMEOUT_MS = 8000;
 
-function emptyQuote(symbol) {
+function emptyQuote(symbol, sourceUrl = null) {
   return {
     symbol,
     price: 0,
@@ -20,7 +20,12 @@ function emptyQuote(symbol) {
     low: 0,
     timestamp: new Date().toISOString(),
     source: 'YAHOO_FINANCE_DELAYED',
-    delayed: true
+    sourceUrl,
+    sourceVerified: false,
+    sourceLatencySeconds: null,
+    confidence: 0,
+    delayed: true,
+    intradayCandles: []
   };
 }
 
@@ -38,7 +43,7 @@ async function fetchYahooQuote(symbol) {
       signal: controller.signal
     });
 
-    if (!response.ok) return emptyQuote(symbol);
+    if (!response.ok) return emptyQuote(symbol, url);
 
     const payload = await response.json();
     const result = payload?.chart?.result?.[0];
@@ -58,7 +63,7 @@ async function fetchYahooQuote(symbol) {
       }
     }
 
-    if (lastIndex < 0) return emptyQuote(symbol);
+    if (lastIndex < 0) return emptyQuote(symbol, url);
 
     const price = Number(closes[lastIndex]);
     const previousClose = Number(
@@ -69,6 +74,25 @@ async function fetchYahooQuote(symbol) {
       ? (change / previousClose) * 100
       : 0;
 
+    const intradayCandles = timestamps
+      .map((timestamp, index) => ({
+        timestamp: Number(timestamp) * 1000,
+        close: Number(closes[index] || 0),
+        high: Number(highs[index] || 0),
+        low: Number(lows[index] || 0),
+        volume: Number(volumes[index] || 0)
+      }))
+      .filter((row) => row.close > 0);
+
+    const latestTimestamp = timestamps[lastIndex]
+      ? Number(timestamps[lastIndex]) * 1000
+      : Date.now();
+
+    const sourceLatencySeconds = Math.max(
+      0,
+      (Date.now() - latestTimestamp) / 1000
+    );
+
     return {
       symbol,
       price,
@@ -78,14 +102,17 @@ async function fetchYahooQuote(symbol) {
       volume: Number(volumes[lastIndex] || 0),
       high: Number(highs[lastIndex] || price),
       low: Number(lows[lastIndex] || price),
-      timestamp: timestamps[lastIndex]
-        ? new Date(Number(timestamps[lastIndex]) * 1000).toISOString()
-        : new Date().toISOString(),
+      timestamp: new Date(latestTimestamp).toISOString(),
       source: 'YAHOO_FINANCE_DELAYED',
-      delayed: true
+      sourceUrl: url,
+      sourceVerified: false,
+      sourceLatencySeconds,
+      confidence: 0,
+      delayed: true,
+      intradayCandles
     };
   } catch (_) {
-    return emptyQuote(symbol);
+    return emptyQuote(symbol, url);
   } finally {
     clearTimeout(timeout);
   }

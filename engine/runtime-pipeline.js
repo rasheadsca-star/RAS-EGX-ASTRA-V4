@@ -6,8 +6,14 @@ const { egxLiveProvider } = require('../data-engine/providers/egx-live-provider'
 const { analyze } = require('./analysis-engine/runtime-analyzer');
 const { generateRecommendation } = require('./recommendation-engine/runtime-recommender');
 const { loadLegacyHistory } = require('../data-engine/history/legacy-history-provider');
+const {
+  buildMorningRecord,
+  morningGate
+} = require('./session/morning-liquidity');
 
-function normalizeLiveQuote(quote = {}) {
+const FRESHNESS_LIMIT_SECONDS = 300;
+
+function normalizeLiveQuote(quote = {}, now = new Date()) {
   const price = Number(quote.price || 0);
   const previousClose = Number(quote.previousClose || 0);
   const explicitChangePercent = Number(quote.changePercent);
@@ -17,6 +23,23 @@ function normalizeLiveQuote(quote = {}) {
       ? ((price - previousClose) / previousClose) * 100
       : 0;
 
+  const timestampMs = Date.parse(quote.timestamp);
+  const ageSeconds = Number.isFinite(timestampMs)
+    ? Math.max(0, (now.getTime() - timestampMs) / 1000)
+    : Infinity;
+  const freshnessStatus =
+    ageSeconds <= FRESHNESS_LIMIT_SECONDS ? 'FRESH' : 'STALE';
+
+  const morning = buildMorningRecord({
+    candles: quote.intradayCandles || [],
+    now,
+    sourceUrl: quote.sourceUrl,
+    sourceVerified: quote.sourceVerified,
+    sourceLatencySeconds: quote.sourceLatencySeconds,
+    confidence: quote.confidence,
+    baselineFirst15Volume: quote.baselineFirst15Volume
+  });
+
   return {
     symbol: quote.symbol,
     price,
@@ -24,7 +47,28 @@ function normalizeLiveQuote(quote = {}) {
     volume: Number(quote.volume || 0),
     high: Number(quote.high || 0),
     low: Number(quote.low || 0),
-    source: quote.source || 'LIVE'
+    source: quote.source || 'LIVE',
+    sourceUrl: quote.sourceUrl || null,
+    sourceVerified: quote.sourceVerified === true,
+    sourceLatencySeconds: Number.isFinite(Number(quote.sourceLatencySeconds))
+      ? Number(quote.sourceLatencySeconds)
+      : null,
+    confidence: Number.isFinite(Number(quote.confidence))
+      ? Number(quote.confidence)
+      : null,
+    delayed: Boolean(quote.delayed),
+    timestamp: quote.timestamp || null,
+    dataFreshness: {
+      status: freshnessStatus,
+      ageSeconds: Number.isFinite(ageSeconds)
+        ? Number(ageSeconds.toFixed(1))
+        : null,
+      maxAgeSeconds: FRESHNESS_LIMIT_SECONDS
+    },
+    priceMatched: freshnessStatus === 'FRESH' && price > 0,
+    morningGate: morning.gate,
+    morningEvidence: morning,
+    sessionPhase: require('./session/morning-liquidity').getSessionPhase(now)
   };
 }
 
@@ -49,16 +93,31 @@ function getLatestHistory(history = []) {
     volume: Number(latest.volume || 0),
     high: Number(latest.high || close),
     low: Number(latest.low || close),
-    source: latest.primarySource || 'LEGACY_HISTORY'
+    source: latest.primarySource || 'LEGACY_HISTORY',
+    sourceUrl: null,
+    sourceVerified: false,
+    sourceLatencySeconds: null,
+    confidence: null,
+    delayed: true,
+    timestamp: latest.date ? new Date(latest.date + 'T23:59:59Z').toISOString() : null,
+    dataFreshness: {
+      status: 'HISTORY_ONLY',
+      ageSeconds: null,
+      maxAgeSeconds: FRESHNESS_LIMIT_SECONDS
+    },
+    priceMatched: false,
+    morningGate: morningGate(null),
+    morningEvidence: null,
+    sessionPhase: 'HISTORICAL'
   };
 }
 
-function buildNormalizedSymbols(liveQuotes, histories) {
+function buildNormalizedSymbols(liveQuotes, histories, now = new Date()) {
   const bySymbol = new Map();
 
   for (const quote of liveQuotes || []) {
     if (quote?.symbol) {
-      bySymbol.set(quote.symbol, normalizeLiveQuote(quote));
+      bySymbol.set(quote.symbol, normalizeLiveQuote(quote, now));
     }
   }
 
@@ -90,21 +149,26 @@ async function loadLiveSnapshot() {
 }
 
 async function buildRuntimeRecommendations(snapshot = {}) {
+  const now = new Date();
   const liveSnapshot = snapshot?.liveSnapshot || snapshot;
   const liveQuotes = Array.isArray(liveSnapshot?.quotes)
     ? liveSnapshot.quotes.filter((quote) => Number(quote?.price) > 0)
     : [];
 
   const histories = snapshot?.histories || await loadLegacyHistory();
-  const normalizedSymbols = buildNormalizedSymbols(liveQuotes, histories);
+  const normalizedSymbols = buildNormalizedSymbols(liveQuotes, histories, now);
 
   if (!normalizedSymbols.length) {
     return {
-      generatedAt: new Date().toISOString(),
+      generatedAt: now.toISOString(),
       recommendations: [],
       status: 'NO_DATA',
       mode: 'NO_DATA',
-      dataSource: 'NONE'
+      dataSource: 'NONE',
+      liveQuoteCount: 0,
+      historyCount: 0,
+      morningConfirmedCount: 0,
+      executionReadyCount: 0
     };
   }
 
@@ -122,7 +186,7 @@ async function buildRuntimeRecommendations(snapshot = {}) {
 
   return {
     status: 'READY',
-    generatedAt: new Date().toISOString(),
+    generatedAt: now.toISOString(),
     mode: hasLive && historyAvailable
       ? 'MIXED_MODE'
       : hasLive
@@ -133,8 +197,18 @@ async function buildRuntimeRecommendations(snapshot = {}) {
       : 'HISTORICAL',
     symbolsAnalyzed: normalizedSymbols.length,
     liveQuoteCount: liveQuotes.length,
-    historyCount: Object.values(histories).filter((rows) => Array.isArray(rows) && rows.length > 0).length,
-    historySymbols: Object.entries(histories).filter(([, rows]) => Array.isArray(rows) && rows.length > 0).map(([symbol]) => symbol),
+    historyCount: Object.values(histories).filter(
+      (rows) => Array.isArray(rows) && rows.length > 0
+    ).length,
+    historySymbols: Object.entries(histories)
+      .filter(([, rows]) => Array.isArray(rows) && rows.length > 0)
+      .map(([symbol]) => symbol),
+    morningConfirmedCount: analysis.results.filter(
+      (item) => item.morningGate?.confirmed === true
+    ).length,
+    executionReadyCount: recommendations.filter(
+      (item) => item.executionReady === true
+    ).length,
     liveSource: liveSnapshot?.source || 'NONE',
     ...recommendations
   };
@@ -154,5 +228,6 @@ module.exports = {
   buildRuntimeRecommendations,
   runRuntimePipeline,
   buildNormalizedSymbols,
-  getLatestHistory
+  getLatestHistory,
+  normalizeLiveQuote
 };

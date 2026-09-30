@@ -22,6 +22,8 @@ async function handler(req, res) {
       pipeline: pipeline.status || 'UNKNOWN',
       mode: pipeline.mode || 'NO_DATA',
       recommendations: pipeline.recommendations?.length || 0,
+      morningConfirmed: Number(pipeline.morningConfirmedCount || 0),
+      executionReady: Number(pipeline.executionReadyCount || 0),
       healthy: pipeline.status !== 'NO_DATA'
     });
   } catch (error) {

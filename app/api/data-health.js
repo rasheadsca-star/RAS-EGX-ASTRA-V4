@@ -34,6 +34,8 @@ async function handler(req, res) {
       quoteCount: Number(pipeline.liveQuoteCount || 0),
       historyCount: Number(pipeline.historyCount || 0),
       symbolsAnalyzed: Number(pipeline.symbolsAnalyzed || 0),
+      morningConfirmedCount: Number(pipeline.morningConfirmedCount || 0),
+      executionReadyCount: Number(pipeline.executionReadyCount || 0),
       checkedAt: now,
       snapshotTime: pipeline.generatedAt,
       deploymentCommit: process.env.VERCEL_GIT_COMMIT_SHA || null,
@@ -42,9 +44,9 @@ async function handler(req, res) {
         pipeline.recommendations.length > 0,
       message:
         engineStatus === 'LIVE_READY'
-          ? 'ASTRA received live market quotes and historical context.'
+          ? 'ASTRA received market quotes and validated historical context.'
           : engineStatus === 'HISTORICAL_READY'
-            ? 'ASTRA is running from validated historical market data.'
+            ? 'ASTRA is running from validated historical market data; paper execution remains blocked until fresh price and morning evidence are confirmed.'
             : 'ASTRA has no usable market data.'
     });
   } catch (error) {

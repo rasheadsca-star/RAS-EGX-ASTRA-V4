@@ -27,11 +27,19 @@ function generateRecommendation(analysis) {
         direction
       });
 
+      const execution = {
+        dataFresh: item.dataFreshness?.status === 'FRESH',
+        priceMatched: item.priceMatched === true,
+        morningGateConfirmed: item.morningGate?.confirmed === true,
+        liveData: item.dataFreshness?.status === 'FRESH'
+      };
+
       const signal = generateSignal({
         symbol: item.symbol,
         analysis: item,
         risk: { level: riskLevel },
-        trade: tradePlan
+        trade: tradePlan,
+        execution
       });
 
       return {
@@ -48,7 +56,13 @@ function generateRecommendation(analysis) {
           historySessions: item.historySessions,
           latestVolume: item.latestVolume,
           averageVolume20: item.averageVolume20
-        }
+        },
+        dataFreshness: item.dataFreshness,
+        priceMatched: item.priceMatched,
+        morningGate: item.morningGate,
+        morningEvidence: item.morningEvidence,
+        sessionPhase: item.sessionPhase,
+        execution
       };
     })
     .sort((a, b) => b.confidence - a.confidence);

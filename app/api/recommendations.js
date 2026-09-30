@@ -10,6 +10,14 @@ function getRecommendations(snapshot = []) {
     stopLoss: stock.stopLoss ?? null,
     confidence: stock.confidence ?? 0,
     riskLevel: stock.riskLevel || 'UNKNOWN',
+    executionReady: stock.executionReady === true,
+    executionMode: stock.executionMode || 'PAPER_ONLY',
+    executionBlockers: stock.executionBlockers || [],
+    dataFreshness: stock.dataFreshness || null,
+    priceMatched: stock.priceMatched === true,
+    morningGate: stock.morningGate || null,
+    morningEvidence: stock.morningEvidence || null,
+    sessionPhase: stock.sessionPhase || null,
     analysis: stock.analysis || null
   }));
 }
@@ -53,6 +61,8 @@ async function handler(req, res) {
       updatedAt: pipeline.generatedAt,
       count: recommendations.length,
       symbolsAnalyzed: pipeline.symbolsAnalyzed || 0,
+      morningConfirmedCount: pipeline.morningConfirmedCount || 0,
+      executionReadyCount: pipeline.executionReadyCount || 0,
       recommendations
     });
   } catch (error) {

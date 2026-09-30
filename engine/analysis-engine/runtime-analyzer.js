@@ -165,7 +165,17 @@ function analyze(snapshot) {
       latestVolume: historyAnalysis.latestVolume,
       averageVolume20: historyAnalysis.averageVolume20,
       technicalScore,
-      riskLevel
+      riskLevel,
+      dataFreshness: item.dataFreshness || null,
+      priceMatched: item.priceMatched === true,
+      source: item.source || null,
+      delayed: item.delayed === true,
+      morningGate: item.morningGate || {
+        confirmed: false,
+        reasons: ['MORNING_NOT_PUBLISHED']
+      },
+      morningEvidence: item.morningEvidence || null,
+      sessionPhase: item.sessionPhase || 'UNKNOWN'
     };
   });
 

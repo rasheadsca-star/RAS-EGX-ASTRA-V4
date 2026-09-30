@@ -1,5 +1,5 @@
 // ASTRA V4 EGX Data Adapter
-// Normalizes provider output without losing change-percent or provenance fields.
+// Normalizes provider output while preserving freshness and morning-evidence metadata.
 
 function normalizeQuote(quote = {}) {
   const price = Number(quote.price || 0);
@@ -22,7 +22,18 @@ function normalizeQuote(quote = {}) {
     low: Number(quote.low || 0),
     timestamp: quote.timestamp || new Date().toISOString(),
     source: quote.source || null,
-    delayed: Boolean(quote.delayed)
+    sourceUrl: quote.sourceUrl || null,
+    sourceVerified: quote.sourceVerified === true,
+    sourceLatencySeconds: Number.isFinite(Number(quote.sourceLatencySeconds))
+      ? Number(quote.sourceLatencySeconds)
+      : null,
+    confidence: Number.isFinite(Number(quote.confidence))
+      ? Number(quote.confidence)
+      : null,
+    delayed: Boolean(quote.delayed),
+    intradayCandles: Array.isArray(quote.intradayCandles)
+      ? quote.intradayCandles
+      : []
   };
 }
 
