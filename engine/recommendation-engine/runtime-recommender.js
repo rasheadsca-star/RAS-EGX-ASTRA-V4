@@ -1,33 +1,45 @@
 // ASTRA V4 Recommendation Runtime
-// Entry-only recommendation engine.
-// Bearish/weak setups remain in the watchlist and are never emitted as SELL entries.
+// Opportunity ranking engine.
+// Separates execution-ready opportunities from watchlist candidates.
 
 const { generateSignal } = require('./signal-generator');
 const { calculateTrade } = require('./trade-calculator-runtime');
 
-const ENTRY_SCORE_MINIMUM = 75;
+const EXECUTION_SCORE_MINIMUM = 70;
+const WATCH_SCORE_MINIMUM = 45;
 
 function qualifiesForEntry(analysis = {}) {
   const score = Number(analysis.technicalScore || 0);
 
   return (
-    score >= ENTRY_SCORE_MINIMUM &&
+    score >= EXECUTION_SCORE_MINIMUM &&
     analysis.riskLevel !== 'HIGH' &&
-    Number(analysis.momentum || 0) >= 60 &&
-    Number(analysis.trend || 0) >= 60 &&
-    Number(analysis.liquidity || 0) >= 50 &&
-    Number(analysis.volatility || 0) >= 45
+    Number(analysis.momentum || 0) >= 55 &&
+    Number(analysis.trend || 0) >= 50 &&
+    Number(analysis.liquidity || 0) >= 40 &&
+    Number(analysis.volatility || 0) >= 35
   );
 }
 
-function classifySignal(analysis = {}) {
-  return qualifiesForEntry(analysis) ? 'BUY' : 'WATCH';
+function classifyOpportunity(analysis = {}) {
+  const score = Number(analysis.technicalScore || 0);
+
+  if (qualifiesForEntry(analysis)) {
+    return 'EXECUTION_READY';
+  }
+
+  if (score >= WATCH_SCORE_MINIMUM) {
+    return 'WATCH';
+  }
+
+  return 'REJECT';
 }
 
 function buildItem(item) {
   const technicalScore = Number(item.technicalScore || 0);
   const riskLevel = item.riskLevel || 'MEDIUM';
-  const entryOpportunity = qualifiesForEntry(item);
+  const opportunityStatus = classifyOpportunity(item);
+  const entryOpportunity = opportunityStatus === 'EXECUTION_READY';
 
   const tradePlan = entryOpportunity
     ? calculateTrade({
@@ -38,8 +50,8 @@ function buildItem(item) {
         recentLow20: Number(item.recentLow20 || 0)
       })
     : {
-        status: 'NOT_ELIGIBLE',
-        reason: 'Entry criteria not met'
+        status: 'WATCH_ONLY',
+        reason: 'Waiting for execution confirmation'
       };
 
   const execution = {
@@ -55,18 +67,18 @@ function buildItem(item) {
     risk: { level: riskLevel },
     trade: tradePlan,
     execution,
-    entryOpportunity: entryOpportunity && tradePlan.status === 'READY'
+    entryOpportunity
   });
 
   return {
     ...signal,
+    opportunityStatus,
     analysis: {
       technicalScore,
       momentum: item.momentum,
       trend: item.trend,
       liquidity: item.liquidity,
       volatility: item.volatility,
-      volatilityPct: item.volatilityPct,
       fiveDayChangePct: item.fiveDayChangePct,
       twentyDayChangePct: item.twentyDayChangePct,
       historySessions: item.historySessions,
@@ -79,7 +91,6 @@ function buildItem(item) {
     dataFreshness: item.dataFreshness,
     priceMatched: item.priceMatched,
     morningGate: item.morningGate,
-    morningEvidence: item.morningEvidence,
     sessionPhase: item.sessionPhase,
     execution
   };
@@ -88,26 +99,26 @@ function buildItem(item) {
 function generateRecommendation(analysis) {
   const evaluated = (analysis?.results || [])
     .map(buildItem)
-    .sort((a, b) => b.confidence - a.confidence);
-
-  const recommendations = evaluated.filter(
-    (item) => item.signal === 'BUY' && item.entryOpportunity === true
-  );
-
-  const watchlist = evaluated.filter(
-    (item) => item.signal !== 'BUY'
-  );
+    .sort((a, b) => Number(b.confidence || 0) - Number(a.confidence || 0));
 
   return {
     generatedAt: new Date().toISOString(),
-    recommendations,
-    watchlist
+    recommendations: evaluated.filter(
+      (item) => item.opportunityStatus === 'EXECUTION_READY'
+    ),
+    watchlist: evaluated.filter(
+      (item) => item.opportunityStatus === 'WATCH'
+    ),
+    rejected: evaluated.filter(
+      (item) => item.opportunityStatus === 'REJECT'
+    )
   };
 }
 
 module.exports = {
-  ENTRY_SCORE_MINIMUM,
+  EXECUTION_SCORE_MINIMUM,
+  WATCH_SCORE_MINIMUM,
   qualifiesForEntry,
-  generateRecommendation,
-  classifySignal
+  classifyOpportunity,
+  generateRecommendation
 };
