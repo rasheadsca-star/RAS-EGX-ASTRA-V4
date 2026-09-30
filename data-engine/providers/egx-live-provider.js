@@ -1,20 +1,11 @@
 // ASTRA V4 EGX Live Provider
 // Free public-market-data fallback using Yahoo Finance chart data.
-// Yahoo's EGX feed is delayed, so the provider must be labeled as delayed
-// and must never fabricate prices when the upstream source is unavailable.
+// Yahoo's EGX feed is delayed; upstream availability is always explicit.
 
-const WATCHLIST = [
-  'COMI',
-  'SWDY',
-  'FWRY',
-  'TMGH',
-  'HRHO'
-];
-
+const WATCHLIST = ['COMI', 'SWDY', 'FWRY', 'TMGH', 'HRHO'];
 const YAHOO_SYMBOLS = Object.fromEntries(
-  WATCHLIST.map((symbol) => [symbol, `${symbol}.CA`])
+  WATCHLIST.map((symbol) => [symbol, symbol + '.CA'])
 );
-
 const REQUEST_TIMEOUT_MS = 8000;
 
 function emptyQuote(symbol) {
@@ -22,6 +13,8 @@ function emptyQuote(symbol) {
     symbol,
     price: 0,
     change: 0,
+    changePercent: 0,
+    previousClose: 0,
     volume: 0,
     high: 0,
     low: 0,
@@ -32,8 +25,10 @@ function emptyQuote(symbol) {
 }
 
 async function fetchYahooQuote(symbol) {
-  const yahooSymbol = YAHOO_SYMBOLS[symbol] || `${symbol}.CA`;
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yahooSymbol)}?range=1d&interval=1m&includePrePost=false`;
+  const yahooSymbol = YAHOO_SYMBOLS[symbol] || symbol + '.CA';
+  const url = 'https://query1.finance.yahoo.com/v8/finance/chart/' +
+    encodeURIComponent(yahooSymbol) +
+    '?range=1d&interval=1m&includePrePost=false';
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
@@ -66,13 +61,20 @@ async function fetchYahooQuote(symbol) {
     if (lastIndex < 0) return emptyQuote(symbol);
 
     const price = Number(closes[lastIndex]);
-    const previousClose = Number(meta.previousClose || 0);
-    const change = previousClose ? price - previousClose : 0;
+    const previousClose = Number(
+      meta.previousClose ?? meta.chartPreviousClose ?? 0
+    );
+    const change = previousClose > 0 ? price - previousClose : 0;
+    const changePercent = previousClose > 0
+      ? (change / previousClose) * 100
+      : 0;
 
     return {
       symbol,
       price,
       change,
+      changePercent,
+      previousClose,
       volume: Number(volumes[lastIndex] || 0),
       high: Number(highs[lastIndex] || price),
       low: Number(lows[lastIndex] || price),
@@ -94,11 +96,9 @@ const egxLiveProvider = {
 
   async fetchQuotes() {
     const quotes = await Promise.all(WATCHLIST.map(fetchYahooQuote));
-    const validQuotes = quotes.filter((quote) => quote.price > 0);
-    return validQuotes.length ? validQuotes : [];
+    return quotes.filter((quote) => quote.price > 0);
   },
 
-  // Compatibility with the live connector contract.
   async getQuotes() {
     return this.fetchQuotes();
   }

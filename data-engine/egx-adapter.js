@@ -1,15 +1,28 @@
 // ASTRA V4 EGX Data Adapter
-// Provider abstraction layer for live EGX market snapshots.
+// Normalizes provider output without losing change-percent or provenance fields.
 
 function normalizeQuote(quote = {}) {
+  const price = Number(quote.price || 0);
+  const previousClose = Number(quote.previousClose || 0);
+  const rawChangePercent = Number(quote.changePercent);
+  const changePercent = Number.isFinite(rawChangePercent)
+    ? rawChangePercent
+    : previousClose > 0
+      ? ((price - previousClose) / previousClose) * 100
+      : 0;
+
   return {
     symbol: quote.symbol || null,
-    price: Number(quote.price || 0),
+    price,
     change: Number(quote.change || 0),
+    changePercent,
+    previousClose,
     volume: Number(quote.volume || 0),
     high: Number(quote.high || 0),
     low: Number(quote.low || 0),
-    timestamp: quote.timestamp || new Date().toISOString()
+    timestamp: quote.timestamp || new Date().toISOString(),
+    source: quote.source || null,
+    delayed: Boolean(quote.delayed)
   };
 }
 
@@ -26,9 +39,9 @@ async function getMarketSnapshot(provider) {
   const quotes = await provider.fetchQuotes();
 
   return {
-    status: 'CONNECTED',
+    status: quotes.length ? 'CONNECTED' : 'NO_QUOTES',
     source: provider.name || 'EGX_PROVIDER',
-    quotes: quotes.map(normalizeQuote),
+    quotes: Array.isArray(quotes) ? quotes.map(normalizeQuote) : [],
     timestamp: new Date().toISOString()
   };
 }

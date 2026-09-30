@@ -1,15 +1,16 @@
 const { runRuntimePipeline } = require('../../engine/runtime-pipeline.js');
 
 function getRecommendations(snapshot = []) {
-  return snapshot.map(stock => ({
+  return snapshot.map((stock) => ({
     symbol: stock.symbol,
-    signal: stock.signal || 'WATCH',
+    signal: stock.signal || 'HOLD',
     entry: stock.entry ?? null,
     target1: stock.target1 ?? null,
     target2: stock.target2 ?? null,
     stopLoss: stock.stopLoss ?? null,
     confidence: stock.confidence ?? 0,
-    riskLevel: stock.riskLevel || 'UNKNOWN'
+    riskLevel: stock.riskLevel || 'UNKNOWN',
+    analysis: stock.analysis || null
   }));
 }
 
@@ -20,32 +21,41 @@ async function handler(req, res) {
   try {
     const pipeline = await runRuntimePipeline();
 
-    if (!pipeline || pipeline.status !== 'READY') {
+    if (!pipeline || pipeline.status === 'NO_DATA') {
       return res.status(200).json({
         success: true,
         market: 'EGX',
-        status: pipeline?.status || 'NO_LIVE_SNAPSHOT',
+        status: 'NO_DATA',
         updatedAt: new Date().toISOString(),
         count: 0,
         recommendations: []
       });
     }
 
-    const recommendations = getRecommendations(pipeline.recommendations || []);
+    const recommendations = getRecommendations(
+      pipeline.recommendations || []
+    );
+
+    const status = pipeline.liveQuoteCount > 0
+      ? 'LIVE_READY'
+      : 'HISTORICAL_READY';
 
     return res.status(200).json({
       success: true,
       market: 'EGX',
-      status: 'LIVE',
+      status,
+      mode: pipeline.mode,
+      dataSource: pipeline.dataSource,
       updatedAt: pipeline.generatedAt,
       count: recommendations.length,
+      symbolsAnalyzed: pipeline.symbolsAnalyzed || 0,
       recommendations
     });
   } catch (error) {
     return res.status(200).json({
       success: false,
       market: 'EGX',
-      status: 'PIPELINE_ERROR',
+      status: 'ERROR',
       updatedAt: new Date().toISOString(),
       count: 0,
       recommendations: [],

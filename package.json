@@ -3,7 +3,8 @@
   "version": "4.0.0",
   "private": true,
   "scripts": {
-    "build": "node scripts/build-check.js"
+    "build": "node scripts/build-check.js",
+    "test": "node scripts/runtime-validation.js"
   },
   "engines": {
     "node": ">=20"

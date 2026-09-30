@@ -1,7 +1,4 @@
-const { getMarketSnapshot } = require('../../data-engine/egx-adapter.js');
-const { egxLiveProvider } = require('../../data-engine/providers/egx-live-provider.js');
 const { runRuntimePipeline } = require('../../engine/runtime-pipeline.js');
-const { loadLegacyHistory } = require('../../data-engine/history/legacy-history-provider.js');
 
 async function handler(req, res) {
   const now = new Date().toISOString();
@@ -10,108 +7,59 @@ async function handler(req, res) {
   res.setHeader('Pragma', 'no-cache');
 
   try {
-    const snapshot = await getMarketSnapshot(egxLiveProvider);
-
     const pipeline = await runRuntimePipeline();
+    const liveReady = Number(pipeline.liveQuoteCount || 0) > 0;
+    const historyReady = Number(pipeline.historyCount || 0) > 0;
 
-    const histories = await loadLegacyHistory();
-
-    const hasRealQuotes =
-      snapshot.quotes.some((q) => q.price > 0);
-
-    const historySymbols =
-      Object.keys(histories).filter(
-        (symbol) =>
-          Array.isArray(histories[symbol]) &&
-          histories[symbol].length > 0
-      );
-
-    const hasHistoricalData =
-      historySymbols.length > 0;
-
-
-    let engineStatus = 'WAITING';
-
-    if (hasRealQuotes) {
-      engineStatus = 'LIVE';
-    } else if (hasHistoricalData) {
-      engineStatus = 'HISTORY_READY';
-    }
-
+    const engineStatus =
+      pipeline.status === 'NO_DATA'
+        ? 'NO_DATA'
+        : liveReady
+          ? 'LIVE_READY'
+          : historyReady
+            ? 'HISTORICAL_READY'
+            : 'NO_DATA';
 
     return res.status(200).json({
       success: true,
-
       market: 'EGX',
-
-      dataEngine: 'READY',
-
+      dataEngine: engineStatus,
       engineStatus,
-
       pipeline: pipeline.status || 'UNKNOWN',
-
-      liveFeed: hasRealQuotes
-        ? 'CONNECTED'
-        : 'WAITING_FOR_SOURCE',
-
-      historicalData: hasHistoricalData
-        ? 'CONNECTED'
-        : 'EMPTY',
-
-      historicalSymbols: historySymbols,
-
-      source: snapshot.source,
-
-      snapshot: hasRealQuotes
-        ? 'READY'
-        : hasHistoricalData
-          ? 'HISTORY_READY'
-          : 'WAITING',
-
-      quoteCount: snapshot.quotes.length,
-
-      historyCount: historySymbols.length,
-
+      liveFeed: liveReady ? 'CONNECTED' : 'WAITING_FOR_SOURCE',
+      historicalData: historyReady ? 'CONNECTED' : 'EMPTY',
+      historicalSymbols: pipeline.historySymbols || [],
+      source: pipeline.liveSource || 'NONE',
+      snapshot: engineStatus,
+      quoteCount: Number(pipeline.liveQuoteCount || 0),
+      historyCount: Number(pipeline.historyCount || 0),
+      symbolsAnalyzed: Number(pipeline.symbolsAnalyzed || 0),
       checkedAt: now,
-
-      snapshotTime: snapshot.timestamp,
-
+      snapshotTime: pipeline.generatedAt,
       recommendationsReady:
         Array.isArray(pipeline.recommendations) &&
         pipeline.recommendations.length > 0,
-
-      message: hasRealQuotes
-        ? 'ASTRA received verified market quotes.'
-        : hasHistoricalData
-          ? 'ASTRA running with validated historical market data.'
-          : 'ASTRA waiting for market data source.'
+      message:
+        engineStatus === 'LIVE_READY'
+          ? 'ASTRA received live market quotes and historical context.'
+          : engineStatus === 'HISTORICAL_READY'
+            ? 'ASTRA is running from validated historical market data.'
+            : 'ASTRA has no usable market data.'
     });
-
   } catch (error) {
-
     return res.status(200).json({
       success: false,
-
       market: 'EGX',
-
       dataEngine: 'ERROR',
-
+      engineStatus: 'ERROR',
       pipeline: 'ERROR',
-
       liveFeed: 'UNKNOWN',
-
       historicalData: 'UNKNOWN',
-
       quoteCount: 0,
-
       historyCount: 0,
-
       checkedAt: now,
-
       recommendationsReady: false,
-
       message: 'ASTRA health check failed safely.',
-
       error: error?.message || 'Unknown runtime error'
     });
   }
