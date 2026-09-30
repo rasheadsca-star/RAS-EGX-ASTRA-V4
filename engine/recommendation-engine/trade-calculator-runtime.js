@@ -44,16 +44,27 @@ function calculateTrade({
 
   const volatilityStop = entry - volatilityRiskDistance;
 
+  const minimumRisk = entry * MIN_STOP_PCT;
+  const maximumRisk = entry * MAX_STOP_PCT;
+
   const supportStop =
     Number.isFinite(recentLow) && recentLow > 0 && recentLow < entry
       ? recentLow * 0.995
-      : volatilityStop;
+      : null;
 
-  let stopLoss = Math.min(volatilityStop, supportStop);
+  let stopLoss = volatilityStop;
+
+  // Use recent support only when it does not push the trade beyond the
+  // maximum allowed risk. Otherwise keep the volatility-based stop.
+  if (
+    Number.isFinite(supportStop) &&
+    entry - supportStop >= minimumRisk &&
+    entry - supportStop <= maximumRisk
+  ) {
+    stopLoss = supportStop;
+  }
+
   let riskPerShare = entry - stopLoss;
-
-  const minimumRisk = entry * MIN_STOP_PCT;
-  const maximumRisk = entry * MAX_STOP_PCT;
 
   if (riskPerShare < minimumRisk) {
     stopLoss = entry - minimumRisk;
