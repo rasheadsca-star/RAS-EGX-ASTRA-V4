@@ -21,13 +21,14 @@ jobs:
         with:
           node-version: 20
 
-      - name: Run ASTRA Pipeline Test
-        run: |
-          node engine/pipeline/e2e-pipeline-test.js
+      - name: Build check
+        run: npm run build
 
-      - name: Generate ASTRA Signal Output
-        run: |
-          node scripts/astra-e2e-runner.js
+      - name: Runtime validation
+        run: npm test
+
+      - name: Full ASTRA E2E validation
+        run: node scripts/astra-e2e-runner.js
 
       - name: Upload ASTRA Result Artifact
         uses: actions/upload-artifact@v4

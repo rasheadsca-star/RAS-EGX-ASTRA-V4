@@ -1,15 +1,15 @@
 {
   "market": "EGX",
-  "timestamp": "2026-09-28T13:00:00Z",
+  "timestamp": "2026-09-30T00:00:00Z",
   "symbols": [
-    {
-      "symbol": "TEST",
-      "price": 100,
-      "volume": 1000000
-    }
+    "COMI",
+    "SWDY",
+    "FWRY",
+    "TMGH",
+    "HRHO"
   ],
   "quality": {
     "validated": true,
-    "coverage": 1
+    "coverage": 5
   }
 }
