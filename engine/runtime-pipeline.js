@@ -8,7 +8,8 @@ const { generateRecommendation } = require('./recommendation-engine/runtime-reco
 const { loadLegacyHistory } = require('../data-engine/history/legacy-history-provider');
 const {
   buildMorningRecord,
-  morningGate
+  morningGate,
+  getSessionPhase
 } = require('./session/morning-liquidity');
 
 const FRESHNESS_LIMIT_SECONDS = 300;
@@ -68,7 +69,7 @@ function normalizeLiveQuote(quote = {}, now = new Date()) {
     priceMatched: freshnessStatus === 'FRESH' && price > 0,
     morningGate: morning.gate,
     morningEvidence: morning,
-    sessionPhase: require('./session/morning-liquidity').getSessionPhase(now)
+    sessionPhase: getSessionPhase(now)
   };
 }
 
@@ -99,7 +100,9 @@ function getLatestHistory(history = []) {
     sourceLatencySeconds: null,
     confidence: null,
     delayed: true,
-    timestamp: latest.date ? new Date(latest.date + 'T23:59:59Z').toISOString() : null,
+    timestamp: latest.date
+      ? new Date(latest.date + 'T23:59:59Z').toISOString()
+      : null,
     dataFreshness: {
       status: 'HISTORY_ONLY',
       ageSeconds: null,
@@ -177,7 +180,9 @@ async function buildRuntimeRecommendations(snapshot = {}) {
     histories
   });
 
-  const recommendations = generateRecommendation(analysis);
+  const recommendationBundle = generateRecommendation(analysis);
+  const recommendationList = recommendationBundle.recommendations || [];
+
   const historyAvailable = Object.values(histories).some(
     (rows) => Array.isArray(rows) && rows.length > 0
   );
@@ -206,11 +211,11 @@ async function buildRuntimeRecommendations(snapshot = {}) {
     morningConfirmedCount: analysis.results.filter(
       (item) => item.morningGate?.confirmed === true
     ).length,
-    executionReadyCount: recommendations.filter(
+    executionReadyCount: recommendationList.filter(
       (item) => item.executionReady === true
     ).length,
     liveSource: liveSnapshot?.source || 'NONE',
-    ...recommendations
+    ...recommendationBundle
   };
 }
 
