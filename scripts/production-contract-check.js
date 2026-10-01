@@ -15,7 +15,7 @@ function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
 async function getJson(path) {
   const url = baseUrl.replace(/\/$/, '') + path;
   const response = await fetch(url, {
-    headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'ASTRA-Production-Contract-Check/1.6' }
+    headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'ASTRA-Production-Contract-Check/1.7' }
   });
   const text = await response.text();
   if (!response.ok) throw new Error('Production API HTTP ' + response.status + ': ' + text.slice(0, 1000));
@@ -53,13 +53,28 @@ function assertUcpShadowContract(ucp) {
   assert(Array.isArray(ucp.snapshot?.decision?.finalRecommendations), JSON.stringify(ucp));
   assert.strictEqual(ucp.snapshot.decision.finalRecommendations.length, 0, 'UCP shadow stage must not publish final recommendations');
 
+  const snapshotSession = ucp.snapshot?.sessionDate || null;
+  const rc2 = ucp.diagnostics?.rc2;
+  const v17 = ucp.diagnostics?.v17;
+  assert(rc2 && typeof rc2 === 'object', JSON.stringify(ucp));
+  assert(v17 && typeof v17 === 'object', JSON.stringify(ucp));
+
   if (ucp.status === 'SHADOW_READY') {
-    assert.strictEqual(ucp.diagnostics?.rc2?.engineId, 'TFE_V20_FUSION_RC2', JSON.stringify(ucp));
-    assert.strictEqual(ucp.diagnostics?.rc2?.mode, 'RESEARCH_ONLY', JSON.stringify(ucp));
+    assert.strictEqual(rc2.engineId, 'TFE_V20_FUSION_RC2', JSON.stringify(ucp));
+    assert.strictEqual(rc2.mode, 'RESEARCH_ONLY', JSON.stringify(ucp));
+    assert.strictEqual(rc2.available, true, JSON.stringify(rc2));
+    assert.strictEqual(rc2.sessionAligned, true, JSON.stringify(rc2));
+    assert.strictEqual(rc2.sessionDate, snapshotSession, JSON.stringify({ snapshotSession, rc2 }));
+    assert.strictEqual(v17.available, true, JSON.stringify(v17));
+    assert.strictEqual(v17.policySafe, true, JSON.stringify(v17));
+    assert.strictEqual(v17.sessionAligned, true, JSON.stringify(v17));
+    assert.strictEqual(v17.sourceCurrent, true, JSON.stringify(v17));
+    assert.strictEqual(v17.referenceSession, snapshotSession, JSON.stringify({ snapshotSession, v17 }));
+    assert(!ucp.snapshot.decision.blockers.includes('RC2_SESSION_ALIGNMENT_REQUIRED'), JSON.stringify(ucp));
+    assert(!ucp.snapshot.decision.blockers.includes('V17_SESSION_ALIGNMENT_REQUIRED'), JSON.stringify(ucp));
+    assert(!ucp.snapshot.decision.blockers.includes('V17_SOURCE_STATUS_NOT_CURRENT'), JSON.stringify(ucp));
   }
 
-  const v17 = ucp.diagnostics?.v17;
-  assert(v17 && typeof v17 === 'object', JSON.stringify(ucp));
   assert.strictEqual(ucp.snapshot?.governance?.executionAllowed, false, JSON.stringify(ucp));
   assert(Array.isArray(ucp.snapshot?.governance?.approvedSymbols), JSON.stringify(ucp));
   assert(Array.isArray(ucp.snapshot?.governance?.rejectedSymbols), JSON.stringify(ucp));
@@ -72,6 +87,11 @@ function assertUcpShadowContract(ucp) {
     }
   } else {
     assert(ucp.snapshot.decision.blockers.includes('V17_GOVERNANCE_UNAVAILABLE'), JSON.stringify(ucp));
+  }
+
+  if (rc2.available === true && rc2.sessionAligned !== true) {
+    assert.strictEqual(ucp.snapshot.alpha.candidates.length, 0, JSON.stringify(ucp));
+    assert(ucp.snapshot.decision.blockers.includes('RC2_SESSION_ALIGNMENT_REQUIRED'), JSON.stringify(ucp));
   }
 
   const v24 = ucp.diagnostics?.v24;
@@ -180,10 +200,14 @@ async function main() {
     morningConfirmedCount: recommendations.morningConfirmedCount,
     executionReadyCount: recommendations.executionReadyCount,
     ucpStatus: ucp.status,
+    ucpSession: ucp.snapshot?.sessionDate,
     ucpDataGatePass: ucp.snapshot?.dataGate?.pass,
     ucpRc2Available: ucp.diagnostics?.rc2?.available,
+    ucpRc2Session: ucp.diagnostics?.rc2?.sessionDate,
+    ucpRc2SessionAligned: ucp.diagnostics?.rc2?.sessionAligned,
     ucpRc2Candidates: ucp.snapshot?.alpha?.candidates?.length || 0,
     ucpV17Available: ucp.diagnostics?.v17?.available,
+    ucpV17SourceCurrent: ucp.diagnostics?.v17?.sourceCurrent,
     ucpV17SessionAligned: ucp.diagnostics?.v17?.sessionAligned,
     ucpV17ReferenceSession: ucp.diagnostics?.v17?.referenceSession,
     ucpV24Status: ucp.diagnostics?.v24?.status,
