@@ -1,3 +1,4 @@
+# Canonical EGX refresh: mirrors the validated post-market PRO dataset into V4.
 name: Daily EGX Data Refresh
 
 on:
