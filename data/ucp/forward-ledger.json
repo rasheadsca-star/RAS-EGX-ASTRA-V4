@@ -53,8 +53,8 @@
       "MIN_FORWARD_SESSIONS_NOT_MET",
       "MIN_RESOLVED_TRADES_NOT_MET",
       "MIN_CALENDAR_DAYS_NOT_MET",
-      "PROFIT_FACTOR_BELOW_POLICY",
-      "AVERAGE_NET_RETURN_NOT_POSITIVE"
+      "PROFIT_FACTOR_NOT_ESTABLISHED",
+      "AVERAGE_NET_RETURN_NOT_ESTABLISHED"
     ],
     "policy": {
       "version": "ucp-forward-promotion/v1",
