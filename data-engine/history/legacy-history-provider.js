@@ -11,7 +11,7 @@ const WATCHLIST = getEGXSymbols();
 const CACHE = new Map();
 
 const REQUEST_TIMEOUT_MS = 8000;
-const BATCH_SIZE = 20;
+const BATCH_SIZE = 50;
 
 async function fetchHistory(symbol) {
   if (CACHE.has(symbol)) {
