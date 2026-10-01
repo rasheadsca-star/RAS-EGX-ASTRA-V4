@@ -46,8 +46,8 @@ async function runUcpShadowPipeline({
   });
 
   const sessionDate = quality.expectedSession || null;
-  const rc2 = await loadRc2ShadowScan(rc2Options);
-  const rc2Candidates = rc2.candidates || [];
+  const rc2 = await loadRc2ShadowScan({ ...rc2Options, expectedSession: sessionDate });
+  const rc2Candidates = rc2.sessionAligned === true ? (rc2.candidates || []) : [];
   const v17 = await loadV17Governance({
     ...v17Options,
     requiredSession: sessionDate,
@@ -98,9 +98,11 @@ async function runUcpShadowPipeline({
   ];
   if (!dataGate.pass) blockers.push('DATA_QUALITY_GATE_FAILED');
   if (!rc2.available) blockers.push('RC2_SHADOW_UNAVAILABLE');
+  if (rc2.available && rc2.sessionAligned !== true) blockers.push('RC2_SESSION_ALIGNMENT_REQUIRED');
   if (!v17.available) blockers.push('V17_GOVERNANCE_UNAVAILABLE');
   if (v17.available && !v17.policySafe) blockers.push('V17_POLICY_CONTRACT_FAILED');
   if (v17.available && !v17.sessionAligned) blockers.push('V17_SESSION_ALIGNMENT_REQUIRED');
+  if (v17.available && v17.sourceCurrent !== true) blockers.push('V17_SOURCE_STATUS_NOT_CURRENT');
   if (preparedCandidates.length && morningBatch.confirmedSymbols.length === 0) {
     blockers.push('V2_4_MORNING_CONFIRMATION_PENDING');
   }
@@ -164,20 +166,28 @@ async function runUcpShadowPipeline({
       sourceCommit: rc2.sourceCommit || null,
       sourceSession: sessionDate,
       notes: [
-        'RC2 is consumed read-only as a frozen after-close Alpha candidate list.',
-        'V17 governance is fail-closed and requires exact session alignment.',
+        'RC2 is consumed read-only from an exact-session persisted research snapshot, with a live exact-session fallback only.',
+        'A zero-candidate RC2 scan is a valid research outcome and never causes an invented recommendation.',
+        'V17 UCP governance is fail-closed and requires an exact current-session snapshot with safe permissions.',
+        'External consensus is diagnostic only and cannot make an exact-session V17 snapshot stale.',
         'V2.4 morning confirmation never re-ranks the frozen RC2 list.',
         'Missing or delayed 10:20-10:45 Cairo evidence becomes WAITING_DATA, never an inferred rejection.',
-        'Daily OHLC is never substituted for first-20-30-minute morning evidence.',
+        'Full-day OHLC/volume is never substituted for a first-20-30-minute morning baseline.',
         'Champion eligibility uses only prospective UCP forward evidence collected after deployment.',
         'Automatic Champion promotion and execution remain permanently disabled by policy.'
       ]
     }
   });
 
+  const pipelineReady = Boolean(
+    dataGate.pass &&
+    rc2.available && rc2.sessionAligned === true &&
+    v17.available && v17.sessionAligned === true && v17.sourceCurrent === true && v17.policySafe === true
+  );
+
   return Object.freeze({
     success: true,
-    status: dataGate.pass && rc2.available && v17.available ? 'SHADOW_READY' : 'SHADOW_DEGRADED',
+    status: pipelineReady ? 'SHADOW_READY' : 'SHADOW_DEGRADED',
     executionAllowed: false,
     recommendationMutationAllowed: false,
     snapshot,
@@ -190,17 +200,25 @@ async function runUcpShadowPipeline({
         mode: rc2.mode || null,
         schemaVersion: rc2.schemaVersion || null,
         sourceCommit: rc2.sourceCommit || null,
+        sourceType: rc2.sourceType || null,
+        expectedSession: rc2.expectedSession || sessionDate,
         sessionDate: rc2.sessionDate || null,
+        sessionAligned: rc2.sessionAligned === true,
         summary: rc2.summary || null,
+        rejectionReasonCounts: rc2.rejectionReasonCounts || {},
+        rejectedSample: rc2.rejectedSample || [],
         error: rc2.error || null
       }),
       v17: Object.freeze({
         available: v17.available,
         status: v17.status,
+        sourceStatus: v17.sourceStatus || null,
+        sourceCurrent: v17.sourceCurrent === true,
         requiredSession: v17.requiredSession || null,
         referenceSession: v17.referenceSession || null,
         sessionAligned: v17.sessionAligned === true,
         policySafe: v17.policySafe === true,
+        zeroRecommendationStateValid: v17.zeroRecommendationStateValid === true,
         approvedCount: v17.approvedSymbols?.length || 0,
         rejectedCount: v17.rejectedSymbols?.length || 0,
         blockers: v17.blockers || [],
@@ -216,7 +234,9 @@ async function runUcpShadowPipeline({
         evidenceAvailable: morningEvidence.available === true,
         evidenceComplete: morningEvidence.completeSource === true,
         evidenceSource: morningEvidence.source || null,
-        evidenceReason: morningEvidence.reason || null
+        evidenceReason: morningEvidence.reason || null,
+        marketCoveragePct: morningEvidence.marketCoveragePct ?? null,
+        latestSourceMinute: morningEvidence.latestSourceMinute ?? null
       }),
       forward: Object.freeze({
         ledgerAvailable: forward.available,
