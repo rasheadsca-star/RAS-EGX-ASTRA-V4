@@ -2,6 +2,8 @@
 
 const DEFAULT_V17_URL = process.env.UCP_V17_URL ||
   'https://raw.githubusercontent.com/rasheadsca-star/RAS-EGX-PRO2026-NEXT/main/data/v17/ucp-current-session.json';
+const DEFAULT_CANONICAL_V17_URL = process.env.UCP_CANONICAL_V17_URL ||
+  'https://raw.githubusercontent.com/rasheadsca-star/RAS-EGX-PRO2026-NEXT/main/data/v17/current.json';
 const DEFAULT_CONSENSUS_URL = process.env.UCP_V17_CONSENSUS_URL ||
   'https://raw.githubusercontent.com/rasheadsca-star/RAS-EGX-PRO2026-NEXT/main/data/stable/v16-main-app-consensus.json';
 const TIMEOUT_MS = Number(process.env.UCP_V17_TIMEOUT_MS || 12000);
@@ -36,7 +38,7 @@ function uniqueSymbols(items = []) {
   return [...new Set(items.map((item) => item?.ticker || item?.symbol).filter(Boolean))];
 }
 
-function evaluateV17Governance({ v17 = {}, consensus = {}, requiredSession = null, candidates = [] } = {}) {
+function evaluateV17Governance({ v17 = {}, consensus = {}, requiredSession = null, candidates = [], sourceType = 'UCP_CURRENT_SESSION' } = {}) {
   const referenceSession = v17.sessionDate || null;
   const sessionAligned = Boolean(requiredSession && referenceSession === requiredSession);
   const sourceStatus = v17.status || null;
@@ -79,6 +81,7 @@ function evaluateV17Governance({ v17 = {}, consensus = {}, requiredSession = nul
     automaticOrdersAllowed: false,
     automaticChampionPromotionAllowed: false,
     sourceStatus,
+    sourceType,
     releaseStage: v17?.readiness?.releaseStage || null,
     professionalEvidenceReady: v17?.readiness?.professionalEvidenceReady === true,
     zeroRecommendationStateValid: v17?.systemHealth?.zeroRecommendationStateValid === true,
@@ -94,6 +97,7 @@ function evaluateV17Governance({ v17 = {}, consensus = {}, requiredSession = nul
     provenance: Object.freeze({
       v17SchemaVersion: v17.schemaVersion || null,
       v17GeneratedAt: v17.generatedAt || null,
+      sourceType,
       consensusGeneratedAt: consensus.generatedAt || null,
       consensusMainSession: consensus?.sourceHealth?.mainSession || consensus.sessionDate || null,
       consensusV17Session: consensus?.sourceHealth?.v17Session || null,
@@ -108,14 +112,20 @@ async function loadV17Governance({
   candidates = [],
   fetchImpl = global.fetch,
   v17Url = DEFAULT_V17_URL,
+  canonicalV17Url = DEFAULT_CANONICAL_V17_URL,
   consensusUrl = DEFAULT_CONSENSUS_URL
 } = {}) {
   try {
-    const [v17, consensus] = await Promise.all([
-      fetchJson(v17Url, fetchImpl),
-      fetchOptional(consensusUrl, fetchImpl)
-    ]);
-    return evaluateV17Governance({ v17, consensus, requiredSession, candidates });
+    let v17;
+    let sourceType = 'UCP_CURRENT_SESSION';
+    try {
+      v17 = await fetchJson(v17Url, fetchImpl);
+    } catch (_) {
+      v17 = await fetchJson(canonicalV17Url, fetchImpl);
+      sourceType = 'CANONICAL_FALLBACK';
+    }
+    const consensus = await fetchOptional(consensusUrl, fetchImpl);
+    return evaluateV17Governance({ v17, consensus, requiredSession, candidates, sourceType });
   } catch (error) {
     return Object.freeze({
       available: false,
@@ -142,6 +152,7 @@ async function loadV17Governance({
 
 module.exports = {
   DEFAULT_V17_URL,
+  DEFAULT_CANONICAL_V17_URL,
   DEFAULT_CONSENSUS_URL,
   CURRENT_STATUSES,
   evaluateV17Governance,
