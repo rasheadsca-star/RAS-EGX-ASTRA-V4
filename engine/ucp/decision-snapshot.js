@@ -25,6 +25,13 @@ function computeDecisionHash(payload) {
   return crypto.createHash('sha256').update(JSON.stringify(stableClone(payload))).digest('hex');
 }
 
+function decisionIdentity(core) {
+  // Runtime timestamp and prospective evidence evolve independently of the frozen
+  // market decision and therefore must never churn the decision identity hash.
+  const { generatedAt, forwardValidation, ...identity } = core;
+  return identity;
+}
+
 function buildDecisionSnapshot({
   generatedAt = new Date().toISOString(),
   sessionDate = null,
@@ -108,8 +115,13 @@ function buildDecisionSnapshot({
     }
   };
 
-  const decisionHash = computeDecisionHash(core);
+  const decisionHash = computeDecisionHash(decisionIdentity(core));
   return deepFreeze({ ...core, decisionHash });
 }
 
-module.exports = { buildDecisionSnapshot, computeDecisionHash, deepFreeze };
+module.exports = {
+  buildDecisionSnapshot,
+  computeDecisionHash,
+  decisionIdentity,
+  deepFreeze
+};
