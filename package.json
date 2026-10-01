@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build-check.js",
-    "test": "node scripts/runtime-validation.js && node scripts/ucp-validation.js",
-    "data:refresh": "node scripts/data-refresh.js"
+    "test": "node scripts/runtime-validation.js && node scripts/ucp-validation.js && node scripts/ucp-forward-validation.js",
+    "data:refresh": "node scripts/data-refresh.js",
+    "ucp:forward": "node scripts/ucp-forward-ledger.js cycle"
   },
   "engines": {
     "node": ">=20"
