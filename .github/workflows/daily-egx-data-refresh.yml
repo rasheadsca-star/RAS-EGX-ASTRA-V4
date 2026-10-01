@@ -2,15 +2,29 @@ name: Daily EGX Data Refresh
 
 on:
   schedule:
-    # 16:30 Africa/Cairo is 13:30 UTC during Egypt daylight time; run after the EGX session.
-    - cron: '30 13 * * 0-4'
+    # Run after the canonical PRO post-market refresh has normally completed.
+    # Use Cairo timezone so DST changes do not move the intended local time.
+    - cron: '30 22 * * 0-4'
+      timezone: 'Africa/Cairo'
   workflow_dispatch:
+  # One-time immediate validation when this workflow definition is changed.
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/daily-egx-data-refresh.yml'
+
+concurrency:
+  group: astra-v4-daily-data-refresh
+  cancel-in-progress: false
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    timeout-minutes: 15
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -18,31 +32,27 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Refresh historical/session data
+      - name: Refresh canonical market and history stores
+        run: npm run data:refresh
+
+      - name: Validate generated stores
         run: |
-          if npm run | grep -q "data:refresh"; then
-            npm run data:refresh
-          elif npm run | grep -q "refresh:data"; then
-            npm run refresh:data
-          else
-            echo "No data refresh script is defined yet; workflow stops safely."
-            exit 0
-          fi
+          node -e "const fs=require('fs');const m=JSON.parse(fs.readFileSync('data/canonical-market.json'));const h=JSON.parse(fs.readFileSync('data/history-index.json'));if(!Array.isArray(m.rows)||m.rows.length<80)throw new Error('Canonical market coverage too low');if(!h.coverage||h.coverage.coveragePct<80)throw new Error('History coverage below 80%');console.log({marketRows:m.rows.length,historyCoveragePct:h.coverage.coveragePct,expectedSession:m.source.expectedSession});"
 
       - name: Commit refreshed data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/ backups/ || true
+          git add data/canonical-market.json data/history-index.json
           if git diff --cached --quiet; then
-            echo "No data changes to commit."
+            echo "No canonical data changes."
           else
-            git commit -m "chore: refresh daily EGX market data"
+            git commit -m "chore(data): refresh canonical EGX market store"
             git push
           fi
