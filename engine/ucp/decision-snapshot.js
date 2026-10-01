@@ -72,8 +72,17 @@ function buildDecisionSnapshot({
     morningConfirmation: {
       engineId: morningConfirmation.engineId || REGISTRY.morningConfirmation.id,
       status: morningConfirmation.status || 'PENDING',
+      preparedFromSession: morningConfirmation.preparedFromSession || sessionDate || null,
+      targetSessionDate: morningConfirmation.targetSessionDate || null,
+      executionAllowed: false,
+      stateCounts: morningConfirmation.stateCounts || {},
+      preparedCandidates: Array.isArray(morningConfirmation.preparedCandidates) ? morningConfirmation.preparedCandidates : [],
       confirmedSymbols: Array.isArray(morningConfirmation.confirmedSymbols) ? morningConfirmation.confirmedSymbols : [],
-      waitingSymbols: Array.isArray(morningConfirmation.waitingSymbols) ? morningConfirmation.waitingSymbols : []
+      waitingSymbols: Array.isArray(morningConfirmation.waitingSymbols) ? morningConfirmation.waitingSymbols : [],
+      rejectedSymbols: Array.isArray(morningConfirmation.rejectedSymbols) ? morningConfirmation.rejectedSymbols : [],
+      expiredSymbols: Array.isArray(morningConfirmation.expiredSymbols) ? morningConfirmation.expiredSymbols : [],
+      evidenceSource: morningConfirmation.evidenceSource || null,
+      evidenceComplete: morningConfirmation.evidenceComplete === true
     },
     decision: {
       status: decision.status || 'RESEARCH_ONLY',
