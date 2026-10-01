@@ -4,6 +4,11 @@ const baseUrl = process.env.ASTRA_PROD_URL || 'https://ras-egx-astra-v4.vercel.a
 const expectedCommit = process.env.GITHUB_SHA;
 const retryAttempts = Number(process.env.ASTRA_PROD_RETRY_ATTEMPTS || 12);
 const retryDelayMs = Number(process.env.ASTRA_PROD_RETRY_DELAY_MS || 10000);
+const READY_STATUSES = new Set([
+  'LIVE_READY',
+  'DELAYED_READY',
+  'HISTORICAL_READY'
+]);
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -14,7 +19,7 @@ async function getJson(path) {
   const response = await fetch(url, {
     headers: {
       'Cache-Control': 'no-cache',
-      'User-Agent': 'ASTRA-Production-Contract-Check/1.1'
+      'User-Agent': 'ASTRA-Production-Contract-Check/1.2'
     }
   });
 
@@ -62,6 +67,16 @@ async function waitForExpectedDeployment() {
   throw lastError || new Error('Production deployment did not become ready');
 }
 
+function assertNonExecutableWhenNotFresh(payload, label) {
+  if (payload.status === 'DELAYED_READY' || payload.status === 'HISTORICAL_READY') {
+    assert.strictEqual(
+      Number(payload.executionReadyCount || 0),
+      0,
+      label + ' must not expose execution-ready signals without fresh market data'
+    );
+  }
+}
+
 async function main() {
   assert(expectedCommit, 'GITHUB_SHA is required');
 
@@ -72,8 +87,7 @@ async function main() {
   assert.strictEqual(recommendations.success, true, JSON.stringify(recommendations));
   assert.strictEqual(recommendations.market, 'EGX', JSON.stringify(recommendations));
   assert(
-    recommendations.status === 'LIVE_READY' ||
-    recommendations.status === 'HISTORICAL_READY',
+    READY_STATUSES.has(recommendations.status),
     JSON.stringify(recommendations)
   );
   assert(Array.isArray(recommendations.recommendations), JSON.stringify(recommendations));
@@ -88,12 +102,13 @@ async function main() {
     JSON.stringify({ expectedCommit, deploymentCommit })
   );
 
+  assert.strictEqual(health.success, true, JSON.stringify(health));
   assert.strictEqual(health.market, 'EGX', JSON.stringify(health));
   assert(
-    health.engineStatus === 'LIVE_READY' ||
-    health.engineStatus === 'HISTORICAL_READY',
+    READY_STATUSES.has(health.engineStatus),
     JSON.stringify(health)
   );
+  assert.strictEqual(system.success, true, JSON.stringify(system));
   assert.strictEqual(system.system, 'ASTRA_V4', JSON.stringify(system));
   assert.strictEqual(system.healthy, true, JSON.stringify(system));
 
@@ -115,6 +130,7 @@ async function main() {
     assert(item.target2 < item.target3, JSON.stringify(item));
 
     if (item.executionReady === true) {
+      assert.strictEqual(recommendations.status, 'LIVE_READY', JSON.stringify(item));
       assert.strictEqual(item.morningGate?.confirmed, true, JSON.stringify(item));
       assert.strictEqual(item.priceMatched, true, JSON.stringify(item));
       assert.strictEqual(item.dataFreshness?.status, 'FRESH', JSON.stringify(item));
@@ -122,11 +138,17 @@ async function main() {
     }
   }
 
-  if (recommendations.status === 'HISTORICAL_READY') {
+  assertNonExecutableWhenNotFresh(recommendations, 'Recommendations API');
+  assertNonExecutableWhenNotFresh({
+    status: health.engineStatus,
+    executionReadyCount: health.executionReadyCount
+  }, 'Data-health API');
+
+  if (recommendations.status === 'DELAYED_READY') {
     assert.strictEqual(
-      Number(recommendations.executionReadyCount || 0),
-      0,
-      JSON.stringify(recommendations)
+      health.liveFeed,
+      'DELAYED_CURRENT_SESSION',
+      JSON.stringify(health)
     );
   }
 
