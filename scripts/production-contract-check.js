@@ -19,7 +19,7 @@ async function getJson(path) {
   const response = await fetch(url, {
     headers: {
       'Cache-Control': 'no-cache',
-      'User-Agent': 'ASTRA-Production-Contract-Check/1.2'
+      'User-Agent': 'ASTRA-Production-Contract-Check/1.3'
     }
   });
 
@@ -77,12 +77,66 @@ function assertNonExecutableWhenNotFresh(payload, label) {
   }
 }
 
+function assertUcpShadowContract(ucp) {
+  assert.strictEqual(ucp.success, true, JSON.stringify(ucp));
+  assert(
+    ucp.status === 'SHADOW_READY' || ucp.status === 'SHADOW_DEGRADED',
+    JSON.stringify(ucp)
+  );
+  assert.strictEqual(ucp.executionAllowed, false, JSON.stringify(ucp));
+  assert.strictEqual(
+    ucp.recommendationMutationAllowed,
+    false,
+    JSON.stringify(ucp)
+  );
+  assert.strictEqual(
+    ucp.snapshot?.schema,
+    'rasheed-egx-ucp-decision-snapshot/v1',
+    JSON.stringify(ucp)
+  );
+  assert.strictEqual(
+    ucp.snapshot?.pipeline?.name,
+    'Rasheed EGX Unified Champion Pipeline',
+    JSON.stringify(ucp)
+  );
+  assert.strictEqual(
+    ucp.snapshot?.executionAllowed,
+    false,
+    JSON.stringify(ucp)
+  );
+  assert(Array.isArray(ucp.snapshot?.decision?.finalRecommendations), JSON.stringify(ucp));
+  assert.strictEqual(
+    ucp.snapshot.decision.finalRecommendations.length,
+    0,
+    'UCP shadow stage must not publish final recommendations'
+  );
+  assert(
+    Array.isArray(ucp.snapshot?.decision?.blockers) &&
+    ucp.snapshot.decision.blockers.includes('FORWARD_VALIDATION_REQUIRED'),
+    JSON.stringify(ucp)
+  );
+
+  if (ucp.status === 'SHADOW_READY') {
+    assert.strictEqual(
+      ucp.diagnostics?.rc2?.engineId,
+      'TFE_V20_FUSION_RC2',
+      JSON.stringify(ucp)
+    );
+    assert.strictEqual(
+      ucp.diagnostics?.rc2?.mode,
+      'RESEARCH_ONLY',
+      JSON.stringify(ucp)
+    );
+  }
+}
+
 async function main() {
   assert(expectedCommit, 'GITHUB_SHA is required');
 
   const recommendations = await waitForExpectedDeployment();
   const health = await getJson('/api/data-health?ci=' + encodeURIComponent(expectedCommit));
   const system = await getJson('/api/system-health?ci=' + encodeURIComponent(expectedCommit));
+  const ucp = await getJson('/api/ucp-shadow?ci=' + encodeURIComponent(expectedCommit));
 
   assert.strictEqual(recommendations.success, true, JSON.stringify(recommendations));
   assert.strictEqual(recommendations.market, 'EGX', JSON.stringify(recommendations));
@@ -111,6 +165,8 @@ async function main() {
   assert.strictEqual(system.success, true, JSON.stringify(system));
   assert.strictEqual(system.system, 'ASTRA_V4', JSON.stringify(system));
   assert.strictEqual(system.healthy, true, JSON.stringify(system));
+  assert.strictEqual(ucp.deploymentCommit, expectedCommit, JSON.stringify(ucp));
+  assertUcpShadowContract(ucp);
 
   assert(
     recommendations.recommendations.every((item) => item.signal === 'BUY'),
@@ -161,6 +217,10 @@ async function main() {
     watchlist: recommendations.watchlistCount,
     morningConfirmedCount: recommendations.morningConfirmedCount,
     executionReadyCount: recommendations.executionReadyCount,
+    ucpStatus: ucp.status,
+    ucpDataGatePass: ucp.snapshot?.dataGate?.pass,
+    ucpRc2Available: ucp.diagnostics?.rc2?.available,
+    ucpRc2Candidates: ucp.snapshot?.alpha?.candidates?.length || 0,
     deploymentCommit
   }, null, 2));
 }
