@@ -1,7 +1,8 @@
 // ASTRA V4 Runtime Pipeline
-// Live EGX data with validated historical fallback -> normalized snapshot -> entry recommendations.
+// Canonical delayed market data + compact validated history -> normalized snapshot -> recommendations.
 
 const { getMarketSnapshot } = require('../data-engine/egx-adapter');
+const { canonicalMarketProvider } = require('../data-engine/providers/canonical-market-provider');
 const { egxLiveProvider } = require('../data-engine/providers/egx-live-provider');
 const { analyze } = require('./analysis-engine/runtime-analyzer');
 const { generateRecommendation } = require('./recommendation-engine/runtime-recommender');
@@ -95,7 +96,7 @@ function getLatestHistory(history = []) {
     volume: Number(latest.volume || 0),
     high: Number(latest.high || close),
     low: Number(latest.low || close),
-    source: latest.primarySource || 'LEGACY_HISTORY',
+    source: latest.source || 'LEGACY_HISTORY',
     sourceUrl: null,
     sourceVerified: false,
     sourceLatencySeconds: null,
@@ -141,21 +142,33 @@ function buildNormalizedSymbols(liveQuotes, histories, now = new Date()) {
 
 async function loadLiveSnapshot() {
   try {
+    const canonical = await getMarketSnapshot(canonicalMarketProvider);
+
+    if (Array.isArray(canonical?.quotes) && canonical.quotes.length) {
+      return canonical;
+    }
+  } catch (error) {
+    console.log(
+      'ASTRA CANONICAL MARKET PROVIDER FAILED',
+      error?.message || error
+    );
+  }
+
+  try {
     return await getMarketSnapshot(egxLiveProvider);
   } catch (error) {
     return {
       status: 'ERROR',
-      source: 'YAHOO_FINANCE_DELAYED',
+      source: 'NO_MARKET_SOURCE',
       quotes: [],
       timestamp: new Date().toISOString(),
-      error: error?.message || 'Live provider failed'
+      error: error?.message || 'Market providers failed'
     };
   }
 }
 
 async function buildRuntimeRecommendations(snapshot = {}) {
   const now = new Date();
-
   const liveSnapshot = snapshot?.liveSnapshot || snapshot;
 
   const liveQuotes = Array.isArray(liveSnapshot?.quotes)
@@ -178,6 +191,7 @@ async function buildRuntimeRecommendations(snapshot = {}) {
       mode: 'NO_DATA',
       dataSource: 'NONE',
       liveQuoteCount: 0,
+      freshQuoteCount: 0,
       historyCount: 0,
       morningConfirmedCount: 0,
       watchlistCount: 0,
@@ -202,6 +216,9 @@ async function buildRuntimeRecommendations(snapshot = {}) {
     );
 
   const hasLive = liveQuotes.length > 0;
+  const freshQuoteCount = normalizedSymbols.filter(
+    (item) => item.dataFreshness?.status === 'FRESH'
+  ).length;
 
   return {
     status: 'READY',
@@ -217,12 +234,13 @@ async function buildRuntimeRecommendations(snapshot = {}) {
     dataSource:
       hasLive
         ? historyAvailable
-          ? 'LIVE_PLUS_HISTORY'
-          : 'LIVE'
+          ? `${liveSnapshot?.source || 'LIVE'}_PLUS_HISTORY`
+          : liveSnapshot?.source || 'LIVE'
         : 'HISTORICAL',
 
     symbolsAnalyzed: normalizedSymbols.length,
     liveQuoteCount: liveQuotes.length,
+    freshQuoteCount,
 
     historyCount:
       Object.values(histories).filter(
@@ -258,11 +276,8 @@ async function buildRuntimeRecommendations(snapshot = {}) {
 }
 
 async function runRuntimePipeline() {
-  const liveSnapshot =
-    await loadLiveSnapshot();
-
-  const histories =
-    await loadLegacyHistory();
+  const liveSnapshot = await loadLiveSnapshot();
+  const histories = await loadLegacyHistory();
 
   return buildRuntimeRecommendations({
     liveSnapshot,
