@@ -8,7 +8,8 @@ async function handler(req, res) {
 
   try {
     const pipeline = await runRuntimePipeline();
-    const liveReady = Number(pipeline.liveQuoteCount || 0) > 0;
+    const quoteCount = Number(pipeline.liveQuoteCount || 0);
+    const freshQuoteCount = Number(pipeline.freshQuoteCount || 0);
     const historyReady = Number(pipeline.historyCount || 0) > 0;
 
     return res.status(200).json({
@@ -16,12 +17,25 @@ async function handler(req, res) {
       system: 'ASTRA_V4',
       checkedAt,
       deploymentCommit: process.env.VERCEL_GIT_COMMIT_SHA || null,
-      dataEngine: liveReady || historyReady ? 'READY' : 'NO_DATA',
-      liveFeed: liveReady ? 'CONNECTED' : 'WAITING_FOR_SOURCE',
+      dataEngine:
+        freshQuoteCount > 0 || quoteCount > 0 || historyReady
+          ? 'READY'
+          : 'NO_DATA',
+      liveFeed:
+        freshQuoteCount > 0
+          ? 'FRESH'
+          : quoteCount > 0
+            ? 'DELAYED_CURRENT_SESSION'
+            : 'WAITING_FOR_SOURCE',
       historicalData: historyReady ? 'CONNECTED' : 'EMPTY',
       pipeline: pipeline.status || 'UNKNOWN',
       mode: pipeline.mode || 'NO_DATA',
+      source: pipeline.liveSource || 'NONE',
+      quotes: quoteCount,
+      freshQuotes: freshQuoteCount,
       recommendations: pipeline.recommendations?.length || 0,
+      watchlist: pipeline.watchlist?.length || 0,
+      rejected: pipeline.rejected?.length || 0,
       morningConfirmed: Number(pipeline.morningConfirmedCount || 0),
       executionReady: Number(pipeline.executionReadyCount || 0),
       healthy: pipeline.status !== 'NO_DATA'
