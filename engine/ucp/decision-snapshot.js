@@ -25,6 +25,13 @@ function computeDecisionHash(payload) {
   return crypto.createHash('sha256').update(JSON.stringify(stableClone(payload))).digest('hex');
 }
 
+function decisionIdentity(core) {
+  // Runtime timestamp and prospective evidence evolve independently of the frozen
+  // market decision and therefore must never churn the decision identity hash.
+  const { generatedAt, forwardValidation, ...identity } = core;
+  return identity;
+}
+
 function buildDecisionSnapshot({
   generatedAt = new Date().toISOString(),
   sessionDate = null,
@@ -32,6 +39,7 @@ function buildDecisionSnapshot({
   alpha = {},
   governance = {},
   morningConfirmation = {},
+  forwardValidation = {},
   decision = {},
   provenance = {}
 } = {}) {
@@ -84,6 +92,16 @@ function buildDecisionSnapshot({
       evidenceSource: morningConfirmation.evidenceSource || null,
       evidenceComplete: morningConfirmation.evidenceComplete === true
     },
+    forwardValidation: {
+      status: forwardValidation.status || 'FORWARD_VALIDATION_REQUIRED',
+      ledgerAvailable: forwardValidation.ledgerAvailable === true,
+      ledgerUpdatedAt: forwardValidation.ledgerUpdatedAt || null,
+      promotionEligible: forwardValidation.promotionEligible === true,
+      automaticPromotionAllowed: false,
+      executionAllowed: false,
+      metrics: forwardValidation.metrics || {},
+      blockers: Array.isArray(forwardValidation.blockers) ? forwardValidation.blockers : []
+    },
     decision: {
       status: decision.status || 'RESEARCH_ONLY',
       finalRecommendations: Array.isArray(decision.finalRecommendations) ? decision.finalRecommendations : [],
@@ -97,8 +115,13 @@ function buildDecisionSnapshot({
     }
   };
 
-  const decisionHash = computeDecisionHash(core);
+  const decisionHash = computeDecisionHash(decisionIdentity(core));
   return deepFreeze({ ...core, decisionHash });
 }
 
-module.exports = { buildDecisionSnapshot, computeDecisionHash, deepFreeze };
+module.exports = {
+  buildDecisionSnapshot,
+  computeDecisionHash,
+  decisionIdentity,
+  deepFreeze
+};

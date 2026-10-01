@@ -11,6 +11,7 @@ const {
   evaluateMorningBatch
 } = require('./v24-morning-confirmation');
 const { loadMorningEvidence } = require('./v24-morning-evidence-adapter');
+const { loadForwardLedger } = require('./forward-governance');
 
 function morningStatus(batch, clock, targetSessionDate) {
   if (!batch.results.length) return 'NO_CANDIDATES';
@@ -27,6 +28,7 @@ async function runUcpShadowPipeline({
   qualityOptions = {},
   v17Options = {},
   morningOptions = {},
+  forwardOptions = {},
   generatedAt = new Date().toISOString()
 } = {}) {
   const quality = await loadUpstreamQuality(qualityOptions);
@@ -51,6 +53,7 @@ async function runUcpShadowPipeline({
     requiredSession: sessionDate,
     candidates: rc2Candidates
   });
+  const forward = loadForwardLedger(forwardOptions.filePath);
 
   const preparedCandidates = prepareCandidates(rc2Candidates, {
     preparedFromSession: sessionDate,
@@ -88,7 +91,11 @@ async function runUcpShadowPipeline({
   );
   const v24Status = morningStatus(morningBatch, clock, targetSessionDate);
 
-  const blockers = ['FORWARD_VALIDATION_REQUIRED'];
+  const blockers = [
+    forward.promotion.eligible
+      ? 'MANUAL_CHAMPION_REVIEW_REQUIRED'
+      : 'FORWARD_VALIDATION_REQUIRED'
+  ];
   if (!dataGate.pass) blockers.push('DATA_QUALITY_GATE_FAILED');
   if (!rc2.available) blockers.push('RC2_SHADOW_UNAVAILABLE');
   if (!v17.available) blockers.push('V17_GOVERNANCE_UNAVAILABLE');
@@ -139,6 +146,14 @@ async function runUcpShadowPipeline({
       evidenceSource: morningEvidence.source || null,
       evidenceComplete: morningEvidence.completeSource === true
     },
+    forwardValidation: {
+      status: forward.promotion.status,
+      ledgerAvailable: forward.available,
+      ledgerUpdatedAt: forward.updatedAt,
+      promotionEligible: forward.promotion.eligible,
+      metrics: forward.summary,
+      blockers: forward.promotion.blockers
+    },
     decision: {
       status: 'RESEARCH_ONLY',
       finalRecommendations: [],
@@ -154,7 +169,8 @@ async function runUcpShadowPipeline({
         'V2.4 morning confirmation never re-ranks the frozen RC2 list.',
         'Missing or delayed 10:20-10:45 Cairo evidence becomes WAITING_DATA, never an inferred rejection.',
         'Daily OHLC is never substituted for first-20-30-minute morning evidence.',
-        'Execution remains disabled pending prospective forward validation and explicit Champion promotion.'
+        'Champion eligibility uses only prospective UCP forward evidence collected after deployment.',
+        'Automatic Champion promotion and execution remain permanently disabled by policy.'
       ]
     }
   });
@@ -201,6 +217,13 @@ async function runUcpShadowPipeline({
         evidenceComplete: morningEvidence.completeSource === true,
         evidenceSource: morningEvidence.source || null,
         evidenceReason: morningEvidence.reason || null
+      }),
+      forward: Object.freeze({
+        ledgerAvailable: forward.available,
+        ledgerUpdatedAt: forward.updatedAt,
+        summary: forward.summary,
+        promotion: forward.promotion,
+        error: forward.error || null
       })
     })
   });

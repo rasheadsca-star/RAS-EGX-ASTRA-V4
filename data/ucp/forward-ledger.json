@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "rasheed-egx-ucp-forward-ledger/v1",
+  "policyVersion": "ucp-forward-promotion/v1",
+  "updatedAt": null,
+  "entries": [],
+  "summary": {
+    "forwardSessions": 0,
+    "resolvedTrades": 0,
+    "wins": 0,
+    "losses": 0,
+    "notEntered": 0,
+    "open": 0,
+    "averageNetReturnPct": null,
+    "profitFactor": null,
+    "observedCalendarDays": 0,
+    "criticalBreaches": 0
+  },
+  "promotion": {
+    "eligible": false,
+    "automaticPromotionAllowed": false,
+    "executionAllowed": false,
+    "status": "FORWARD_VALIDATION_REQUIRED",
+    "blockers": [
+      "MIN_FORWARD_SESSIONS_NOT_MET",
+      "MIN_RESOLVED_TRADES_NOT_MET",
+      "MIN_CALENDAR_DAYS_NOT_MET",
+      "PROFIT_FACTOR_NOT_ESTABLISHED",
+      "AVERAGE_NET_RETURN_NOT_ESTABLISHED"
+    ]
+  }
+}
