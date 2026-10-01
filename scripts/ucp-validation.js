@@ -10,6 +10,15 @@ const { loadRc2ShadowScan } = require('../engine/ucp/rc2-shadow-adapter');
 const { loadUpstreamQuality } = require('../engine/ucp/upstream-quality');
 const { runUcpShadowPipeline } = require('../engine/ucp/shadow-pipeline');
 const { evaluateV17Governance } = require('../engine/ucp/v17-governance-adapter');
+const {
+  nextEgxTradingSession,
+  prepareCandidates,
+  evaluateCandidate,
+  evaluateMorningBatch
+} = require('../engine/ucp/v24-morning-confirmation');
+const {
+  legacyEvidenceFromHistory
+} = require('../engine/ucp/v24-morning-evidence-adapter');
 
 function jsonResponse(payload, status = 200) {
   return {
@@ -111,6 +120,22 @@ function consensusPayload(v17Session = '2026-09-13', aligned = false) {
   };
 }
 
+function completeMorningEvidence(overrides = {}) {
+  return {
+    sourceSessionDate: '2026-10-04',
+    latestSourceMinute: 625,
+    marketCoveragePct: 94,
+    candidatePresent: true,
+    volumeBaselineAvailable: true,
+    openingGapPass: true,
+    priceAcceptancePass: true,
+    relativeVolumePass: true,
+    relativeTurnoverPass: true,
+    marketBreadthPass: true,
+    ...overrides
+  };
+}
+
 async function main() {
   const oct1Gate = evaluateDataQuality({
     expectedUniverseSize: 212,
@@ -150,8 +175,13 @@ async function main() {
     sessionDate: '2026-10-01',
     dataGate: oct1Gate,
     alpha: { status: 'SHADOW_READY', candidates: [{ symbol: 'TEST', score: 88 }] },
-    governance: { status: 'READY', approvedSymbols: ['TEST'] },
-    morningConfirmation: { status: 'WAITING_NEXT_SESSION', waitingSymbols: ['TEST'] },
+    governance: { status: 'READY', sessionAligned: true, policySafe: true, approvedSymbols: ['TEST'] },
+    morningConfirmation: {
+      status: 'WAITING_NEXT_SESSION',
+      preparedFromSession: '2026-10-01',
+      targetSessionDate: '2026-10-04',
+      waitingSymbols: ['TEST']
+    },
     decision: { status: 'RESEARCH_ONLY', finalRecommendations: [], watchlist: ['TEST'], blockers: ['FORWARD_VALIDATION_REQUIRED'] },
     provenance: { sourceSession: '2026-10-01', notes: ['UCP bootstrap validation'] }
   });
@@ -164,6 +194,8 @@ async function main() {
   assert.strictEqual(snapshot.decisionHash.length, 64);
   assert.strictEqual(Object.isFrozen(snapshot), true);
   assert.strictEqual(Object.isFrozen(snapshot.dataGate), true);
+  assert.strictEqual(snapshot.morningConfirmation.targetSessionDate, '2026-10-04');
+  assert.strictEqual(snapshot.morningConfirmation.executionAllowed, false);
 
   const quality = await loadUpstreamQuality({ fetchImpl: async () => jsonResponse(qualityPayload()) });
   assert.strictEqual(quality.available, true);
@@ -215,6 +247,98 @@ async function main() {
   assert.strictEqual(staleV17.rejectedSymbols[0].reason, 'V17_SESSION_MISMATCH');
   assert.ok(staleV17.blockers.includes('V17_SESSION_MISMATCH'));
 
+  // V2.4 session calendar: Thursday -> Sunday, with holiday skip.
+  assert.strictEqual(nextEgxTradingSession('2026-10-01'), '2026-10-04');
+  assert.strictEqual(nextEgxTradingSession('2026-10-01', ['2026-10-04']), '2026-10-05');
+
+  const prepared = prepareCandidates(rc2.candidates, {
+    preparedFromSession: '2026-10-01',
+    dataGatePass: true
+  });
+  assert.strictEqual(prepared.length, 1);
+  assert.strictEqual(prepared[0].ticker, 'COPR');
+  assert.strictEqual(prepared[0].lifecycleState, 'PREPARED');
+  assert.strictEqual(prepared[0].targetSessionDate, '2026-10-04');
+  assert.strictEqual(prepared[0].fusionRankScore, 86);
+  assert.strictEqual(prepared[0].executionAllowed, false);
+
+  const tooEarly = evaluateCandidate(prepared[0], completeMorningEvidence({ latestSourceMinute: 612 }), {
+    now: new Date('2026-10-04T07:12:00.000Z')
+  });
+  assert.strictEqual(tooEarly.lifecycleState, 'WAITING_DATA');
+  assert.ok(tooEarly.reasons.includes('MORNING_WINDOW_NOT_READY'));
+
+  const missingBaseline = evaluateCandidate(prepared[0], completeMorningEvidence({ volumeBaselineAvailable: false }), {
+    now: new Date('2026-10-04T07:25:00.000Z')
+  });
+  assert.strictEqual(missingBaseline.lifecycleState, 'WAITING_DATA');
+  assert.ok(missingBaseline.reasons.includes('MORNING_VOLUME_BASELINE_MISSING'));
+
+  const confirmed = evaluateCandidate(prepared[0], completeMorningEvidence(), {
+    now: new Date('2026-10-04T07:25:00.000Z')
+  });
+  assert.strictEqual(confirmed.lifecycleState, 'CONFIRMED');
+  assert.strictEqual(confirmed.executionAllowed, false);
+
+  const rejected = evaluateCandidate(prepared[0], completeMorningEvidence({ priceAcceptancePass: false }), {
+    now: new Date('2026-10-04T07:25:00.000Z')
+  });
+  assert.strictEqual(rejected.lifecycleState, 'REJECTED');
+  assert.ok(rejected.reasons.includes('PRICE_ACCEPTANCE_FAILED'));
+
+  const expired = evaluateCandidate(prepared[0], completeMorningEvidence({ volumeBaselineAvailable: false }), {
+    now: new Date('2026-10-04T07:50:00.000Z')
+  });
+  assert.strictEqual(expired.lifecycleState, 'EXPIRED');
+  assert.strictEqual(expired.terminal, true);
+
+  const terminalRemainsTerminal = evaluateCandidate(prepared[0], completeMorningEvidence({ priceAcceptancePass: false }), {
+    now: new Date('2026-10-04T07:30:00.000Z'),
+    previousState: 'CONFIRMED'
+  });
+  assert.strictEqual(terminalRemainsTerminal.lifecycleState, 'CONFIRMED');
+
+  const batch = evaluateMorningBatch(prepared, { COPR: completeMorningEvidence() }, {
+    now: new Date('2026-10-04T07:25:00.000Z')
+  });
+  assert.deepStrictEqual(batch.confirmedSymbols, ['COPR']);
+  assert.strictEqual(batch.stateCounts.CONFIRMED, 1);
+  assert.strictEqual(batch.executionAllowed, false);
+
+  // A legacy snapshot at 10:12 is not eligible for the 10:20-10:45 window.
+  const noEligibleLegacy = legacyEvidenceFromHistory({
+    updatedAt: '2026-10-04T07:12:00.000Z',
+    snapshots: [{
+      generatedAt: '2026-10-04T07:12:00.000Z',
+      cairoTime: '2026-10-04 10:12:00',
+      rows: [{ ticker: 'COPR', price: 0.50, turnover: 5000000 }]
+    }]
+  }, {
+    targetSessionDate: '2026-10-04',
+    candidates: prepared,
+    expectedUniverseSize: 212
+  });
+  assert.strictEqual(noEligibleLegacy.available, false);
+  assert.strictEqual(noEligibleLegacy.reason, 'NO_ELIGIBLE_10_20_TO_10_45_SNAPSHOT');
+
+  // Even an eligible legacy row cannot fabricate opening/volume-baseline evidence.
+  const incompleteLegacy = legacyEvidenceFromHistory({
+    updatedAt: '2026-10-04T07:25:00.000Z',
+    snapshots: [{
+      generatedAt: '2026-10-04T07:25:00.000Z',
+      cairoTime: '2026-10-04 10:25:00',
+      rows: [{ ticker: 'COPR', price: 0.50, turnover: 5000000, changePct: 1.2 }]
+    }]
+  }, {
+    targetSessionDate: '2026-10-04',
+    candidates: prepared,
+    expectedUniverseSize: 212
+  });
+  assert.strictEqual(incompleteLegacy.available, true);
+  assert.strictEqual(incompleteLegacy.completeSource, false);
+  assert.strictEqual(incompleteLegacy.evidenceByTicker.COPR.volumeBaselineAvailable, false);
+  assert.strictEqual(incompleteLegacy.evidenceByTicker.COPR.openingGapPass, undefined);
+
   const fetchImpl = async (url) => {
     const value = String(url);
     if (value.includes('fetch-status.json')) return jsonResponse(qualityPayload());
@@ -224,11 +348,13 @@ async function main() {
     return jsonResponse({}, 404);
   };
 
+  // Oct 2 is before the Oct 4 target session: frozen candidate stays PREPARED.
   const shadow = await runUcpShadowPipeline({
-    generatedAt: '2026-10-01T21:59:00.000Z',
+    generatedAt: '2026-10-02T09:00:00.000Z',
     rc2Options: { fetchImpl },
     qualityOptions: { fetchImpl },
-    v17Options: { fetchImpl }
+    v17Options: { fetchImpl },
+    morningOptions: { fetchImpl }
   });
 
   assert.strictEqual(shadow.success, true);
@@ -240,12 +366,23 @@ async function main() {
   assert.strictEqual(shadow.snapshot.governance.status, 'GOVERNANCE_BLOCKED');
   assert.strictEqual(shadow.snapshot.governance.sessionAligned, false);
   assert.deepStrictEqual(shadow.snapshot.governance.approvedSymbols, []);
+  assert.strictEqual(shadow.snapshot.morningConfirmation.engineId, 'V2_4_MORNING_CONFIRMATION');
+  assert.strictEqual(shadow.snapshot.morningConfirmation.status, 'WAITING_NEXT_SESSION');
+  assert.strictEqual(shadow.snapshot.morningConfirmation.preparedFromSession, '2026-10-01');
+  assert.strictEqual(shadow.snapshot.morningConfirmation.targetSessionDate, '2026-10-04');
+  assert.strictEqual(shadow.snapshot.morningConfirmation.preparedCandidates.length, 1);
+  assert.strictEqual(shadow.snapshot.morningConfirmation.preparedCandidates[0].lifecycleState, 'PREPARED');
+  assert.strictEqual(shadow.snapshot.morningConfirmation.executionAllowed, false);
   assert.deepStrictEqual(shadow.snapshot.decision.finalRecommendations, []);
   assert.deepStrictEqual(shadow.snapshot.decision.watchlist, ['COPR']);
   assert.ok(shadow.snapshot.decision.blockers.includes('FORWARD_VALIDATION_REQUIRED'));
   assert.ok(shadow.snapshot.decision.blockers.includes('V17_SESSION_ALIGNMENT_REQUIRED'));
-  assert.ok(shadow.snapshot.decision.blockers.includes('V2_4_MORNING_CONFIRMATION_NOT_WIRED'));
+  assert.ok(shadow.snapshot.decision.blockers.includes('V2_4_MORNING_CONFIRMATION_PENDING'));
+  assert.ok(!shadow.snapshot.decision.blockers.includes('V2_4_MORNING_CONFIRMATION_NOT_WIRED'));
   assert.ok(!shadow.snapshot.decision.blockers.includes('V17_UCP_ADAPTER_NOT_WIRED'));
+  assert.strictEqual(shadow.diagnostics.v24.targetSessionDate, '2026-10-04');
+  assert.strictEqual(shadow.diagnostics.v24.status, 'WAITING_NEXT_SESSION');
+  assert.strictEqual(shadow.diagnostics.v24.evidenceAvailable, false);
 
   console.log('Rasheed EGX UCP validation passed');
 }
