@@ -10,9 +10,14 @@ const {
 
 const LEDGER_PATH = path.join(process.cwd(), 'data', 'ucp', 'forward-ledger.json');
 const PROD_URL = process.env.UCP_PROD_URL || 'https://ras-egx-astra-v4.vercel.app';
+const EXPECTED_COMMIT = process.env.UCP_EXPECTED_COMMIT || null;
 const HISTORY_BASE = process.env.UCP_HISTORY_BASE ||
   'https://raw.githubusercontent.com/rasheadsca-star/RAS-EGX-PRO2026-NEXT/main/data/history';
 const FETCH_TIMEOUT_MS = Number(process.env.UCP_FORWARD_FETCH_TIMEOUT_MS || 20000);
+const PROD_RETRY_ATTEMPTS = Number(process.env.UCP_PROD_RETRY_ATTEMPTS || 12);
+const PROD_RETRY_DELAY_MS = Number(process.env.UCP_PROD_RETRY_DELAY_MS || 10000);
+
+function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
 
 function round(value, digits = 4) {
   if (!Number.isFinite(Number(value))) return null;
@@ -33,7 +38,7 @@ async function fetchJson(url) {
       headers: {
         Accept: 'application/json',
         'Cache-Control': 'no-cache',
-        'User-Agent': 'Rasheed-EGX-UCP-Forward-Ledger/1.0'
+        'User-Agent': 'Rasheed-EGX-UCP-Forward-Ledger/1.1'
       },
       signal: controller.signal
     });
@@ -42,6 +47,25 @@ async function fetchJson(url) {
   } finally {
     clearTimeout(timer);
   }
+}
+
+async function waitForProductionSnapshot() {
+  let lastError = null;
+  for (let attempt = 1; attempt <= PROD_RETRY_ATTEMPTS; attempt += 1) {
+    try {
+      const ucp = await fetchJson(
+        `${PROD_URL.replace(/\/$/, '')}/api/ucp-shadow?forwardCapture=${Date.now()}&attempt=${attempt}`
+      );
+      if (!EXPECTED_COMMIT || ucp?.deploymentCommit === EXPECTED_COMMIT) return ucp;
+      lastError = new Error(
+        `PRODUCTION_COMMIT_MISMATCH expected=${EXPECTED_COMMIT} actual=${ucp?.deploymentCommit || 'missing'}`
+      );
+    } catch (error) {
+      lastError = error;
+    }
+    if (attempt < PROD_RETRY_ATTEMPTS) await sleep(PROD_RETRY_DELAY_MS);
+  }
+  throw lastError || new Error('PRODUCTION_SNAPSHOT_NOT_READY');
 }
 
 function readLedger() {
@@ -75,16 +99,24 @@ function assertSafeSnapshot(ucp) {
 }
 
 async function capture(ledger) {
-  const stamp = Date.now();
-  const ucp = await fetchJson(`${PROD_URL.replace(/\/$/, '')}/api/ucp-shadow?forwardCapture=${stamp}`);
+  const ucp = await waitForProductionSnapshot();
   assertSafeSnapshot(ucp);
 
   const snapshot = ucp.snapshot;
   const decisionHash = snapshot.decisionHash;
   if (!decisionHash || !snapshot.sessionDate) throw new Error('UCP_DECISION_IDENTITY_MISSING');
 
-  if (ledger.entries.some((entry) => entry.decisionHash === decisionHash)) {
-    return { changed: false, reason: 'NOOP_DECISION_HASH_ALREADY_CAPTURED', decisionHash };
+  const frozenSession = ledger.entries.find((entry) => entry.sessionDate === snapshot.sessionDate);
+  if (frozenSession) {
+    return {
+      changed: false,
+      reason: frozenSession.decisionHash === decisionHash
+        ? 'NOOP_SESSION_ALREADY_CAPTURED'
+        : 'NOOP_SESSION_ALREADY_FROZEN_HASH_CHANGED',
+      decisionHash,
+      frozenDecisionHash: frozenSession.decisionHash,
+      sessionDate: snapshot.sessionDate
+    };
   }
 
   const candidates = (snapshot.alpha?.candidates || []).map(safeCandidate).filter((item) => item.ticker);
@@ -126,7 +158,14 @@ async function capture(ledger) {
   };
 
   ledger.entries.push(entry);
-  return { changed: true, reason: 'CAPTURED', decisionHash, candidateCount: candidates.length };
+  return {
+    changed: true,
+    reason: 'CAPTURED',
+    decisionHash,
+    sessionDate: snapshot.sessionDate,
+    candidateCount: candidates.length,
+    deploymentCommit: ucp.deploymentCommit || null
+  };
 }
 
 function historyRows(payload = {}) {
@@ -168,9 +207,7 @@ function resolveCandidate(entry, candidate, rows, previous = {}) {
   }
 
   const future = rows.filter((row) => row.date >= targetSession);
-  if (!future.length) {
-    return { ...previous, ticker, outcome: 'OPEN', entered: false, entryPrice, sourceLastSession };
-  }
+  if (!future.length) return { ...previous, ticker, outcome: 'OPEN', entered: false, entryPrice, sourceLastSession };
 
   const entryWindow = future.slice(0, FORWARD_POLICY.entryExpirySessions);
   const entryIndexInWindow = entryWindow.findIndex((row) => row.low <= entryPrice && row.high >= entryPrice);
@@ -201,8 +238,6 @@ function resolveCandidate(entry, candidate, rows, previous = {}) {
   for (const row of holdRows) {
     const stopHit = row.low <= stop;
     const targetHit = row.high >= target1;
-
-    // Conservative RC2 semantics: STOP_FIRST on same-bar ambiguity.
     if (stopHit) {
       return {
         ticker,
@@ -218,7 +253,6 @@ function resolveCandidate(entry, candidate, rows, previous = {}) {
         sameBarAmbiguity: targetHit ? 'STOP_FIRST' : null
       };
     }
-
     if (targetHit) {
       return {
         ticker,
@@ -253,15 +287,7 @@ function resolveCandidate(entry, candidate, rows, previous = {}) {
     };
   }
 
-  return {
-    ...previous,
-    ticker,
-    outcome: 'OPEN',
-    entered: true,
-    entrySession: entryRow.date,
-    entryPrice,
-    sourceLastSession
-  };
+  return { ...previous, ticker, outcome: 'OPEN', entered: true, entrySession: entryRow.date, entryPrice, sourceLastSession };
 }
 
 async function resolve(ledger) {
@@ -292,9 +318,7 @@ async function resolve(ledger) {
       if (!rows) continue;
       const next = resolveCandidate(entry, candidate, rows, previous);
       const index = entry.outcomes.findIndex((item) => item.ticker === ticker);
-      const priorJson = JSON.stringify(previous);
-      const nextJson = JSON.stringify(next);
-      if (priorJson !== nextJson) {
+      if (JSON.stringify(previous) !== JSON.stringify(next)) {
         if (index >= 0) entry.outcomes[index] = next;
         else entry.outcomes.push(next);
         changed = true;
@@ -331,7 +355,6 @@ async function main() {
     result.capture = await capture(ledger);
     changed = changed || result.capture.changed;
   }
-
   if (mode === 'resolve' || mode === 'cycle') {
     result.resolve = await resolve(ledger);
     changed = changed || result.resolve.changed;
@@ -346,6 +369,7 @@ async function main() {
 
   console.log(JSON.stringify({
     mode,
+    expectedCommit: EXPECTED_COMMIT,
     changed,
     entries: ledger.entries.length,
     summary: ledger.summary,
@@ -366,5 +390,6 @@ module.exports = {
   historyRows,
   netReturn,
   resolveCandidate,
-  finalizeLedger
+  finalizeLedger,
+  waitForProductionSnapshot
 };
