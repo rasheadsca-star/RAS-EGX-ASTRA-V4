@@ -55,9 +55,10 @@ function summarizeForwardLedger(ledger = {}) {
   const averageNetReturnPct = returns.length
     ? Number((returns.reduce((sum, value) => sum + value, 0) / returns.length).toFixed(4))
     : null;
+  // Cap the no-loss case so the metric stays JSON-safe while remaining clearly above policy.
   const profitFactor = grossLoss > 0
     ? Number((grossProfit / grossLoss).toFixed(4))
-    : grossProfit > 0 ? Infinity : null;
+    : grossProfit > 0 ? 999 : null;
   const dates = entries
     .flatMap((entry) => [entry?.sessionDate, entry?.targetSessionDate, entry?.capturedAt, ...(entry?.outcomes || []).map((item) => item?.resolvedAt || item?.exitSession)])
     .map(dateOnly)
