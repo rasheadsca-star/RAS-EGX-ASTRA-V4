@@ -94,9 +94,15 @@ async function handler(req, res) {
     const watchlist = (pipeline.watchlist || []).map(mapWatch);
     const rejected = (pipeline.rejected || []).map(mapRejected);
 
-    const status = pipeline.liveQuoteCount > 0
-      ? 'LIVE_READY'
-      : 'HISTORICAL_READY';
+    const quoteCount = Number(pipeline.liveQuoteCount || 0);
+    const freshQuoteCount = Number(pipeline.freshQuoteCount || 0);
+
+    const status =
+      freshQuoteCount > 0
+        ? 'LIVE_READY'
+        : quoteCount > 0
+          ? 'DELAYED_READY'
+          : 'HISTORICAL_READY';
 
     return res.status(200).json({
       success: true,
@@ -121,10 +127,14 @@ async function handler(req, res) {
       rejected,
 
       symbolsAnalyzed: pipeline.symbolsAnalyzed || 0,
+      quoteCount,
+      freshQuoteCount,
       historyCount: pipeline.historyCount || 0,
       historySymbols: pipeline.historySymbols || [],
       morningConfirmedCount: pipeline.morningConfirmedCount || 0,
-      executionReadyCount: pipeline.executionReadyCount || 0
+      executionReadyCount: pipeline.executionReadyCount || 0,
+      recommendationsReady:
+        entryCandidates.length + watchlist.length + rejected.length > 0
     });
   } catch (error) {
     return res.status(200).json({
