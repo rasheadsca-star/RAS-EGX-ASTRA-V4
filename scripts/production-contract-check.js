@@ -5,13 +5,22 @@ const expectedCommit = process.env.GITHUB_SHA;
 const retryAttempts = Number(process.env.ASTRA_PROD_RETRY_ATTEMPTS || 12);
 const retryDelayMs = Number(process.env.ASTRA_PROD_RETRY_DELAY_MS || 10000);
 const READY_STATUSES = new Set(['LIVE_READY', 'DELAYED_READY', 'HISTORICAL_READY']);
+const V24_STATUSES = new Set([
+  'NO_CANDIDATES',
+  'WAITING_NEXT_SESSION',
+  'WAITING_DATA',
+  'WATCH',
+  'CONFIRMED_RESEARCH_ONLY',
+  'REJECTED_PRESENT',
+  'EXPIRED'
+]);
 
 function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
 
 async function getJson(path) {
   const url = baseUrl.replace(/\/$/, '') + path;
   const response = await fetch(url, {
-    headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'ASTRA-Production-Contract-Check/1.4' }
+    headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'ASTRA-Production-Contract-Check/1.5' }
   });
   const text = await response.text();
   if (!response.ok) throw new Error('Production API HTTP ' + response.status + ': ' + text.slice(0, 1000));
@@ -69,6 +78,32 @@ function assertUcpShadowContract(ucp) {
     }
   } else {
     assert(ucp.snapshot.decision.blockers.includes('V17_GOVERNANCE_UNAVAILABLE'), JSON.stringify(ucp));
+  }
+
+  const v24 = ucp.diagnostics?.v24;
+  const morning = ucp.snapshot?.morningConfirmation;
+  assert(v24 && typeof v24 === 'object', JSON.stringify(ucp));
+  assert(morning && typeof morning === 'object', JSON.stringify(ucp));
+  assert.strictEqual(morning.engineId, 'V2_4_MORNING_CONFIRMATION', JSON.stringify(ucp));
+  assert.strictEqual(morning.executionAllowed, false, JSON.stringify(ucp));
+  assert(V24_STATUSES.has(morning.status), JSON.stringify(morning));
+  assert.strictEqual(morning.status, v24.status, JSON.stringify({ morning, v24 }));
+  assert(Array.isArray(morning.confirmedSymbols), JSON.stringify(morning));
+  assert(Array.isArray(morning.waitingSymbols), JSON.stringify(morning));
+  assert(Array.isArray(morning.rejectedSymbols), JSON.stringify(morning));
+  assert(Array.isArray(morning.expiredSymbols), JSON.stringify(morning));
+  assert(!ucp.snapshot.decision.blockers.includes('V2_4_MORNING_CONFIRMATION_NOT_WIRED'), JSON.stringify(ucp));
+
+  if ((v24.preparedCount || 0) > 0 && morning.confirmedSymbols.length === 0) {
+    assert(ucp.snapshot.decision.blockers.includes('V2_4_MORNING_CONFIRMATION_PENDING'), JSON.stringify(ucp));
+  }
+
+  if (v24.evidenceComplete !== true) {
+    assert.strictEqual(morning.confirmedSymbols.length, 0, 'Incomplete morning evidence must not confirm candidates');
+  }
+
+  for (const item of morning.preparedCandidates || []) {
+    assert.strictEqual(item.executionAllowed, false, JSON.stringify(item));
   }
 }
 
@@ -140,6 +175,10 @@ async function main() {
     ucpV17Available: ucp.diagnostics?.v17?.available,
     ucpV17SessionAligned: ucp.diagnostics?.v17?.sessionAligned,
     ucpV17ReferenceSession: ucp.diagnostics?.v17?.referenceSession,
+    ucpV24Status: ucp.diagnostics?.v24?.status,
+    ucpV24TargetSession: ucp.diagnostics?.v24?.targetSessionDate,
+    ucpV24Prepared: ucp.diagnostics?.v24?.preparedCount,
+    ucpV24EvidenceComplete: ucp.diagnostics?.v24?.evidenceComplete,
     deploymentCommit
   }, null, 2));
 }
