@@ -6,13 +6,8 @@ const retryAttempts = Number(process.env.ASTRA_PROD_RETRY_ATTEMPTS || 12);
 const retryDelayMs = Number(process.env.ASTRA_PROD_RETRY_DELAY_MS || 10000);
 const READY_STATUSES = new Set(['LIVE_READY', 'DELAYED_READY', 'HISTORICAL_READY']);
 const V24_STATUSES = new Set([
-  'NO_CANDIDATES',
-  'WAITING_NEXT_SESSION',
-  'WAITING_DATA',
-  'WATCH',
-  'CONFIRMED_RESEARCH_ONLY',
-  'REJECTED_PRESENT',
-  'EXPIRED'
+  'NO_CANDIDATES', 'WAITING_NEXT_SESSION', 'WAITING_DATA', 'WATCH',
+  'CONFIRMED_RESEARCH_ONLY', 'REJECTED_PRESENT', 'EXPIRED'
 ]);
 
 function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
@@ -20,7 +15,7 @@ function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
 async function getJson(path) {
   const url = baseUrl.replace(/\/$/, '') + path;
   const response = await fetch(url, {
-    headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'ASTRA-Production-Contract-Check/1.5' }
+    headers: { 'Cache-Control': 'no-cache', 'User-Agent': 'ASTRA-Production-Contract-Check/1.6' }
   });
   const text = await response.text();
   if (!response.ok) throw new Error('Production API HTTP ' + response.status + ': ' + text.slice(0, 1000));
@@ -57,7 +52,6 @@ function assertUcpShadowContract(ucp) {
   assert.strictEqual(ucp.snapshot?.executionAllowed, false, JSON.stringify(ucp));
   assert(Array.isArray(ucp.snapshot?.decision?.finalRecommendations), JSON.stringify(ucp));
   assert.strictEqual(ucp.snapshot.decision.finalRecommendations.length, 0, 'UCP shadow stage must not publish final recommendations');
-  assert(Array.isArray(ucp.snapshot?.decision?.blockers) && ucp.snapshot.decision.blockers.includes('FORWARD_VALIDATION_REQUIRED'), JSON.stringify(ucp));
 
   if (ucp.status === 'SHADOW_READY') {
     assert.strictEqual(ucp.diagnostics?.rc2?.engineId, 'TFE_V20_FUSION_RC2', JSON.stringify(ucp));
@@ -97,13 +91,30 @@ function assertUcpShadowContract(ucp) {
   if ((v24.preparedCount || 0) > 0 && morning.confirmedSymbols.length === 0) {
     assert(ucp.snapshot.decision.blockers.includes('V2_4_MORNING_CONFIRMATION_PENDING'), JSON.stringify(ucp));
   }
-
   if (v24.evidenceComplete !== true) {
     assert.strictEqual(morning.confirmedSymbols.length, 0, 'Incomplete morning evidence must not confirm candidates');
   }
-
   for (const item of morning.preparedCandidates || []) {
     assert.strictEqual(item.executionAllowed, false, JSON.stringify(item));
+  }
+
+  const forward = ucp.diagnostics?.forward;
+  const forwardSnapshot = ucp.snapshot?.forwardValidation;
+  assert(forward && typeof forward === 'object', JSON.stringify(ucp));
+  assert(forwardSnapshot && typeof forwardSnapshot === 'object', JSON.stringify(ucp));
+  assert.strictEqual(forwardSnapshot.automaticPromotionAllowed, false, JSON.stringify(forwardSnapshot));
+  assert.strictEqual(forwardSnapshot.executionAllowed, false, JSON.stringify(forwardSnapshot));
+  assert.strictEqual(forward.promotion?.automaticPromotionAllowed, false, JSON.stringify(forward));
+  assert.strictEqual(forward.promotion?.executionAllowed, false, JSON.stringify(forward));
+  assert.strictEqual(forwardSnapshot.promotionEligible, forward.promotion?.eligible === true, JSON.stringify({ forwardSnapshot, forward }));
+
+  if (forward.promotion?.eligible === true) {
+    assert.strictEqual(forwardSnapshot.status, 'MANUAL_CHAMPION_REVIEW_REQUIRED', JSON.stringify(forwardSnapshot));
+    assert(ucp.snapshot.decision.blockers.includes('MANUAL_CHAMPION_REVIEW_REQUIRED'), JSON.stringify(ucp));
+    assert(!ucp.snapshot.decision.blockers.includes('FORWARD_VALIDATION_REQUIRED'), JSON.stringify(ucp));
+  } else {
+    assert.strictEqual(forwardSnapshot.status, 'FORWARD_VALIDATION_REQUIRED', JSON.stringify(forwardSnapshot));
+    assert(ucp.snapshot.decision.blockers.includes('FORWARD_VALIDATION_REQUIRED'), JSON.stringify(ucp));
   }
 }
 
@@ -179,6 +190,9 @@ async function main() {
     ucpV24TargetSession: ucp.diagnostics?.v24?.targetSessionDate,
     ucpV24Prepared: ucp.diagnostics?.v24?.preparedCount,
     ucpV24EvidenceComplete: ucp.diagnostics?.v24?.evidenceComplete,
+    ucpForwardSessions: ucp.diagnostics?.forward?.summary?.forwardSessions,
+    ucpForwardResolvedTrades: ucp.diagnostics?.forward?.summary?.resolvedTrades,
+    ucpPromotionEligible: ucp.diagnostics?.forward?.promotion?.eligible,
     deploymentCommit
   }, null, 2));
 }
