@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build-check.js",
-    "test": "node scripts/runtime-validation.js"
+    "test": "node scripts/runtime-validation.js",
+    "data:refresh": "node scripts/data-refresh.js"
   },
   "engines": {
     "node": ">=20"
