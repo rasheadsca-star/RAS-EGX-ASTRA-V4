@@ -4,8 +4,10 @@
 
 const { getEGXSymbols, getRegistryMeta } = require('../registry/egx-symbol-registry');
 
+// Track the canonical legacy history branch so new validated sessions flow into ASTRA V4
+// without requiring a manual deployment for every post-close data update.
 const LEGACY_REPO =
-  'https://raw.githubusercontent.com/rasheadsca-star/RAS-EGX-PRO2026-NEXT/c8539c78ba38cc58ef34842b34f6a3141a3811fe/data/history';
+  'https://raw.githubusercontent.com/rasheadsca-star/RAS-EGX-PRO2026-NEXT/main/data/history';
 
 const WATCHLIST = getEGXSymbols();
 const CACHE = new Map();
