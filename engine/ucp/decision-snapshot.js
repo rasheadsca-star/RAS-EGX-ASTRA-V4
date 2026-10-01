@@ -32,6 +32,7 @@ function buildDecisionSnapshot({
   alpha = {},
   governance = {},
   morningConfirmation = {},
+  forwardValidation = {},
   decision = {},
   provenance = {}
 } = {}) {
@@ -83,6 +84,16 @@ function buildDecisionSnapshot({
       expiredSymbols: Array.isArray(morningConfirmation.expiredSymbols) ? morningConfirmation.expiredSymbols : [],
       evidenceSource: morningConfirmation.evidenceSource || null,
       evidenceComplete: morningConfirmation.evidenceComplete === true
+    },
+    forwardValidation: {
+      status: forwardValidation.status || 'FORWARD_VALIDATION_REQUIRED',
+      ledgerAvailable: forwardValidation.ledgerAvailable === true,
+      ledgerUpdatedAt: forwardValidation.ledgerUpdatedAt || null,
+      promotionEligible: forwardValidation.promotionEligible === true,
+      automaticPromotionAllowed: false,
+      executionAllowed: false,
+      metrics: forwardValidation.metrics || {},
+      blockers: Array.isArray(forwardValidation.blockers) ? forwardValidation.blockers : []
     },
     decision: {
       status: decision.status || 'RESEARCH_ONLY',
