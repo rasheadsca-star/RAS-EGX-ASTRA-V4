@@ -9,29 +9,31 @@ const { getEGXSymbols, getRegistryMeta } = require('../registry/egx-symbol-regis
 const LEGACY_REPO =
   'https://raw.githubusercontent.com/rasheadsca-star/RAS-EGX-PRO2026-NEXT/main/data/history';
 
-const LOCAL_INDEX =
+const LOCAL_INDEX_PATH =
   path.join(__dirname, '..', '..', 'data', 'history-index.json');
 
 const WATCHLIST = getEGXSymbols();
 const CACHE = new Map();
-let LOCAL_INDEX = null;
+let LOCAL_INDEX_CACHE = null;
 let LOCAL_INDEX_LOADED = false;
 
 const REQUEST_TIMEOUT_MS = 8000;
 const BATCH_SIZE = 50;
 
 function getLocalHistoryIndex() {
-  if (LOCAL_INDEX_LOADED) return LOCAL_INDEX;
+  if (LOCAL_INDEX_LOADED) return LOCAL_INDEX_CACHE;
 
   LOCAL_INDEX_LOADED = true;
 
   try {
-    if (!fs.existsSync(LOCAL_INDEX)) return null;
-    LOCAL_INDEX = JSON.parse(fs.readFileSync(LOCAL_INDEX, 'utf8'));
-    return LOCAL_INDEX;
+    if (!fs.existsSync(LOCAL_INDEX_PATH)) return null;
+    LOCAL_INDEX_CACHE = JSON.parse(
+      fs.readFileSync(LOCAL_INDEX_PATH, 'utf8')
+    );
+    return LOCAL_INDEX_CACHE;
   } catch (error) {
     console.log('ASTRA LOCAL HISTORY INDEX ERROR', error?.message || error);
-    LOCAL_INDEX = null;
+    LOCAL_INDEX_CACHE = null;
     return null;
   }
 }
@@ -158,7 +160,7 @@ async function loadLegacyHistory(symbols = WATCHLIST) {
       requestedSymbols: requested.length,
       loadedSymbols: loaded,
       failedSymbols: requested.length - loaded,
-      localIndex: fs.existsSync(LOCAL_INDEX),
+      localIndex: fs.existsSync(LOCAL_INDEX_PATH),
       batchSize: BATCH_SIZE
     })
   );
