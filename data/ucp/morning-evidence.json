@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "rasheed-egx-ucp-morning-evidence/v1",
+  "sessionDate": null,
+  "generatedAt": null,
+  "source": "UCP_CURRENT_MARKET_MORNING_COLLECTOR",
+  "completeSource": false,
+  "marketCoveragePct": null,
+  "breadth": null,
+  "evidenceByTicker": {},
+  "baselineSessions": [],
+  "notes": [
+    "No morning session has been captured yet.",
+    "Evidence remains fail-closed until a real 10:20-10:45 Africa/Cairo market snapshot and sufficient historical morning baselines are available."
+  ]
+}
