@@ -2,13 +2,19 @@ const assert = require('assert');
 
 const baseUrl = process.env.ASTRA_PROD_URL || 'https://ras-egx-astra-v4.vercel.app';
 const expectedCommit = process.env.GITHUB_SHA;
+const retryAttempts = Number(process.env.ASTRA_PROD_RETRY_ATTEMPTS || 12);
+const retryDelayMs = Number(process.env.ASTRA_PROD_RETRY_DELAY_MS || 10000);
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 async function getJson(path) {
   const url = baseUrl.replace(/\/$/, '') + path;
   const response = await fetch(url, {
     headers: {
       'Cache-Control': 'no-cache',
-      'User-Agent': 'ASTRA-Production-Contract-Check/1.0'
+      'User-Agent': 'ASTRA-Production-Contract-Check/1.1'
     }
   });
 
@@ -25,12 +31,41 @@ async function getJson(path) {
   }
 }
 
+async function waitForExpectedDeployment() {
+  let lastError = null;
+
+  for (let attempt = 1; attempt <= retryAttempts; attempt += 1) {
+    try {
+      const recommendations = await getJson(
+        '/api/recommendations?ci=' + encodeURIComponent(expectedCommit) +
+        '&attempt=' + attempt
+      );
+
+      if (recommendations?.deploymentCommit === expectedCommit) {
+        return recommendations;
+      }
+
+      lastError = new Error(
+        'Production deployment commit mismatch: expected ' +
+        expectedCommit + ', received ' +
+        (recommendations?.deploymentCommit || 'missing')
+      );
+    } catch (error) {
+      lastError = error;
+    }
+
+    if (attempt < retryAttempts) {
+      await sleep(retryDelayMs);
+    }
+  }
+
+  throw lastError || new Error('Production deployment did not become ready');
+}
+
 async function main() {
   assert(expectedCommit, 'GITHUB_SHA is required');
 
-  const recommendations = await getJson(
-    '/api/recommendations?ci=' + encodeURIComponent(expectedCommit)
-  );
+  const recommendations = await waitForExpectedDeployment();
   const health = await getJson('/api/data-health?ci=' + encodeURIComponent(expectedCommit));
   const system = await getJson('/api/system-health?ci=' + encodeURIComponent(expectedCommit));
 
