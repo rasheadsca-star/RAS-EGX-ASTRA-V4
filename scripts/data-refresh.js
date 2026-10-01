@@ -162,9 +162,14 @@ async function main() {
     );
   }
 
+  const sourceGeneratedAt =
+    fetchStatus?.generatedAt ||
+    market?.generatedAt ||
+    new Date().toISOString();
+
   const historyIndex = {
     schemaVersion: '4.1.0',
-    generatedAt: new Date().toISOString(),
+    generatedAt: sourceGeneratedAt,
     source: {
       repository: 'rasheadsca-star/RAS-EGX-PRO2026-NEXT',
       branch: 'main',
@@ -201,7 +206,7 @@ async function main() {
 
   const canonicalMarket = {
     schemaVersion: '4.1.0',
-    generatedAt: new Date().toISOString(),
+    generatedAt: sourceGeneratedAt,
     source: {
       repository: 'rasheadsca-star/RAS-EGX-PRO2026-NEXT',
       branch: 'main',
