@@ -179,15 +179,17 @@ async function runUcpShadowPipeline({
     }
   });
 
-  const pipelineReady = Boolean(
+  // SHADOW_READY means the shadow system itself is operational. Governance/session
+  // blockers remain explicit in the DecisionSnapshot and can never grant execution.
+  const shadowOperational = Boolean(
     dataGate.pass &&
     rc2.available && rc2.sessionAligned === true &&
-    v17.available && v17.sessionAligned === true && v17.sourceCurrent === true && v17.policySafe === true
+    v17.available && v17.policySafe === true
   );
 
   return Object.freeze({
     success: true,
-    status: pipelineReady ? 'SHADOW_READY' : 'SHADOW_DEGRADED',
+    status: shadowOperational ? 'SHADOW_READY' : 'SHADOW_DEGRADED',
     executionAllowed: false,
     recommendationMutationAllowed: false,
     snapshot,
@@ -213,6 +215,7 @@ async function runUcpShadowPipeline({
         available: v17.available,
         status: v17.status,
         sourceStatus: v17.sourceStatus || null,
+        sourceType: v17.sourceType || null,
         sourceCurrent: v17.sourceCurrent === true,
         requiredSession: v17.requiredSession || null,
         referenceSession: v17.referenceSession || null,
