@@ -4,6 +4,7 @@ function mapRecommendation(stock) {
   return {
     symbol: stock.symbol,
     signal: stock.signal || 'WATCH',
+    opportunityStatus: stock.opportunityStatus || 'WATCH',
     entryOpportunity: stock.entryOpportunity === true,
     entry: stock.entry ?? null,
     target1: stock.target1 ?? null,
@@ -33,11 +34,27 @@ function mapWatch(stock) {
   return {
     symbol: stock.symbol,
     signal: 'WATCH',
+    opportunityStatus: 'WATCH',
     confidence: stock.confidence ?? 0,
     riskLevel: stock.riskLevel || 'UNKNOWN',
     reason: stock.executionBlockers?.includes('ENTRY_SCORE_BELOW_THRESHOLD')
       ? 'ENTRY_CRITERIA_NOT_MET'
       : 'TRADE_PLAN_NOT_READY',
+    analysis: stock.analysis || null,
+    dataFreshness: stock.dataFreshness || null
+  };
+}
+
+function mapRejected(stock) {
+  return {
+    symbol: stock.symbol,
+    signal: 'REJECT',
+    opportunityStatus: 'REJECT',
+    confidence: stock.confidence ?? 0,
+    riskLevel: stock.riskLevel || 'UNKNOWN',
+    reason: stock.analysis?.technicalScore < 45
+      ? 'OPPORTUNITY_SCORE_BELOW_WATCH_THRESHOLD'
+      : 'RISK_OR_SETUP_NOT_VALID',
     analysis: stock.analysis || null,
     dataFreshness: stock.dataFreshness || null
   };
@@ -59,14 +76,23 @@ async function handler(req, res) {
         dataSource: 'NONE',
         deploymentCommit: process.env.VERCEL_GIT_COMMIT_SHA || null,
         updatedAt: new Date().toISOString(),
+        scanSummary: {
+          scannedSymbols: 0,
+          entryCandidates: 0,
+          watchlist: 0,
+          rejected: 0
+        },
         count: 0,
         recommendations: [],
-        watchlist: []
+        entryCandidates: [],
+        watchlist: [],
+        rejected: []
       });
     }
 
-    const recommendations = (pipeline.recommendations || []).map(mapRecommendation);
+    const entryCandidates = (pipeline.recommendations || []).map(mapRecommendation);
     const watchlist = (pipeline.watchlist || []).map(mapWatch);
+    const rejected = (pipeline.rejected || []).map(mapRejected);
 
     const status = pipeline.liveQuoteCount > 0
       ? 'LIVE_READY'
@@ -80,13 +106,25 @@ async function handler(req, res) {
       dataSource: pipeline.dataSource,
       deploymentCommit: process.env.VERCEL_GIT_COMMIT_SHA || null,
       updatedAt: pipeline.generatedAt,
-      count: recommendations.length,
-      watchlistCount: watchlist.length,
+
+      scanSummary: {
+        scannedSymbols: pipeline.symbolsAnalyzed || 0,
+        entryCandidates: entryCandidates.length,
+        watchlist: watchlist.length,
+        rejected: rejected.length
+      },
+
+      count: entryCandidates.length,
+      entryCandidates,
+      recommendations: entryCandidates,
+      watchlist,
+      rejected,
+
       symbolsAnalyzed: pipeline.symbolsAnalyzed || 0,
+      historyCount: pipeline.historyCount || 0,
+      historySymbols: pipeline.historySymbols || [],
       morningConfirmedCount: pipeline.morningConfirmedCount || 0,
-      executionReadyCount: pipeline.executionReadyCount || 0,
-      recommendations,
-      watchlist
+      executionReadyCount: pipeline.executionReadyCount || 0
     });
   } catch (error) {
     return res.status(200).json({
@@ -95,9 +133,17 @@ async function handler(req, res) {
       status: 'ERROR',
       deploymentCommit: process.env.VERCEL_GIT_COMMIT_SHA || null,
       updatedAt: new Date().toISOString(),
+      scanSummary: {
+        scannedSymbols: 0,
+        entryCandidates: 0,
+        watchlist: 0,
+        rejected: 0
+      },
       count: 0,
       recommendations: [],
+      entryCandidates: [],
       watchlist: [],
+      rejected: [],
       error: error?.message || 'Unknown runtime error'
     });
   }
