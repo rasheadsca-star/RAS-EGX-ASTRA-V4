@@ -2,7 +2,8 @@
 
 const DEFAULT_INTRADAY_URL = process.env.UCP_INTRADAY_HISTORY_URL ||
   'https://raw.githubusercontent.com/rasheadsca-star/RAS-EGX-PRO2026-NEXT/main/data/intraday/history.json';
-const FULL_EVIDENCE_URL = process.env.UCP_MORNING_EVIDENCE_URL || null;
+const FULL_EVIDENCE_URL = process.env.UCP_MORNING_EVIDENCE_URL ||
+  'https://raw.githubusercontent.com/rasheadsca-star/RAS-EGX-ASTRA-V4/main/data/ucp/morning-evidence.json';
 const TIMEOUT_MS = Number(process.env.UCP_MORNING_EVIDENCE_TIMEOUT_MS || 12000);
 
 async function fetchJson(url, fetchImpl = global.fetch) {
@@ -11,11 +12,11 @@ async function fetchJson(url, fetchImpl = global.fetch) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
-    const response = await fetchImpl(url, {
+    const response = await fetchImpl(`${url}${url.includes('?') ? '&' : '?'}ucp=${Date.now()}`, {
       headers: {
         Accept: 'application/json',
         'Cache-Control': 'no-cache',
-        'User-Agent': 'Rasheed-EGX-UCP/1.0-V2.4-Morning'
+        'User-Agent': 'Rasheed-EGX-UCP/1.1-V2.4-Morning'
       },
       signal: controller.signal
     });
@@ -39,20 +40,23 @@ function normalizeFullEvidence(payload = {}, candidates = []) {
   const byTicker = payload.evidenceByTicker || payload.candidates || {};
   const output = {};
   for (const candidate of candidates || []) {
-    const ticker = candidate.ticker || candidate.symbol;
+    const ticker = String(candidate.ticker || candidate.symbol || '').toUpperCase();
     if (!ticker) continue;
     const item = Array.isArray(byTicker)
-      ? byTicker.find((row) => (row?.ticker || row?.symbol) === ticker)
+      ? byTicker.find((row) => String(row?.ticker || row?.symbol || '').toUpperCase() === ticker)
       : byTicker[ticker];
     if (item) output[ticker] = Object.freeze({ ...item, candidatePresent: item.candidatePresent !== false });
   }
   return Object.freeze({
-    available: true,
-    completeSource: true,
-    source: payload.source || 'UCP_MORNING_EVIDENCE',
+    available: Boolean(payload.sessionDate || payload.generatedAt),
+    completeSource: payload.completeSource === true,
+    source: payload.source || 'UCP_CURRENT_MARKET_MORNING_COLLECTOR',
     sessionDate: payload.sessionDate || null,
     generatedAt: payload.generatedAt || null,
-    evidenceByTicker: Object.freeze(output)
+    latestSourceMinute: Number.isFinite(Number(payload.latestSourceMinute)) ? Number(payload.latestSourceMinute) : null,
+    marketCoveragePct: Number.isFinite(Number(payload.marketCoveragePct)) ? Number(payload.marketCoveragePct) : null,
+    evidenceByTicker: Object.freeze(output),
+    reason: payload.completeSource === true ? null : 'REAL_MORNING_EVIDENCE_INCOMPLETE'
   });
 }
 
@@ -139,7 +143,7 @@ async function loadMorningEvidence({
         return normalizeFullEvidence(payload, candidates);
       }
     } catch (_) {
-      // Fail closed to the legacy observation source below.
+      // Network failure only: fail closed to the observation-only legacy source.
     }
   }
 
