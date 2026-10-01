@@ -76,12 +76,17 @@ async function fetchJson(url, fetchImpl) {
   }
 }
 
+function sessionMatches(sessionDate, expectedSession, sourceAligned = true) {
+  if (!sessionDate || sourceAligned === false) return false;
+  return expectedSession ? sessionDate === expectedSession : true;
+}
+
 function normalizePersistedSnapshot(payload = {}, expectedSession = null) {
   if (payload?.engine !== EXPECTED_ENGINE) throw new Error('RC2_ENGINE_ID_MISMATCH');
   if (payload?.mode !== 'RESEARCH_ONLY') throw new Error('RC2_MODE_NOT_RESEARCH_ONLY');
   if (!validateResearchPermissions(payload?.permissions)) throw new Error('RC2_PERMISSION_CONTRACT_VIOLATION');
   const sessionDate = payload.sessionDate || null;
-  const sessionAligned = Boolean(expectedSession && sessionDate === expectedSession && payload.sessionAligned !== false);
+  const sessionAligned = sessionMatches(sessionDate, expectedSession, payload.sessionAligned !== false);
   const candidates = Array.isArray(payload.recommendations) ? payload.recommendations.map(normalizeCandidate) : [];
   return Object.freeze({
     available: true,
@@ -125,7 +130,7 @@ function normalizeLiveScan(payload = {}, expectedSession = null, baseUrl = DEFAU
   if (payload?.mode !== 'RESEARCH_ONLY') throw new Error('RC2_MODE_NOT_RESEARCH_ONLY');
   if (!validateResearchPermissions(payload?.permissions)) throw new Error('RC2_PERMISSION_CONTRACT_VIOLATION');
   const sessionDate = payload.universe?.sessionDate || null;
-  const sessionAligned = Boolean(expectedSession && sessionDate === expectedSession);
+  const sessionAligned = sessionMatches(sessionDate, expectedSession, true);
   const candidates = Array.isArray(payload.recommendations) ? payload.recommendations.map(normalizeCandidate) : [];
   return Object.freeze({
     available: true,
@@ -180,12 +185,14 @@ async function loadRc2ShadowScan({
     });
   }
 
+  let persistedError = null;
   try {
     const persisted = await fetchJson(snapshotUrl, fetchImpl);
     const normalized = normalizePersistedSnapshot(persisted, expectedSession);
     if (normalized.sessionAligned) return normalized;
-  } catch (_) {
-    // Fallback below is still research-only and exact-session checked.
+    persistedError = new Error('RC2_PERSISTED_SESSION_MISMATCH');
+  } catch (error) {
+    persistedError = error;
   }
 
   const safeLimit = Math.max(1, Math.min(50, Number(limit) || 20));
@@ -203,7 +210,9 @@ async function loadRc2ShadowScan({
       sessionDate: null,
       expectedSession,
       sessionAligned: false,
-      error: error?.name === 'AbortError' ? 'RC2_TIMEOUT' : error?.message || 'RC2_SHADOW_ERROR',
+      error: error?.name === 'AbortError'
+        ? 'RC2_TIMEOUT'
+        : error?.message || persistedError?.message || 'RC2_SHADOW_ERROR',
       candidates: Object.freeze([]),
       endpoint: baseUrl.replace(/\/$/, '')
     });
@@ -218,5 +227,6 @@ module.exports = {
   normalizeCandidate,
   normalizePersistedSnapshot,
   normalizeLiveScan,
+  sessionMatches,
   validateResearchPermissions
 };
