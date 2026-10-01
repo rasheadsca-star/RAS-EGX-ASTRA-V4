@@ -6,23 +6,16 @@ const {
   evaluateDataQuality,
   buildDecisionSnapshot
 } = require('../engine/ucp');
-const {
-  loadRc2ShadowScan
-} = require('../engine/ucp/rc2-shadow-adapter');
-const {
-  loadUpstreamQuality
-} = require('../engine/ucp/upstream-quality');
-const {
-  runUcpShadowPipeline
-} = require('../engine/ucp/shadow-pipeline');
+const { loadRc2ShadowScan } = require('../engine/ucp/rc2-shadow-adapter');
+const { loadUpstreamQuality } = require('../engine/ucp/upstream-quality');
+const { runUcpShadowPipeline } = require('../engine/ucp/shadow-pipeline');
+const { evaluateV17Governance } = require('../engine/ucp/v17-governance-adapter');
 
 function jsonResponse(payload, status = 200) {
   return {
     ok: status >= 200 && status < 300,
     status,
-    async json() {
-      return payload;
-    }
+    async json() { return payload; }
   };
 }
 
@@ -75,29 +68,46 @@ function rc2Payload(overrides = {}) {
       withheldForPriceReconciliation: 1,
       returned: 1
     },
-    recommendations: [
-      {
-        ticker: 'COPR',
-        publicationState: 'RESEARCH_CANDIDATE',
-        publicationEligible: true,
-        technicalEligible: true,
-        scores: {
-          research: 84,
-          fusionRank: 86,
-          liquidity: 70,
-          supportResistance: 68
-        },
-        tradePlan: {
-          entry: 0.50,
-          stop: 0.47,
-          target1: 0.524,
-          target2: 0.55,
-          structuralNetRR: 1.5
-        },
-        reasonCodes: []
-      }
-    ],
+    recommendations: [{
+      ticker: 'COPR',
+      publicationState: 'RESEARCH_CANDIDATE',
+      publicationEligible: true,
+      technicalEligible: true,
+      scores: { research: 84, fusionRank: 86, liquidity: 70, supportResistance: 68 },
+      tradePlan: { entry: 0.50, stop: 0.47, target1: 0.524, target2: 0.55, structuralNetRR: 1.5 },
+      reasonCodes: []
+    }],
     ...overrides
+  };
+}
+
+function v17Payload(sessionDate = '2026-09-13') {
+  return {
+    schemaVersion: '17.0.0-rc3',
+    generatedAt: '2026-09-13T22:40:05.200Z',
+    status: 'READY_FOR_NEXT_SESSION_REVIEW',
+    sessionDate,
+    championChallenger: { promotionAllowed: false },
+    readiness: { releaseStage: 'CONTROLLED_PILOT', professionalEvidenceReady: false },
+    portfolioPolicy: { automaticOrders: false },
+    market: { regime: 'NEUTRAL', score: 48, riskMultiplier: 0.65, maxTradeRiskPct: 0.16 }
+  };
+}
+
+function consensusPayload(v17Session = '2026-09-13', aligned = false) {
+  return {
+    generatedAt: '2026-10-01T22:03:03.062Z',
+    sessionDate: '2026-10-01',
+    sourceHealth: {
+      mainSession: '2026-10-01',
+      v17Session,
+      v17SessionAligned: aligned
+    },
+    policy: {
+      exactSessionAlignmentRequired: true,
+      failClosedOnMissingExternalData: true,
+      comparisonCanGrantExecution: false
+    }
   };
 }
 
@@ -120,87 +130,48 @@ async function main() {
   assert.ok(!oct1Gate.blockers.includes('COVERAGE_BELOW_POLICY'));
 
   const weakCoverageGate = evaluateDataQuality({
-    expectedUniverseSize: 212,
-    acceptedRows: 180,
-    verifiedRows: 180,
-    sourceReady: true,
-    currentSessionReady: true,
-    executionGrade: true,
-    criticalErrors: []
+    expectedUniverseSize: 212, acceptedRows: 180, verifiedRows: 180,
+    sourceReady: true, currentSessionReady: true, executionGrade: true, criticalErrors: []
   });
-
   assert.strictEqual(weakCoverageGate.pass, false);
   assert.ok(weakCoverageGate.blockers.includes('COVERAGE_BELOW_POLICY'));
   assert.ok(weakCoverageGate.blockers.includes('VERIFIED_COVERAGE_BELOW_POLICY'));
 
   const criticalErrorGate = evaluateDataQuality({
-    expectedUniverseSize: 212,
-    acceptedRows: 205,
-    verifiedRows: 205,
-    sourceReady: true,
-    currentSessionReady: true,
-    executionGrade: true,
+    expectedUniverseSize: 212, acceptedRows: 205, verifiedRows: 205,
+    sourceReady: true, currentSessionReady: true, executionGrade: true,
     criticalErrors: ['SESSION_DATE_CORRUPT']
   });
-
   assert.strictEqual(criticalErrorGate.pass, false);
-  assert.ok(
-    criticalErrorGate.blockers.includes('CRITICAL_DATA_ERRORS_PRESENT')
-  );
+  assert.ok(criticalErrorGate.blockers.includes('CRITICAL_DATA_ERRORS_PRESENT'));
 
   const snapshot = buildDecisionSnapshot({
     generatedAt: '2026-10-01T21:52:21.000Z',
     sessionDate: '2026-10-01',
     dataGate: oct1Gate,
-    alpha: {
-      status: 'SHADOW_READY',
-      candidates: [{ symbol: 'TEST', score: 88 }]
-    },
-    governance: {
-      status: 'READY',
-      approvedSymbols: ['TEST']
-    },
-    morningConfirmation: {
-      status: 'WAITING_NEXT_SESSION',
-      waitingSymbols: ['TEST']
-    },
-    decision: {
-      status: 'RESEARCH_ONLY',
-      finalRecommendations: [],
-      watchlist: ['TEST'],
-      blockers: ['FORWARD_VALIDATION_REQUIRED']
-    },
-    provenance: {
-      sourceSession: '2026-10-01',
-      notes: ['UCP bootstrap validation']
-    }
+    alpha: { status: 'SHADOW_READY', candidates: [{ symbol: 'TEST', score: 88 }] },
+    governance: { status: 'READY', approvedSymbols: ['TEST'] },
+    morningConfirmation: { status: 'WAITING_NEXT_SESSION', waitingSymbols: ['TEST'] },
+    decision: { status: 'RESEARCH_ONLY', finalRecommendations: [], watchlist: ['TEST'], blockers: ['FORWARD_VALIDATION_REQUIRED'] },
+    provenance: { sourceSession: '2026-10-01', notes: ['UCP bootstrap validation'] }
   });
 
   assert.strictEqual(snapshot.pipeline.name, 'Rasheed EGX Unified Champion Pipeline');
   assert.strictEqual(snapshot.mode, 'SHADOW_PRODUCTION');
   assert.strictEqual(snapshot.executionAllowed, false);
-  assert.strictEqual(
-    snapshot.engines.alphaChampionCandidate.id,
-    'TFE_V20_FUSION_RC2'
-  );
+  assert.strictEqual(snapshot.engines.alphaChampionCandidate.id, 'TFE_V20_FUSION_RC2');
   assert.strictEqual(REGISTRY.championCandidate.executionAllowed, false);
   assert.strictEqual(snapshot.decisionHash.length, 64);
   assert.strictEqual(Object.isFrozen(snapshot), true);
   assert.strictEqual(Object.isFrozen(snapshot.dataGate), true);
 
-  const quality = await loadUpstreamQuality({
-    fetchImpl: async () => jsonResponse(qualityPayload())
-  });
-
+  const quality = await loadUpstreamQuality({ fetchImpl: async () => jsonResponse(qualityPayload()) });
   assert.strictEqual(quality.available, true);
   assert.strictEqual(quality.acceptedRows, 199);
   assert.strictEqual(quality.coveragePct, 93.87);
   assert.strictEqual(quality.verifiedCoveragePct, 95.28);
 
-  const rc2 = await loadRc2ShadowScan({
-    fetchImpl: async () => jsonResponse(rc2Payload())
-  });
-
+  const rc2 = await loadRc2ShadowScan({ fetchImpl: async () => jsonResponse(rc2Payload()) });
   assert.strictEqual(rc2.available, true);
   assert.strictEqual(rc2.status, 'SHADOW_READY');
   assert.strictEqual(rc2.engineId, 'TFE_V20_FUSION_RC2');
@@ -210,41 +181,54 @@ async function main() {
   assert.strictEqual(rc2.candidates[0].fusionRankScore, 86);
 
   const unsafeRc2 = await loadRc2ShadowScan({
-    fetchImpl: async () => jsonResponse(
-      rc2Payload({
-        permissions: {
-          researchOnly: false,
-          executionAllowed: true,
-          productionAllocation: true,
-          automaticOrders: true,
-          automaticChampionPromotion: true
-        }
-      })
-    )
+    fetchImpl: async () => jsonResponse(rc2Payload({
+      permissions: {
+        researchOnly: false, executionAllowed: true, productionAllocation: true,
+        automaticOrders: true, automaticChampionPromotion: true
+      }
+    }))
   });
-
   assert.strictEqual(unsafeRc2.available, false);
-  assert.strictEqual(
-    unsafeRc2.error,
-    'RC2_PERMISSION_CONTRACT_VIOLATION'
-  );
+  assert.strictEqual(unsafeRc2.error, 'RC2_PERMISSION_CONTRACT_VIOLATION');
+
+  const sameSessionV17 = evaluateV17Governance({
+    v17: v17Payload('2026-10-01'),
+    consensus: consensusPayload('2026-10-01', true),
+    requiredSession: '2026-10-01',
+    candidates: [{ ticker: 'COPR' }]
+  });
+  assert.strictEqual(sameSessionV17.status, 'GOVERNANCE_READY');
+  assert.strictEqual(sameSessionV17.sessionAligned, true);
+  assert.strictEqual(sameSessionV17.policySafe, true);
+  assert.deepStrictEqual(sameSessionV17.approvedSymbols, ['COPR']);
+  assert.strictEqual(sameSessionV17.executionAllowed, false);
+
+  const staleV17 = evaluateV17Governance({
+    v17: v17Payload('2026-09-13'),
+    consensus: consensusPayload('2026-09-13', false),
+    requiredSession: '2026-10-01',
+    candidates: [{ ticker: 'COPR' }]
+  });
+  assert.strictEqual(staleV17.status, 'GOVERNANCE_BLOCKED');
+  assert.strictEqual(staleV17.sessionAligned, false);
+  assert.deepStrictEqual(staleV17.approvedSymbols, []);
+  assert.strictEqual(staleV17.rejectedSymbols[0].reason, 'V17_SESSION_MISMATCH');
+  assert.ok(staleV17.blockers.includes('V17_SESSION_MISMATCH'));
 
   const fetchImpl = async (url) => {
-    if (String(url).includes('fetch-status.json')) {
-      return jsonResponse(qualityPayload());
-    }
-
-    if (String(url).includes('route=scan')) {
-      return jsonResponse(rc2Payload());
-    }
-
+    const value = String(url);
+    if (value.includes('fetch-status.json')) return jsonResponse(qualityPayload());
+    if (value.includes('route=scan')) return jsonResponse(rc2Payload());
+    if (value.includes('/data/v17/current.json')) return jsonResponse(v17Payload('2026-09-13'));
+    if (value.includes('v16-main-app-consensus.json')) return jsonResponse(consensusPayload('2026-09-13', false));
     return jsonResponse({}, 404);
   };
 
   const shadow = await runUcpShadowPipeline({
     generatedAt: '2026-10-01T21:59:00.000Z',
     rc2Options: { fetchImpl },
-    qualityOptions: { fetchImpl }
+    qualityOptions: { fetchImpl },
+    v17Options: { fetchImpl }
   });
 
   assert.strictEqual(shadow.success, true);
@@ -253,19 +237,15 @@ async function main() {
   assert.strictEqual(shadow.recommendationMutationAllowed, false);
   assert.strictEqual(shadow.snapshot.dataGate.pass, true);
   assert.strictEqual(shadow.snapshot.alpha.status, 'SHADOW_READY');
+  assert.strictEqual(shadow.snapshot.governance.status, 'GOVERNANCE_BLOCKED');
+  assert.strictEqual(shadow.snapshot.governance.sessionAligned, false);
+  assert.deepStrictEqual(shadow.snapshot.governance.approvedSymbols, []);
   assert.deepStrictEqual(shadow.snapshot.decision.finalRecommendations, []);
   assert.deepStrictEqual(shadow.snapshot.decision.watchlist, ['COPR']);
-  assert.ok(
-    shadow.snapshot.decision.blockers.includes('FORWARD_VALIDATION_REQUIRED')
-  );
-  assert.ok(
-    shadow.snapshot.decision.blockers.includes('V17_UCP_ADAPTER_NOT_WIRED')
-  );
-  assert.ok(
-    shadow.snapshot.decision.blockers.includes(
-      'V2_4_MORNING_CONFIRMATION_NOT_WIRED'
-    )
-  );
+  assert.ok(shadow.snapshot.decision.blockers.includes('FORWARD_VALIDATION_REQUIRED'));
+  assert.ok(shadow.snapshot.decision.blockers.includes('V17_SESSION_ALIGNMENT_REQUIRED'));
+  assert.ok(shadow.snapshot.decision.blockers.includes('V2_4_MORNING_CONFIRMATION_NOT_WIRED'));
+  assert.ok(!shadow.snapshot.decision.blockers.includes('V17_UCP_ADAPTER_NOT_WIRED'));
 
   console.log('Rasheed EGX UCP validation passed');
 }
