@@ -14,15 +14,31 @@ const LOCAL_INDEX =
 
 const WATCHLIST = getEGXSymbols();
 const CACHE = new Map();
+let LOCAL_INDEX = null;
+let LOCAL_INDEX_LOADED = false;
 
 const REQUEST_TIMEOUT_MS = 8000;
 const BATCH_SIZE = 50;
 
-function loadLocalHistory(symbol) {
+function getLocalHistoryIndex() {
+  if (LOCAL_INDEX_LOADED) return LOCAL_INDEX;
+
+  LOCAL_INDEX_LOADED = true;
+
   try {
     if (!fs.existsSync(LOCAL_INDEX)) return null;
+    LOCAL_INDEX = JSON.parse(fs.readFileSync(LOCAL_INDEX, 'utf8'));
+    return LOCAL_INDEX;
+  } catch (error) {
+    console.log('ASTRA LOCAL HISTORY INDEX ERROR', error?.message || error);
+    LOCAL_INDEX = null;
+    return null;
+  }
+}
 
-    const index = JSON.parse(fs.readFileSync(LOCAL_INDEX, 'utf8'));
+function loadLocalHistory(symbol) {
+  try {
+    const index = getLocalHistoryIndex();
     const entry = index?.symbols?.[symbol];
 
     if (!entry || !Array.isArray(entry.sessions)) return null;
@@ -40,7 +56,7 @@ function loadLocalHistory(symbol) {
       .filter((row) => row.date && row.close > 0)
       .sort((a, b) => a.date.localeCompare(b.date));
   } catch (error) {
-    console.log('ASTRA LOCAL HISTORY INDEX ERROR', error?.message || error);
+    console.log('ASTRA LOCAL HISTORY SYMBOL ERROR', symbol, error?.message || error);
     return null;
   }
 }
