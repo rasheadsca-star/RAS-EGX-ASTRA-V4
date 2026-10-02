@@ -1,7 +1,7 @@
 {
   "schemaVersion": "astra-v5-prospective-evidence/v2",
   "policyVersion": "astra-v5-prospective-evidence-policy/v2",
-  "updatedAt": "2026-10-02T20:43:22.429Z",
+  "updatedAt": "2026-10-02T20:45:13.015Z",
   "cohorts": [
     {
       "schemaVersion": "astra-v5-prospective-cohort/v1",
@@ -85,7 +85,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -125,6 +125,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 1,
+            "unifiedScore": 71.06,
+            "crossSectionalRank": 1,
+            "crossSectionalScore": 90.55,
+            "dataQualityScore": 78,
+            "liquidityScore": 94.3
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -169,7 +190,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -255,6 +276,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 2,
+            "unifiedScore": 67.01,
+            "crossSectionalRank": 8,
+            "crossSectionalScore": 80.25,
+            "dataQualityScore": 78,
+            "liquidityScore": 98
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -302,7 +344,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -342,6 +384,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "رعاية صحية ودواء",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 3,
+            "unifiedScore": 65.44,
+            "crossSectionalRank": 9,
+            "crossSectionalScore": 78.91,
+            "dataQualityScore": 78,
+            "liquidityScore": 89.5
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -387,7 +450,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -427,6 +490,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 4,
+            "unifiedScore": 64.12,
+            "crossSectionalRank": 10,
+            "crossSectionalScore": 78.86,
+            "dataQualityScore": 78,
+            "liquidityScore": 95.7
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -472,7 +556,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -512,6 +596,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "صناعة وطاقة وبنية تحتية",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 5,
+            "unifiedScore": 64.02,
+            "crossSectionalRank": 7,
+            "crossSectionalScore": 80.47,
+            "dataQualityScore": 78,
+            "liquidityScore": 99.6
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -557,7 +662,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -597,6 +702,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 6,
+            "unifiedScore": 63.87,
+            "crossSectionalRank": 6,
+            "crossSectionalScore": 80.97,
+            "dataQualityScore": 78,
+            "liquidityScore": 94.2
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -642,7 +768,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -682,6 +808,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 7,
+            "unifiedScore": 63.58,
+            "crossSectionalRank": 37,
+            "crossSectionalScore": 66.04,
+            "dataQualityScore": 78,
+            "liquidityScore": 88.1
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -728,7 +875,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -768,6 +915,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "بتروكيماويات وكيماويات",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 8,
+            "unifiedScore": 63.4,
+            "crossSectionalRank": 2,
+            "crossSectionalScore": 86.07,
+            "dataQualityScore": 78,
+            "liquidityScore": 98.4
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -814,7 +982,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -854,6 +1022,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "سيارات وتجارة وتوزيع",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 9,
+            "unifiedScore": 62.73,
+            "crossSectionalRank": 3,
+            "crossSectionalScore": 84.67,
+            "dataQualityScore": 78,
+            "liquidityScore": 100
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -899,7 +1088,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -939,6 +1128,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "بتروكيماويات وكيماويات",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 11,
+            "unifiedScore": 62.07,
+            "crossSectionalRank": 21,
+            "crossSectionalScore": 73.73,
+            "dataQualityScore": 78,
+            "liquidityScore": 88.3
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -984,7 +1194,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -1024,6 +1234,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "معادن ومواد أساسية",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 12,
+            "unifiedScore": 62.03,
+            "crossSectionalRank": 4,
+            "crossSectionalScore": 82.19,
+            "dataQualityScore": 78,
+            "liquidityScore": 99.3
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -1069,7 +1300,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -1109,6 +1340,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 13,
+            "unifiedScore": 61.88,
+            "crossSectionalRank": 11,
+            "crossSectionalScore": 78.64,
+            "dataQualityScore": 78,
+            "liquidityScore": 98.1
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -1154,7 +1406,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -1194,6 +1446,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "بتروكيماويات وكيماويات",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 14,
+            "unifiedScore": 61.24,
+            "crossSectionalRank": 15,
+            "crossSectionalScore": 75.58,
+            "dataQualityScore": 78,
+            "liquidityScore": 87.6
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -1240,7 +1513,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -1280,6 +1553,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "استثمارات قابضة ومتنوعة",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 16,
+            "unifiedScore": 60.68,
+            "crossSectionalRank": 12,
+            "crossSectionalScore": 77.63,
+            "dataQualityScore": 78,
+            "liquidityScore": 95.3
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -1326,7 +1620,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -1366,6 +1660,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 17,
+            "unifiedScore": 59.9,
+            "crossSectionalRank": 20,
+            "crossSectionalScore": 74.03,
+            "dataQualityScore": 78,
+            "liquidityScore": 87.3
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -1412,7 +1727,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -1452,6 +1767,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 18,
+            "unifiedScore": 59.81,
+            "crossSectionalRank": 18,
+            "crossSectionalScore": 74.12,
+            "dataQualityScore": 78,
+            "liquidityScore": 90.1
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -1498,7 +1834,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -1538,6 +1874,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "صناعة وطاقة وبنية تحتية",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 20,
+            "unifiedScore": 58.91,
+            "crossSectionalRank": 19,
+            "crossSectionalScore": 74.1,
+            "dataQualityScore": 69,
+            "liquidityScore": 90.2
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -1584,7 +1941,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -1624,6 +1981,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 21,
+            "unifiedScore": 58.88,
+            "crossSectionalRank": 13,
+            "crossSectionalScore": 77.24,
+            "dataQualityScore": 78,
+            "liquidityScore": 95.3
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -1670,7 +2048,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -1710,6 +2088,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "بنوك وخدمات مالية مصرفية",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 22,
+            "unifiedScore": 58.42,
+            "crossSectionalRank": 5,
+            "crossSectionalScore": 81.23,
+            "dataQualityScore": 78,
+            "liquidityScore": 97.3
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -1756,7 +2155,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -1796,6 +2195,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "صناعة وطاقة وبنية تحتية",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 24,
+            "unifiedScore": 57.45,
+            "crossSectionalRank": 17,
+            "crossSectionalScore": 74.2,
+            "dataQualityScore": 78,
+            "liquidityScore": 93.5
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -1842,7 +2262,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -1882,6 +2302,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "بنوك وخدمات مالية مصرفية",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 25,
+            "unifiedScore": 57.38,
+            "crossSectionalRank": 23,
+            "crossSectionalScore": 71.22,
+            "dataQualityScore": 78,
+            "liquidityScore": 83
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -1928,7 +2369,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -1968,6 +2409,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "منسوجات وملابس",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 27,
+            "unifiedScore": 57.09,
+            "crossSectionalRank": 24,
+            "crossSectionalScore": 70.42,
+            "dataQualityScore": 77.4,
+            "liquidityScore": 98.5
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -2013,7 +2475,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -2053,6 +2515,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 30,
+            "unifiedScore": 56.8,
+            "crossSectionalRank": 30,
+            "crossSectionalScore": 67.35,
+            "dataQualityScore": 78,
+            "liquidityScore": 97
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -2099,7 +2582,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -2139,6 +2622,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "رعاية صحية ودواء",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 32,
+            "unifiedScore": 55.86,
+            "crossSectionalRank": 25,
+            "crossSectionalScore": 70.21,
+            "dataQualityScore": 78,
+            "liquidityScore": 99.3
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -2185,7 +2689,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -2225,6 +2729,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "تكنولوجيا ومدفوعات",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 35,
+            "unifiedScore": 55.13,
+            "crossSectionalRank": 14,
+            "crossSectionalScore": 77.09,
+            "dataQualityScore": 78,
+            "liquidityScore": 98.8
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -2271,7 +2796,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -2311,6 +2836,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "أسمنت ومواد بناء",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 36,
+            "unifiedScore": 54.26,
+            "crossSectionalRank": 86,
+            "crossSectionalScore": 55.34,
+            "dataQualityScore": 78,
+            "liquidityScore": 100
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -2357,7 +2903,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -2397,6 +2943,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "تعليم وخدمات",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 37,
+            "unifiedScore": 54.25,
+            "crossSectionalRank": 40,
+            "crossSectionalScore": 64.4,
+            "dataQualityScore": 78,
+            "liquidityScore": 89.4
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -2443,7 +3010,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -2483,6 +3050,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 38,
+            "unifiedScore": 54.15,
+            "crossSectionalRank": 50,
+            "crossSectionalScore": 62.64,
+            "dataQualityScore": 70.6,
+            "liquidityScore": 90.2
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -2529,7 +3117,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -2569,6 +3157,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 40,
+            "unifiedScore": 54.09,
+            "crossSectionalRank": 36,
+            "crossSectionalScore": 66.11,
+            "dataQualityScore": 78,
+            "liquidityScore": 88
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -2614,7 +3223,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -2654,6 +3263,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "أسمنت ومواد بناء",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 43,
+            "unifiedScore": 53.77,
+            "crossSectionalRank": 33,
+            "crossSectionalScore": 66.92,
+            "dataQualityScore": 78,
+            "liquidityScore": 97.5
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -2700,7 +3330,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -2740,6 +3370,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 44,
+            "unifiedScore": 53.68,
+            "crossSectionalRank": 48,
+            "crossSectionalScore": 62.84,
+            "dataQualityScore": 78,
+            "liquidityScore": 94
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -2786,7 +3437,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -2826,6 +3477,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "تعليم وخدمات",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 47,
+            "unifiedScore": 53.64,
+            "crossSectionalRank": 32,
+            "crossSectionalScore": 67.02,
+            "dataQualityScore": 78,
+            "liquidityScore": 91.3
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -2872,7 +3544,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -2912,6 +3584,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 49,
+            "unifiedScore": 53.16,
+            "crossSectionalRank": 112,
+            "crossSectionalScore": 47.56,
+            "dataQualityScore": 78,
+            "liquidityScore": 86.9
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -2958,7 +3651,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -2998,6 +3691,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 50,
+            "unifiedScore": 52.99,
+            "crossSectionalRank": 39,
+            "crossSectionalScore": 64.69,
+            "dataQualityScore": 78,
+            "liquidityScore": 94
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -3044,7 +3758,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -3084,6 +3798,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "عقارات وإنشاءات",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 51,
+            "unifiedScore": 52.9,
+            "crossSectionalRank": 27,
+            "crossSectionalScore": 69.33,
+            "dataQualityScore": 78,
+            "liquidityScore": 97.5
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -3130,7 +3865,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -3170,6 +3905,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 52,
+            "unifiedScore": 52.56,
+            "crossSectionalRank": 45,
+            "crossSectionalScore": 63.42,
+            "dataQualityScore": 78,
+            "liquidityScore": 94.9
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -3216,7 +3972,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -3256,6 +4012,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 53,
+            "unifiedScore": 52.55,
+            "crossSectionalRank": 41,
+            "crossSectionalScore": 64.34,
+            "dataQualityScore": 78,
+            "liquidityScore": 93.2
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -3302,7 +4079,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -3342,6 +4119,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 55,
+            "unifiedScore": 52.43,
+            "crossSectionalRank": 38,
+            "crossSectionalScore": 65.24,
+            "dataQualityScore": 78,
+            "liquidityScore": 99.3
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -3388,7 +4186,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -3428,6 +4226,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 56,
+            "unifiedScore": 52.42,
+            "crossSectionalRank": 124,
+            "crossSectionalScore": 46.02,
+            "dataQualityScore": 78,
+            "liquidityScore": 85.7
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -3474,7 +4293,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -3514,6 +4333,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 59,
+            "unifiedScore": 52,
+            "crossSectionalRank": 34,
+            "crossSectionalScore": 66.67,
+            "dataQualityScore": 78,
+            "liquidityScore": 96
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -3560,7 +4400,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -3600,6 +4440,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "تجارة وتوزيع",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 61,
+            "unifiedScore": 51.48,
+            "crossSectionalRank": 43,
+            "crossSectionalScore": 64.07,
+            "dataQualityScore": 78,
+            "liquidityScore": 94.9
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -3646,7 +4507,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -3686,6 +4547,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "تكنولوجيا ومدفوعات",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 62,
+            "unifiedScore": 51.4,
+            "crossSectionalRank": 35,
+            "crossSectionalScore": 66.19,
+            "dataQualityScore": 78,
+            "liquidityScore": 96.1
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -3732,7 +4614,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -3772,6 +4654,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "أسمنت ومواد بناء",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 63,
+            "unifiedScore": 51.14,
+            "crossSectionalRank": 57,
+            "crossSectionalScore": 60.25,
+            "dataQualityScore": 78,
+            "liquidityScore": 99.3
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -3818,7 +4721,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -3858,6 +4761,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 64,
+            "unifiedScore": 50.96,
+            "crossSectionalRank": 130,
+            "crossSectionalScore": 43.5,
+            "dataQualityScore": 78,
+            "liquidityScore": 77.8
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -3904,7 +4828,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -3944,6 +4868,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 65,
+            "unifiedScore": 50.89,
+            "crossSectionalRank": 52,
+            "crossSectionalScore": 61.32,
+            "dataQualityScore": 78,
+            "liquidityScore": 99.1
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -3990,7 +4935,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -4030,6 +4975,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "عقارات وإنشاءات",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 66,
+            "unifiedScore": 50.66,
+            "crossSectionalRank": 54,
+            "crossSectionalScore": 60.78,
+            "dataQualityScore": 78,
+            "liquidityScore": 94.3
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -4076,7 +5042,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -4116,6 +5082,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 67,
+            "unifiedScore": 50.61,
+            "crossSectionalRank": 47,
+            "crossSectionalScore": 62.88,
+            "dataQualityScore": 78,
+            "liquidityScore": 94.4
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -4162,7 +5149,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -4202,6 +5189,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 68,
+            "unifiedScore": 50.6,
+            "crossSectionalRank": 49,
+            "crossSectionalScore": 62.75,
+            "dataQualityScore": 78,
+            "liquidityScore": 88.5
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -4248,7 +5256,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -4288,6 +5296,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "اتصالات وإعلام وتكنولوجيا",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 69,
+            "unifiedScore": 50.6,
+            "crossSectionalRank": 53,
+            "crossSectionalScore": 61.12,
+            "dataQualityScore": 78,
+            "liquidityScore": 89
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -4334,7 +5363,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -4374,6 +5403,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "تجارة وتوزيع",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 70,
+            "unifiedScore": 50.28,
+            "crossSectionalRank": 51,
+            "crossSectionalScore": 62.42,
+            "dataQualityScore": 78,
+            "liquidityScore": 98
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -4420,7 +5470,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -4460,6 +5510,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "أغذية ومشروبات",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 71,
+            "unifiedScore": 50.25,
+            "crossSectionalRank": 28,
+            "crossSectionalScore": 69.28,
+            "dataQualityScore": 78,
+            "liquidityScore": 99
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -4506,7 +5577,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -4546,6 +5617,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 73,
+            "unifiedScore": 49.15,
+            "crossSectionalRank": 42,
+            "crossSectionalScore": 64.1,
+            "dataQualityScore": 78,
+            "liquidityScore": 96.9
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -4591,7 +5683,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -4631,6 +5723,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 74,
+            "unifiedScore": 49.13,
+            "crossSectionalRank": 75,
+            "crossSectionalScore": 57.53,
+            "dataQualityScore": 78,
+            "liquidityScore": 87.9
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -4677,7 +5790,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -4717,6 +5830,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 75,
+            "unifiedScore": 49.12,
+            "crossSectionalRank": 55,
+            "crossSectionalScore": 60.56,
+            "dataQualityScore": 78,
+            "liquidityScore": 91.9
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -4763,7 +5897,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -4803,6 +5937,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 76,
+            "unifiedScore": 49.1,
+            "crossSectionalRank": 91,
+            "crossSectionalScore": 54.67,
+            "dataQualityScore": 78,
+            "liquidityScore": 92.9
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -4849,7 +6004,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -4889,6 +6044,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "خدمات مالية غير مصرفية",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 77,
+            "unifiedScore": 49.04,
+            "crossSectionalRank": 46,
+            "crossSectionalScore": 63.28,
+            "dataQualityScore": 78,
+            "liquidityScore": 96.3
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -4935,7 +6111,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -4975,6 +6151,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 78,
+            "unifiedScore": 49.03,
+            "crossSectionalRank": 83,
+            "crossSectionalScore": 56.53,
+            "dataQualityScore": 78,
+            "liquidityScore": 91.3
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -5022,7 +6219,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -5062,6 +6259,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "منسوجات وملابس",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 79,
+            "unifiedScore": 48.09,
+            "crossSectionalRank": 56,
+            "crossSectionalScore": 60.51,
+            "dataQualityScore": 78,
+            "liquidityScore": 99.4
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -5109,7 +6327,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -5149,6 +6367,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "خدمات مالية غير مصرفية",
+          "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 80,
+            "unifiedScore": 47.97,
+            "crossSectionalRank": 78,
+            "crossSectionalScore": 57.27,
+            "dataQualityScore": 78,
+            "liquidityScore": 97.6
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         },
         {
@@ -5194,7 +6433,7 @@
             "regimeScore": 8,
             "regimeRiskMultiplier": 0.35
           },
-          "evidenceVersion": 1,
+          "evidenceVersion": 2,
           "prospectiveOnly": true,
           "executionAllowed": false,
           "morningEvidence": [
@@ -5234,6 +6473,27 @@
             "sourceLastSession": "2026-10-01",
             "sameBarAmbiguity": null,
             "resolvedAt": null
+          },
+          "sector": "غير مصنف",
+          "sectorSource": "UNCLASSIFIED",
+          "decisionMarketState": {
+            "sessionDate": "2026-10-01",
+            "generatedAt": "2026-10-02T20:27:36.528Z",
+            "regime": "RISK_OFF",
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35,
+            "maxTradeRiskPct": 0.09,
+            "unifiedRank": 81,
+            "unifiedScore": 47.53,
+            "crossSectionalRank": 102,
+            "crossSectionalScore": 51.56,
+            "dataQualityScore": 78,
+            "liquidityScore": 98.2
+          },
+          "slippage": {
+            "estimatedPct": 0.15,
+            "realizedProxyPct": null,
+            "measurement": "NOT_YET_OBSERVED"
           }
         }
       ],
@@ -5248,7 +6508,9 @@
     "negativeOutcomes": 0,
     "notEntered": 0,
     "open": 60,
-    "sectorCoverage": 0,
+    "sectorCoverage": 30,
+    "sectorRecorded": 60,
+    "sectorUnclassified": 30,
     "morningEvidenceCaptured": 60,
     "slippageProxyObserved": 0,
     "observedCalendarDays": 1,
