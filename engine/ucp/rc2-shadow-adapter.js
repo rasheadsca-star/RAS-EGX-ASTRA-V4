@@ -37,6 +37,7 @@ function normalizeScoreboardRow(item = {}) {
     stopLoss: safeNumber(item.tradePlan?.stop),
     target1: safeNumber(item.tradePlan?.target1),
     target2: safeNumber(item.tradePlan?.target2),
+    roundTripCostPct: safeNumber(item.tradePlan?.roundTripCostPct),
     reasonCodes: Object.freeze(Array.isArray(item.reasonCodes) ? [...item.reasonCodes] : []),
     nearMiss: item.nearMiss === true,
     gateDistance: safeNumber(item.gateDistance),
