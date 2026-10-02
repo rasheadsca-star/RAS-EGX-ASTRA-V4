@@ -1,8 +1,7 @@
-// ASTRA V4 Daily Canonical Data Refresh
-// Pulls the validated current-session market snapshot and the latest 60 daily
-// history sessions per registered symbol from the canonical PRO repository.
-// The V4 runtime then reads these local compact stores instead of making
-// hundreds of remote requests per API invocation.
+// ASTRA V4 Atomic Canonical Data Refresh
+// Mirrors one fully validated PRO session into local market + history stores.
+// Runtime reads these local stores so recommendations are tied to one immutable
+// deployed session rather than a moving remote feed.
 
 const fs = require('fs');
 const path = require('path');
@@ -29,15 +28,16 @@ async function fetchJson(url) {
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
   try {
-    const response = await fetch(url, {
-      headers: { 'User-Agent': 'ASTRA-V4-DAILY-REFRESH/4.0' },
+    const response = await fetch(`${url}${url.includes('?') ? '&' : '?'}atomic=${Date.now()}`, {
+      headers: {
+        Accept: 'application/json',
+        'Cache-Control': 'no-cache',
+        'User-Agent': 'ASTRA-V4-ATOMIC-REFRESH/5.0'
+      },
       signal: controller.signal
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${url}`);
     return await response.json();
   } finally {
     clearTimeout(timeout);
@@ -65,10 +65,7 @@ async function mapLimit(items, limit, worker) {
   }
 
   await Promise.all(
-    Array.from(
-      { length: Math.min(limit, items.length) },
-      () => runWorker()
-    )
+    Array.from({ length: Math.min(limit, items.length) }, () => runWorker())
   );
 
   return results;
@@ -80,7 +77,7 @@ function normalizeSession(row, symbol) {
 
   return {
     ticker: symbol,
-    date: String(row.date),
+    date: String(row.date).slice(0, 10),
     open: Number(row.open || 0),
     high: Number(row.high || close),
     low: Number(row.low || close),
@@ -90,20 +87,115 @@ function normalizeSession(row, symbol) {
   };
 }
 
+function time(value) {
+  const parsed = Date.parse(String(value || ''));
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function maxTime(...values) {
+  return Math.max(...values.map(time), 0);
+}
+
+function assertAtomicSource({
+  fetchStatus,
+  priceTruth,
+  primary,
+  regime,
+  v17,
+  rc2,
+  expectedSession,
+  currentSessionRows
+}) {
+  const regimeSession = regime?.metrics?.sessionDate || regime?.sessionDate || null;
+  const v17RequiredFreshAt = maxTime(
+    primary?.generatedAt,
+    regime?.generatedAt,
+    priceTruth?.generatedAt
+  );
+  const rc2RequiredFreshAt = maxTime(
+    fetchStatus?.generatedAt,
+    priceTruth?.generatedAt,
+    primary?.generatedAt
+  );
+
+  const failures = [];
+
+  if (!expectedSession) failures.push('EXPECTED_SESSION_MISSING');
+  if (fetchStatus?.expectedSession !== expectedSession) failures.push('FETCH_SESSION_MISMATCH');
+  if (fetchStatus?.executionGrade !== true) failures.push('FETCH_NOT_EXECUTION_GRADE');
+  if (Number(fetchStatus?.currentSessionRows || currentSessionRows.length) < MIN_MARKET_ROWS) {
+    failures.push('CURRENT_SESSION_ROWS_BELOW_POLICY');
+  }
+  if (priceTruth?.expectedSession !== expectedSession || priceTruth?.executionGrade !== true) {
+    failures.push('PRICE_TRUTH_NOT_READY');
+  }
+  if (
+    primary?.sessionDate !== expectedSession ||
+    primary?.selectedModel?.id !== 'V16_9_EQUAL_WEIGHT_BASKET'
+  ) {
+    failures.push('V169_PRIMARY_NOT_READY');
+  }
+  if (regimeSession !== expectedSession) failures.push('REGIME_SESSION_MISMATCH');
+  if (
+    v17?.sessionDate !== expectedSession ||
+    v17?.systemHealth?.sessionAligned !== true
+  ) {
+    failures.push('V17_SESSION_NOT_ALIGNED');
+  }
+  if (time(v17?.generatedAt) < v17RequiredFreshAt) {
+    failures.push('V17_STALE_WITHIN_SESSION');
+  }
+  if (rc2?.sessionDate !== expectedSession || rc2?.sessionAligned !== true) {
+    failures.push('RC2_SESSION_NOT_ALIGNED');
+  }
+  if (time(rc2?.generatedAt) < rc2RequiredFreshAt) {
+    failures.push('RC2_STALE_WITHIN_SESSION');
+  }
+
+  if (failures.length) {
+    throw new Error(`ATOMIC_SOURCE_NOT_READY:${failures.join(',')}`);
+  }
+
+  return {
+    v17RequiredFreshAt: v17RequiredFreshAt
+      ? new Date(v17RequiredFreshAt).toISOString()
+      : null,
+    rc2RequiredFreshAt: rc2RequiredFreshAt
+      ? new Date(rc2RequiredFreshAt).toISOString()
+      : null
+  };
+}
+
 async function main() {
-  const [market, fetchStatus, sourceHealth, sessionEvidence] =
-    await Promise.all([
-      fetchJson(`${BASE}/market.json`),
-      fetchJson(`${BASE}/fetch-status.json`),
-      fetchJson(`${BASE}/source-health.json`).catch(() => ({})),
-      fetchJson(`${BASE}/stable/v16-source-session-evidence.json`).catch(() => ({}))
-    ]);
+  const [
+    market,
+    fetchStatus,
+    sourceHealth,
+    sessionEvidence,
+    priceTruth,
+    primary,
+    regime,
+    v17,
+    rc2
+  ] = await Promise.all([
+    fetchJson(`${BASE}/market.json`),
+    fetchJson(`${BASE}/fetch-status.json`),
+    fetchJson(`${BASE}/source-health.json`).catch(() => ({})),
+    fetchJson(`${BASE}/stable/v16-source-session-evidence.json`).catch(() => ({})),
+    fetchJson(`${BASE}/stable/v15-price-truth.json`),
+    fetchJson(`${BASE}/stable/v16-v169-primary-decision.json`),
+    fetchJson(`${BASE}/stable/v16-market-regime.json`),
+    fetchJson(`${BASE}/v17/ucp-current-session.json`),
+    fetchJson(`${BASE}/rc2/current-session.json`)
+  ]);
 
   const marketRows = Array.isArray(market?.rows) ? market.rows : [];
   const expectedSession =
     fetchStatus?.expectedSession ||
+    priceTruth?.expectedSession ||
+    primary?.sessionDate ||
     marketRows
-      .map((row) => row?.sourceSessionDate || row?.marketSessionDate)
+      .map(row => row?.sourceSessionDate || row?.marketSessionDate)
       .filter(Boolean)
       .sort()
       .pop() ||
@@ -111,28 +203,37 @@ async function main() {
 
   const currentSessionRows = expectedSession
     ? marketRows.filter(
-        (row) =>
+        row =>
           row?.sourceSessionDate === expectedSession ||
           row?.marketSessionDate === expectedSession
       )
     : marketRows;
 
   if (marketRows.length < MIN_MARKET_ROWS) {
-    throw new Error(
-      `Canonical market coverage too low: ${marketRows.length} rows`
-    );
+    throw new Error(`Canonical market coverage too low: ${marketRows.length} rows`);
   }
+
+  const freshness = assertAtomicSource({
+    fetchStatus,
+    priceTruth,
+    primary,
+    regime,
+    v17,
+    rc2,
+    expectedSession,
+    currentSessionRows
+  });
 
   const symbols = getEGXSymbols();
 
   const historyResults = await mapLimit(
     symbols,
     CONCURRENCY,
-    async (symbol) => {
+    async symbol => {
       const payload = await fetchJson(`${HISTORY_BASE}/${symbol}.json`);
       const sessions = Array.isArray(payload?.sessions)
         ? payload.sessions
-            .map((row) => normalizeSession(row, symbol))
+            .map(row => normalizeSession(row, symbol))
             .filter(Boolean)
             .sort((a, b) => a.date.localeCompare(b.date))
             .slice(-HISTORY_SESSIONS)
@@ -153,7 +254,7 @@ async function main() {
     }
   );
 
-  const goodHistory = historyResults.filter((item) => item?.ok);
+  const goodHistory = historyResults.filter(item => item?.ok);
   const coverage = goodHistory.length / Math.max(1, symbols.length);
 
   if (coverage < MIN_HISTORY_COVERAGE) {
@@ -162,73 +263,88 @@ async function main() {
     );
   }
 
+  const historyCurrentSymbols = goodHistory.filter(
+    item => item.lastSession === expectedSession
+  ).length;
+
   const sourceGeneratedAt =
     fetchStatus?.generatedAt ||
     market?.generatedAt ||
     new Date().toISOString();
 
+  const sourceSessionDataHash =
+    primary?.basketPlan?.sourceSessionDataHash ||
+    primary?.sourceSessionDataHash ||
+    null;
+
+  const sourceMeta = {
+    repository: 'rasheadsca-star/RAS-EGX-PRO2026-NEXT',
+    branch: 'main',
+    expectedSession,
+    sourceName: market?.source || fetchStatus?.sourceName || null,
+    executionGrade: fetchStatus?.executionGrade === true,
+    currentSessionRows: Number(
+      fetchStatus?.currentSessionRows || currentSessionRows.length
+    ),
+    sourceSessionVerifiedRows: Number(
+      fetchStatus?.sourceSessionVerifiedRows ||
+      sessionEvidence?.matchingRows ||
+      0
+    ),
+    coveragePct: Number(
+      fetchStatus?.coveragePct ||
+      sourceHealth?.coveragePct ||
+      0
+    ),
+    sourceSessionDataHash,
+    marketGeneratedAt: market?.generatedAt || null,
+    fetchStatusGeneratedAt: fetchStatus?.generatedAt || null,
+    priceTruthGeneratedAt: priceTruth?.generatedAt || null,
+    primaryDecisionGeneratedAt: primary?.generatedAt || null,
+    regimeGeneratedAt: regime?.generatedAt || null,
+    v17GeneratedAt: v17?.generatedAt || null,
+    rc2GeneratedAt: rc2?.generatedAt || null,
+    v17Session: v17?.sessionDate || null,
+    rc2Session: rc2?.sessionDate || null,
+    v17FreshRequiredAt: freshness.v17RequiredFreshAt,
+    rc2FreshRequiredAt: freshness.rc2RequiredFreshAt,
+    delayed: true,
+    atomicHandoff: true
+  };
+
   const historyIndex = {
-    schemaVersion: '4.1.0',
+    schemaVersion: '5.0.0',
     generatedAt: sourceGeneratedAt,
-    source: {
-      repository: 'rasheadsca-star/RAS-EGX-PRO2026-NEXT',
-      branch: 'main',
-      expectedSession,
-      marketGeneratedAt: market?.generatedAt || null,
-      fetchStatusGeneratedAt: fetchStatus?.generatedAt || null,
-      sourceHealthGeneratedAt: sourceHealth?.generatedAt || null,
-      sessionEvidenceGeneratedAt: sessionEvidence?.generatedAt || null
-    },
+    source: { ...sourceMeta },
     coverage: {
       registeredSymbols: symbols.length,
       loadedSymbols: goodHistory.length,
       coveragePct: Number((coverage * 100).toFixed(2)),
-      retainedSessionsPerSymbol: HISTORY_SESSIONS
+      retainedSessionsPerSymbol: HISTORY_SESSIONS,
+      currentSessionSymbols: historyCurrentSymbols
     },
     symbols: Object.fromEntries(
-      historyResults
-        .filter((item) => item?.ok)
-        .map((item) => [
-          item.symbol,
-          {
-            lastSession: item.lastSession,
-            availableSessions: item.availableSessions,
-            generatedAt: item.generatedAt,
-            primarySource: item.primarySource,
-            staleData: item.staleData,
-            updateFailed: item.updateFailed,
-            warnings: item.warnings,
-            sessions: item.sessions
-          }
-        ])
+      goodHistory.map(item => [
+        item.symbol,
+        {
+          lastSession: item.lastSession,
+          availableSessions: item.availableSessions,
+          generatedAt: item.generatedAt,
+          primarySource: item.primarySource,
+          staleData: item.staleData,
+          updateFailed: item.updateFailed,
+          warnings: item.warnings,
+          sessions: item.sessions
+        }
+      ])
     )
   };
 
   const canonicalMarket = {
-    schemaVersion: '4.1.0',
+    schemaVersion: '5.0.0',
     generatedAt: sourceGeneratedAt,
-    source: {
-      repository: 'rasheadsca-star/RAS-EGX-PRO2026-NEXT',
-      branch: 'main',
-      sourceName: market?.source || fetchStatus?.sourceName || null,
-      expectedSession,
-      executionGrade: fetchStatus?.executionGrade === true,
-      currentSessionRows: Number(
-        fetchStatus?.currentSessionRows || currentSessionRows.length
-      ),
-      sourceSessionVerifiedRows: Number(
-        fetchStatus?.sourceSessionVerifiedRows ||
-        sessionEvidence?.matchingRows ||
-        0
-      ),
-      coveragePct: Number(
-        fetchStatus?.coveragePct ||
-        sourceHealth?.coveragePct ||
-        0
-      ),
-      delayed: true
-    },
-    rows: marketRows.filter((row) => Number(row?.price) > 0)
+    source: { ...sourceMeta },
+    rows: marketRows.filter(row => Number(row?.price) > 0)
   };
 
   writeJson(
@@ -245,11 +361,16 @@ async function main() {
     JSON.stringify(
       {
         ok: true,
+        atomicHandoff: true,
         expectedSession,
+        sourceSessionDataHash,
         marketRows: canonicalMarket.rows.length,
         currentSessionRows: currentSessionRows.length,
         historySymbols: goodHistory.length,
+        historyCurrentSymbols,
         historyCoveragePct: Number((coverage * 100).toFixed(2)),
+        v17Session: v17?.sessionDate || null,
+        rc2Session: rc2?.sessionDate || null,
         source: canonicalMarket.source
       },
       null,
@@ -258,8 +379,8 @@ async function main() {
   );
 }
 
-main().catch((error) => {
-  console.error('ASTRA DAILY REFRESH FAILED');
+main().catch(error => {
+  console.error('ASTRA ATOMIC DAILY REFRESH FAILED');
   console.error(error?.stack || error?.message || error);
   process.exit(1);
 });
