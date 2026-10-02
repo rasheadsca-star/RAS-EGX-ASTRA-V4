@@ -1,7 +1,7 @@
 {
   "schemaVersion": "astra-v5-prospective-evidence/v2",
   "policyVersion": "astra-v5-prospective-evidence-policy/v2",
-  "updatedAt": "2026-10-02T21:05:52.766Z",
+  "updatedAt": "2026-10-02T21:06:40.586Z",
   "cohorts": [
     {
       "schemaVersion": "astra-v5-prospective-cohort/v1",
@@ -4227,7 +4227,7 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "رعاية صحية وأدوية",
+          "sector": "رعاية صحية ودواء",
           "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
@@ -6619,18 +6619,8 @@
           "averageNetReturnPct": null,
           "averageEntrySlippageProxyPct": null
         },
-        "رعاية صحية وأدوية": {
-          "captured": 1,
-          "resolved": 0,
-          "positive": 0,
-          "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
-        },
         "رعاية صحية ودواء": {
-          "captured": 2,
+          "captured": 3,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
