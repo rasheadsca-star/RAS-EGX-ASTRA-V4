@@ -5,6 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const { getEGXSymbols, getRegistryMeta } = require('../registry/egx-symbol-registry');
+const { loadRemoteAtomicPair } = require('../atomic-remote-store');
 
 const LEGACY_REPO =
   'https://raw.githubusercontent.com/rasheadsca-star/RAS-EGX-PRO2026-NEXT/main/data/history';
@@ -127,6 +128,23 @@ async function fetchHistory(symbol) {
   return remote;
 }
 
+function rowsFromIndex(index = {}, symbol) {
+  const entry = index?.symbols?.[symbol];
+  if (!entry || !Array.isArray(entry.sessions)) return [];
+  return entry.sessions
+    .map((row) => ({
+      date: row.date,
+      open: Number(row.open || 0),
+      high: Number(row.high || 0),
+      low: Number(row.low || 0),
+      close: Number(row.close || 0),
+      volume: Number(row.volume || 0),
+      source: row.source || entry.primarySource || 'canonical-history'
+    }))
+    .filter((row) => row.date && row.close > 0)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
 async function loadLegacyHistory(symbols = WATCHLIST) {
   const requested = Array.from(
     new Set(
@@ -136,19 +154,26 @@ async function loadLegacyHistory(symbols = WATCHLIST) {
     )
   );
 
+  const remoteAtomic = await loadRemoteAtomicPair();
   const entries = [];
 
-  for (let offset = 0; offset < requested.length; offset += BATCH_SIZE) {
-    const batch = requested.slice(offset, offset + BATCH_SIZE);
+  if (remoteAtomic.available === true) {
+    for (const symbol of requested) {
+      entries.push([symbol, rowsFromIndex(remoteAtomic.history, symbol)]);
+    }
+  } else {
+    for (let offset = 0; offset < requested.length; offset += BATCH_SIZE) {
+      const batch = requested.slice(offset, offset + BATCH_SIZE);
 
-    const batchEntries = await Promise.all(
-      batch.map(async (symbol) => [
-        symbol,
-        await fetchHistory(symbol)
-      ])
-    );
+      const batchEntries = await Promise.all(
+        batch.map(async (symbol) => [
+          symbol,
+          await fetchHistory(symbol)
+        ])
+      );
 
-    entries.push(...batchEntries);
+      entries.push(...batchEntries);
+    }
   }
 
   const loaded = entries.filter(([, data]) => data.length > 0).length;
@@ -161,6 +186,9 @@ async function loadLegacyHistory(symbols = WATCHLIST) {
       loadedSymbols: loaded,
       failedSymbols: requested.length - loaded,
       localIndex: fs.existsSync(LOCAL_INDEX_PATH),
+      runtimeHistorySource: remoteAtomic.available === true ? 'REMOTE_ATOMIC_GITHUB' : 'LOCAL_OR_LEGACY_FALLBACK',
+      remoteAtomicSession: remoteAtomic.available === true ? remoteAtomic.expectedSession : null,
+      remoteAtomicFingerprint: remoteAtomic.available === true ? remoteAtomic.sourceSessionDataHash : null,
       batchSize: BATCH_SIZE
     })
   );
@@ -173,5 +201,6 @@ module.exports = {
   BATCH_SIZE,
   loadLegacyHistory,
   fetchHistory,
-  getRegistryMeta
+  getRegistryMeta,
+  rowsFromIndex
 };
