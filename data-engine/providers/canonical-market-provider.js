@@ -5,6 +5,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadRemoteAtomicPair } = require('../atomic-remote-store');
 
 const SOURCE_BASE =
   process.env.ASTRA_CANONICAL_SOURCE_BASE ||
@@ -132,6 +133,11 @@ const canonicalMarketProvider = {
   name: 'ASTRA_ATOMIC_CANONICAL',
 
   async fetchQuotes() {
+    const remoteAtomic = await loadRemoteAtomicPair();
+    if (remoteAtomic.available === true) {
+      return quotesFromPayload(remoteAtomic.market, 'ASTRA_REMOTE_ATOMIC_GITHUB');
+    }
+
     const local = loadLocalMarket();
     if (local) return quotesFromPayload(local, 'ASTRA_ATOMIC_LOCAL');
 
