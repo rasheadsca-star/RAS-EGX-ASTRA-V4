@@ -123,6 +123,14 @@ function sectorForTicker(ticker) {
       sectorConfidence: 100
     };
   }
+  const verified = SECTOR_MAP?.publicVerifiedSymbolToSector?.[key] || null;
+  if (verified?.sector) {
+    return {
+      sector: canonicalSector(verified.sector),
+      sectorSource: 'PUBLIC_VERIFIED_MUBASHER_PROFILE',
+      sectorConfidence: 100
+    };
+  }
   const inferred = SECTOR_MAP?.inferredSymbolToSector?.[key] || null;
   if (inferred?.sector) {
     return {
@@ -802,6 +810,7 @@ function summarize(ledger) {
     open: candidates.filter(c => c.outcome?.status === 'OPEN').length,
     sectorCoverage: candidates.filter(c => Boolean(c.sector) && c.sectorSource !== 'UNCLASSIFIED').length,
     sectorExact: candidates.filter(c => c.sectorSource === 'LEGACY_SECTOR_MAP_EXACT' || c.sectorSource === 'UNIFIED_BOARD').length,
+    sectorPublicVerified: candidates.filter(c => c.sectorSource === 'PUBLIC_VERIFIED_MUBASHER_PROFILE').length,
     sectorInferredHighConfidence: candidates.filter(c => c.sectorSource === 'LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE').length,
     sectorRecorded: candidates.filter(c => Boolean(c.sector)).length,
     sectorUnclassified: candidates.filter(c => c.sectorSource === 'UNCLASSIFIED').length,
