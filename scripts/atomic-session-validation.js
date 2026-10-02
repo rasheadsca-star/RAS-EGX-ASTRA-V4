@@ -35,7 +35,19 @@ async function main() {
     ]
   };
 
-  const pairValidation = validatePair(payload, {
+  const marketCoverageFixture = {
+    ...payload,
+    rows: Array.from({ length: 80 }, (_, i) => ({
+      symbol: i === 0 ? 'AAA' : `T${i}`,
+      price: 10 + i / 10,
+      previousClose: 9.8 + i / 10,
+      volume: 1000 + i,
+      sourceSessionDate: '2026-10-01',
+      updatedAt: '2026-10-01T13:00:00.000Z'
+    }))
+  };
+
+  const pairValidation = validatePair(marketCoverageFixture, {
     schemaVersion: '5.0.0',
     generatedAt: payload.generatedAt,
     source: { ...payload.source },
