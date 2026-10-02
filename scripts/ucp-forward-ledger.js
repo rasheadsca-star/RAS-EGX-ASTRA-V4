@@ -524,6 +524,7 @@ if (require.main === module) {
 
 module.exports = {
   safeCandidate,
+  captureRr68Observation,
   historyRows,
   netReturn,
   rangeFill,
