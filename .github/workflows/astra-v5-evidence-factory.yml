@@ -51,6 +51,7 @@ jobs:
       - name: Re-validate generated evidence
         run: |
           node research/astra-v5/evidence-factory-validation.js
+          node research/astra-v5/evidence-integrity-audit.js
           node research/astra-v5/shadow-validation.js
 
       - name: Commit research evidence only
