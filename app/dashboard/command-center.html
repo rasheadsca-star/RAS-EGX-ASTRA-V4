@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar" dir="rtl">
 <head>
-<title>ASTRA V4 Command Center</title>
+<title>مركز أوامر ASTRA V4</title>
 <style>
-body{font-family:Arial,sans-serif;background:#070d18;color:#fff;padding:30px}
+body{font-family:Arial,sans-serif;background:#070d18;color:#fff;padding:30px;direction:rtl;text-align:right}
 .card{background:#162033;border-radius:14px;padding:22px;margin:16px 0}
 .status{color:#4ade80;font-weight:bold}
 .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
@@ -14,91 +14,91 @@ body{font-family:Arial,sans-serif;background:#070d18;color:#fff;padding:30px}
 .ready{color:#4ade80}.blocked{color:#f87171}.warn{color:#facc15}.muted{color:#94a3b8}
 .buy{color:#4ade80}.watch{color:#facc15}
 table{width:100%;border-collapse:collapse;font-size:13px}
-td,th{padding:11px 8px;border-bottom:1px solid #334155;text-align:left}
+td,th{padding:11px 8px;border-bottom:1px solid #334155;text-align:right}
 th{color:#94a3b8;font-size:11px;text-transform:uppercase}
-.small{font-size:11px;color:#94a3b8;margin-top:8px}
+.small{font-size:11px;color:#94a3b8;margin-top:8px}.ltr{direction:ltr;text-align:left}.num{direction:ltr;unicode-bidi:embed;white-space:nowrap}
 @media(max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:700px){body{padding:15px}.grid{grid-template-columns:repeat(2,1fr)}table{font-size:11px}.card{overflow:auto}}
 </style>
 </head>
 <body>
-<h1>ASTRA V4 Command Center</h1>
+<h1>مركز أوامر ASTRA V4</h1>
 
 <div class="card">
-  <h2>Engine Status</h2>
-  <div id="engine" class="status">Checking...</div>
-  <p id="health">Loading data health...</p>
-  <div class="small" id="deployment">Deployment: -</div>
+  <h2>حالة المحرك</h2>
+  <div id="engine" class="status">جاري الفحص...</div>
+  <p id="health">جاري تحميل حالة البيانات...</p>
+  <div class="small" id="deployment">النشر: -</div>
 </div>
 
 <div class="grid">
-  <div class="metric"><div class="label">Market</div><div class="value">EGX</div></div>
-  <div class="metric"><div class="label">Engine</div><div class="value">ASTRA V4</div></div>
-  <div class="metric"><div class="label">Data Mode</div><div class="value" id="mode">-</div></div>
-  <div class="metric"><div class="label">Live Feed</div><div class="value" id="live">-</div></div>
-  <div class="metric"><div class="label">Entry Opportunities</div><div class="value" id="entryCount">-</div></div>
-  <div class="metric"><div class="label">Paper Ready</div><div class="value" id="paper">-</div></div>
+  <div class="metric"><div class="label">السوق</div><div class="value">EGX</div></div>
+  <div class="metric"><div class="label">المحرك</div><div class="value">ASTRA V4</div></div>
+  <div class="metric"><div class="label">وضع البيانات</div><div class="value" id="mode">-</div></div>
+  <div class="metric"><div class="label">تغذية السوق</div><div class="value" id="live">-</div></div>
+  <div class="metric"><div class="label">فرص الدخول</div><div class="value" id="entryCount">-</div></div>
+  <div class="metric"><div class="label">جاهز للمحاكاة</div><div class="value" id="paper">-</div></div>
 </div>
 
 <div class="card">
-  <h2>Unified Opportunity Board</h2>
-  <div class="small" id="unifiedSummary">Combines ASTRA Native + RC2 + RR68 on one comparable scale. Confidence is shown separately because it currently duplicates ASTRA technical score.</div>
+  <h2>لوحة الفرص الموحدة</h2>
+  <div class="small" id="unifiedSummary">تجمع ASTRA Native وRC2 وRR68 في مقياس موحد للمقارنة. يتم عرض الثقة بشكل منفصل لأنها تكرر حاليًا التقييم الفني في ASTRA.</div>
   <table>
     <thead>
       <tr>
-        <th>Rank</th>
-        <th>Symbol</th>
-        <th>Source</th>
-        <th>Unified</th>
-        <th>Technical</th>
-        <th>Research</th>
-        <th>Confidence</th>
-        <th>Risk</th>
-        <th>Liq.</th>
-        <th>S/R</th>
-        <th>Struct. RR</th>
-        <th>Entry Zone</th>
-        <th>Stop</th>
-        <th>Target 1</th>
-        <th>Target 2</th>
-        <th>Morning</th>
+        <th>الترتيب</th>
+        <th>السهم</th>
+        <th>المصدر</th>
+        <th>التقييم الموحد</th>
+        <th>فني</th>
+        <th>بحثي</th>
+        <th>الثقة</th>
+        <th>المخاطرة</th>
+        <th>السيولة</th>
+        <th>دعم/مقاومة</th>
+        <th>عائد/مخاطرة</th>
+        <th>منطقة الدخول</th>
+        <th>وقف الخسارة</th>
+        <th>الهدف 1</th>
+        <th>الهدف 2</th>
+        <th>تأكيد الصباح</th>
       </tr>
     </thead>
     <tbody id="unifiedBoard">
-      <tr><td colspan="16">Loading unified opportunity board...</td></tr>
+      <tr><td colspan="16">جاري تحميل لوحة الفرص الموحدة...</td></tr>
     </tbody>
   </table>
-  <div class="small">Unified weights: Technical 20% · Research 25% · Liquidity 10% · S/R 10% · Structural RR 15% · Risk Safety 15% · Data Quality 5%. Entry/Stop/Targets are the research trade plan when available. This is not an execution instruction.</div>
+  <div class="small">الأوزان الموحدة: فني 20% · بحثي 25% · سيولة 10% · دعم/مقاومة 10% · عائد/مخاطرة 15% · أمان المخاطرة 15% · جودة البيانات 5%. نقاط الدخول والوقف والأهداف هي خطة بحثية وليست أمر تنفيذ.</div>
 </div>
 
 <div class="card">
-  <h2>Entry Opportunities — ASTRA Native</h2>
-  <div class="small" id="summary">Loading...</div>
+  <h2>فرص الدخول — ASTRA Native</h2>
+  <div class="small" id="summary">جاري التحميل...</div>
   <table>
     <thead>
       <tr>
-        <th>Symbol</th>
-        <th>Signal</th>
-        <th>Entry</th>
-        <th>Target 1</th>
-        <th>Target 2</th>
-        <th>Target 3</th>
-        <th>Stop</th>
-        <th>Confidence</th>
-        <th>Risk</th>
-        <th>Paper</th>
+        <th>السهم</th>
+        <th>التوصية</th>
+        <th>الدخول</th>
+        <th>الهدف 1</th>
+        <th>الهدف 2</th>
+        <th>الهدف 3</th>
+        <th>وقف الخسارة</th>
+        <th>الثقة</th>
+        <th>المخاطرة</th>
+        <th>المحاكاة</th>
       </tr>
     </thead>
     <tbody id="signals">
-      <tr><td colspan="10">Loading ASTRA entry opportunities...</td></tr>
+      <tr><td colspan="10">جاري تحميل فرص الدخول...</td></tr>
     </tbody>
   </table>
 </div>
 
 <div class="card">
-  <h2>Watchlist — No Entry</h2>
-  <div class="small">These symbols do not currently meet ASTRA's entry criteria. They are not short recommendations.</div>
-  <div id="watchlist">Loading watchlist...</div>
+  <h2>قائمة المراقبة — بدون دخول حاليًا</h2>
+  <div class="small">هذه الأسهم لا تحقق شروط الدخول حاليًا. وجودها في القائمة لا يعني توصية بيع.</div>
+  <div id="watchlist">جاري تحميل قائمة المراقبة...</div>
 </div>
 
 <script>
@@ -112,11 +112,86 @@ function esc(value){
   return String(value??'-').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+const AR={
+  source:{
+    RC2_FROZEN:'RC2 معتمد',
+    RR68_CHALLENGER:'مرشح RR68',
+    RC2_NEAR_MISS:'قريب من التأهل RC2',
+    ASTRA_NATIVE_ENTRY:'فرصة دخول ASTRA',
+    ASTRA_NATIVE_WATCH:'مراقبة ASTRA',
+    REJECTED:'مرفوض',
+    UNKNOWN:'غير معروف'
+  },
+  signal:{
+    BUY:'شراء',
+    STRONG_BUY:'شراء قوي',
+    WATCH:'مراقبة',
+    HOLD:'احتفاظ',
+    SELL:'بيع',
+    REJECTED:'مرفوض'
+  },
+  risk:{
+    LOW:'منخفضة',
+    MEDIUM:'متوسطة',
+    HIGH:'مرتفعة',
+    UNKNOWN:'غير محددة'
+  },
+  morning:{
+    PREPARED:'جاهز للتأكيد الصباحي',
+    WAITING_NEXT_SESSION:'انتظار الجلسة التالية',
+    WAITING_DATA:'انتظار البيانات',
+    CONFIRMED:'مؤكد صباحًا',
+    CONFIRMED_RESEARCH_ONLY:'مؤكد بحثيًا',
+    WATCH:'مراقبة صباحية',
+    REJECTED:'مرفوض صباحًا',
+    NO_CANDIDATES:'لا توجد فرص مؤهلة',
+    NOT_PREPARED:'غير مجهز',
+    UNCONFIRMED_DATA_GAP:'غير مؤكد بسبب نقص البيانات',
+    DEGRADED_EVIDENCE:'بيانات التأكيد غير مكتملة'
+  },
+  reason:{
+    CORE_SCORE_LOW:'التقييم الأساسي أقل من المطلوب',
+    RESEARCH_SCORE_LOW:'التقييم البحثي أقل من المطلوب',
+    STRUCTURAL_RR_LOW:'العائد مقابل المخاطرة أقل من المطلوب',
+    QUALITY_BLOCKED:'جودة البيانات لا تسمح بالتأهيل',
+    LIQUIDITY_GATE_FAIL:'السيولة أقل من الحد المطلوب',
+    SR_CONFLUENCE_FAIL:'توافق الدعم والمقاومة غير كافٍ',
+    DO_NOT_CHASE:'السعر ممتد ولا يفضل مطاردته',
+    TRADE_PLAN_UNAVAILABLE:'خطة التداول غير متاحة',
+    MORNING_SOURCE_TOO_EARLY:'بيانات الصباح أقدم من نافذة التقييم',
+    MORNING_SOURCE_TOO_LATE:'بيانات الصباح خارج نافذة التقييم',
+    MORNING_EVIDENCE_UNAVAILABLE_AFTER_GRACE:'تعذر اكتمال بيانات التأكيد الصباحي',
+    V2_4_MORNING_CONFIRMATION_PENDING:'التأكيد الصباحي ما زال معلقًا',
+    FORWARD_VALIDATION_REQUIRED:'يلزم تحقق مستقبلي إضافي',
+    RR68_CHALLENGER_FORWARD_VALIDATION_REQUIRED:'مرشح RR68 يحتاج تحققًا مستقبليًا',
+    VALIDATION_REQUIRED:'يلزم تحقق إضافي'
+  }
+};
+
+function arLookup(group,value){
+  const key=String(value??'').trim().toUpperCase();
+  return AR[group]?.[key]||String(value??'-');
+}
+
+function arReason(value){
+  if(!value) return 'يلزم تحقق إضافي';
+  const direct=arLookup('reason',value);
+  if(direct!==String(value)) return direct;
+  return String(value)
+    .replace(/entry/ig,'الدخول')
+    .replace(/target/ig,'الهدف')
+    .replace(/stop/ig,'وقف الخسارة')
+    .replace(/risk/ig,'المخاطرة')
+    .replace(/confidence/ig,'الثقة')
+    .replace(/liquidity/ig,'السيولة')
+    .replace(/validation required/ig,'يلزم تحقق إضافي');
+}
+
 function sourceBadge(source){
-  const label=source||'UNKNOWN';
-  const cls=label==='RC2_FROZEN'?'ready':
-    label==='RR68_CHALLENGER'?'warn':
-    label==='RC2_NEAR_MISS'?'warn':'muted';
+  const label=arLookup('source',source||'UNKNOWN');
+  const cls=source==='RC2_FROZEN'?'ready':
+    source==='RR68_CHALLENGER'?'warn':
+    source==='RC2_NEAR_MISS'?'warn':'muted';
   return '<span class="badge '+cls+'">'+esc(label)+'</span>';
 }
 
@@ -143,14 +218,14 @@ function entryZoneCell(item){
 
 function paperCell(item){
   if(item.executionReady===true){
-    return '<span class="badge ready">PAPER READY</span>';
+    return '<span class="badge ready">جاهز للمحاكاة</span>';
   }
   const blockers=(item.executionBlockers||[]).slice(0,2).join(', ');
-  return '<span class="badge blocked">BLOCKED</span><div class="small">'+esc(blockers||'Validation required')+'</div>';
+  return '<span class="badge blocked">غير جاهز</span><div class="small">'+esc(blockers?blockers.split(', ').map(arReason).join('، '):'يلزم تحقق إضافي')+'</div>';
 }
 
 async function loadSignals(){
-  document.getElementById('deployment').innerText='Deployment: checking...';
+  document.getElementById('deployment').innerText='النشر: جاري الفحص...';
 
   try{
     const [data,h,unified]=await Promise.all([
@@ -170,22 +245,22 @@ async function loadSignals(){
       (data.executionReadyCount||0)+' / '+rows.length;
 
     document.getElementById('summary').innerText=
-      (rows.length||0)+' entry opportunities · '+
-      (data.dataSource||'-')+' · updated '+
-      new Date(data.updatedAt||Date.now()).toLocaleString();
+      'عدد فرص الدخول: '+(rows.length||0)+' · المصدر: '+
+      (data.dataSource||'-')+' · آخر تحديث: '+
+      new Date(data.updatedAt||Date.now()).toLocaleString('ar-EG');
 
     document.getElementById('unifiedSummary').innerText=
-      (unifiedRows.length||0)+' ranked rows shown · session '+
+      'يتم عرض '+(unifiedRows.length||0)+' سهمًا مرتبًا · جلسة '+
       (unified.sessionDate||'-')+
-      ' · UCP '+(unified.ucpStatus||'-')+
-      ' · Confidence displayed separately, not double-counted';
+      ' · حالة UCP: '+(unified.ucpStatus||'-')+
+      ' · الثقة معروضة بشكل منفصل ولا يتم احتسابها مرتين';
 
     document.getElementById('unifiedBoard').innerHTML=unifiedRows.length
       ? unifiedRows.map(x=>{
           const conf=x.confidence&&x.confidence.value!=null?x.confidence.value:'-';
-          const risk=(x.riskLevel||'UNKNOWN')+
-            (x.stopRiskPct!=null?' / '+Number(x.stopRiskPct).toFixed(1)+'% stop':'');
-          const morning=x.morningStatus||'NOT_PREPARED';
+          const risk=arLookup('risk',x.riskLevel||'UNKNOWN')+
+            (x.stopRiskPct!=null?' / وقف '+Number(x.stopRiskPct).toFixed(1)+'%':'');
+          const morning=arLookup('morning',x.morningStatus||'NOT_PREPARED');
           const selected=x.selectedByUcp===true?' ★':'';
           return '<tr>'+
             '<td>'+esc(x.unifiedRank)+'</td>'+
@@ -212,38 +287,39 @@ async function loadSignals(){
       ? rows.map(x=>{
           return '<tr>'+
             '<td><b>'+esc(x.symbol)+'</b></td>'+
-            '<td class="buy">'+esc(x.signal)+'</td>'+
+            '<td class="buy">'+esc(arLookup('signal',x.signal))+'</td>'+
             '<td>'+esc(x.entry)+'</td>'+
             '<td>'+esc(x.target1)+'</td>'+
             '<td>'+esc(x.target2)+'</td>'+
             '<td>'+esc(x.target3)+'</td>'+
             '<td>'+esc(x.stopLoss)+'</td>'+
             '<td>'+esc(x.confidence)+'</td>'+
-            '<td>'+esc(x.riskLevel)+'</td>'+
+            '<td>'+esc(arLookup('risk',x.riskLevel))+'</td>'+
             '<td>'+paperCell(x)+'</td>'+
           '</tr>';
         }).join('')
-      : '<tr><td colspan="10">No entry opportunities currently. ASTRA is not converting bearish/weak setups into short entries.</td></tr>';
+      : '<tr><td colspan="10">لا توجد فرص دخول مؤهلة حاليًا. ASTRA لا يحول الإشارات الضعيفة أو الهابطة تلقائيًا إلى توصيات بيع.</td></tr>';
 
     document.getElementById('watchlist').innerHTML=watch.length
-      ? '<table><thead><tr><th>Symbol</th><th>Status</th><th>Confidence</th><th>Risk</th><th>Reason</th></tr></thead><tbody>'+
+      ? '<table><thead><tr><th>السهم</th><th>Status</th><th>الثقة</th><th>المخاطرة</th><th>Reason</th></tr></thead><tbody>'+
         watch.map(x=>'<tr>'+
           '<td><b>'+esc(x.symbol)+'</b></td>'+
-          '<td class="watch">WATCH</td>'+
+          '<td class="watch">مراقبة</td>'+
           '<td>'+esc(x.confidence)+'</td>'+
-          '<td>'+esc(x.riskLevel)+'</td>'+
-          '<td>'+esc(x.reason)+'</td>'+
+          '<td>'+esc(arLookup('risk',x.riskLevel))+'</td>'+
+          '<td>'+esc(arReason(x.reason))+'</td>'+
         '</tr>').join('')+
         '</tbody></table>'
-      : '<div class="muted">No watchlist items.</div>';
+      : '<div class="muted">لا توجد أسهم في قائمة المراقبة.</div>';
 
     document.getElementById('health').innerText=
-      h.message||h.engineStatus||'Data health checked';
+      h.message||arLookup('morning',h.engineStatus)||'تم فحص حالة البيانات';
 
     document.getElementById('engine').innerText=
-      h.engineStatus==='LIVE_READY'?'LIVE READY':
-      h.engineStatus==='HISTORICAL_READY'?'HISTORICAL READY':
-      h.engineStatus||'DEGRADED';
+      h.engineStatus==='LIVE_READY'?'جاهز ببيانات السوق':
+      h.engineStatus==='HISTORICAL_READY'?'جاهز بالبيانات التاريخية':
+      h.engineStatus==='DELAYED_READY'?'جاهز ببيانات متأخرة':
+      h.engineStatus||'حالة منخفضة';
 
     document.getElementById('engine').className=
       h.engineStatus==='LIVE_READY'||h.engineStatus==='HISTORICAL_READY'
@@ -251,17 +327,17 @@ async function loadSignals(){
         : 'blocked';
 
     document.getElementById('deployment').innerText=
-      'Deployment: '+(data.deploymentCommit||'unknown');
+      'النشر: '+(data.deploymentCommit||'غير معروف');
   }catch(e){
     document.getElementById('unifiedBoard').innerHTML=
-      '<tr><td colspan="16">Unified board unavailable</td></tr>';
+      '<tr><td colspan="16">لوحة الفرص الموحدة غير متاحة حاليًا</td></tr>';
     document.getElementById('signals').innerHTML=
-      '<tr><td colspan="10">Runtime data unavailable</td></tr>';
-    document.getElementById('watchlist').innerText='Runtime data unavailable';
-    document.getElementById('engine').innerText='DEGRADED';
+      '<tr><td colspan="10">بيانات التشغيل غير متاحة حاليًا</td></tr>';
+    document.getElementById('watchlist').innerText='بيانات التشغيل غير متاحة حاليًا';
+    document.getElementById('engine').innerText='حالة منخفضة';
     document.getElementById('engine').className='blocked';
-    document.getElementById('health').innerText='Waiting for API connection';
-    document.getElementById('deployment').innerText='Deployment: unavailable';
+    document.getElementById('health').innerText='في انتظار الاتصال بواجهة البيانات';
+    document.getElementById('deployment').innerText='النشر: غير متاح';
   }
 }
 
