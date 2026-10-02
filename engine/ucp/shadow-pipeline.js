@@ -48,14 +48,35 @@ async function runUcpShadowPipeline({
   const sessionDate = quality.expectedSession || null;
   const rc2 = await loadRc2ShadowScan({ ...rc2Options, expectedSession: sessionDate });
   const rc2Candidates = rc2.sessionAligned === true ? (rc2.candidates || []) : [];
+  const rr68 = rc2.challenger || Object.freeze({
+    published: false,
+    available: false,
+    status: 'NOT_PUBLISHED',
+    candidates: Object.freeze([])
+  });
+  const rr68Candidates = rr68.available === true && rr68.sessionAligned === true
+    ? (rr68.candidates || [])
+    : [];
+
+  const candidatePoolMap = new Map();
+  for (const candidate of rc2Candidates) {
+    if (candidate?.ticker) candidatePoolMap.set(candidate.ticker, candidate);
+  }
+  for (const candidate of rr68Candidates) {
+    if (candidate?.ticker && !candidatePoolMap.has(candidate.ticker)) {
+      candidatePoolMap.set(candidate.ticker, candidate);
+    }
+  }
+  const morningCandidatePool = Object.freeze([...candidatePoolMap.values()]);
+
   const v17 = await loadV17Governance({
     ...v17Options,
     requiredSession: sessionDate,
-    candidates: rc2Candidates
+    candidates: morningCandidatePool
   });
   const forward = loadForwardLedger(forwardOptions.filePath);
 
-  const preparedCandidates = prepareCandidates(rc2Candidates, {
+  const preparedCandidates = prepareCandidates(morningCandidatePool, {
     preparedFromSession: sessionDate,
     dataGatePass: dataGate.pass
   });
@@ -99,6 +120,8 @@ async function runUcpShadowPipeline({
   if (!dataGate.pass) blockers.push('DATA_QUALITY_GATE_FAILED');
   if (!rc2.available) blockers.push('RC2_SHADOW_UNAVAILABLE');
   if (rc2.available && rc2.sessionAligned !== true) blockers.push('RC2_SESSION_ALIGNMENT_REQUIRED');
+  if (rr68.published === true && rr68.available !== true) blockers.push('RR68_CHALLENGER_CONTRACT_FAILED');
+  if (rr68Candidates.length) blockers.push('RR68_CHALLENGER_FORWARD_VALIDATION_REQUIRED');
   if (!v17.available) blockers.push('V17_GOVERNANCE_UNAVAILABLE');
   if (v17.available && !v17.policySafe) blockers.push('V17_POLICY_CONTRACT_FAILED');
   if (v17.available && !v17.sessionAligned) blockers.push('V17_SESSION_ALIGNMENT_REQUIRED');
@@ -119,7 +142,20 @@ async function runUcpShadowPipeline({
     alpha: {
       engineId: rc2.engineId,
       status: rc2.status,
-      candidates: rc2Candidates
+      candidates: rc2Candidates,
+      challengers: rr68.published === true ? [{
+        id: rr68.id,
+        baseEngine: rr68.baseEngine,
+        status: rr68.status,
+        sessionDate: rr68.sessionDate,
+        sessionAligned: rr68.sessionAligned === true,
+        researchOnly: true,
+        executionAllowed: false,
+        automaticPromotionAllowed: false,
+        policyDiff: rr68.policyDiff || null,
+        historicalEvidenceRef: rr68.historicalEvidenceRef || null,
+        candidates: rr68Candidates
+      }] : []
     },
     governance: {
       engineId: v17.id,
@@ -167,7 +203,9 @@ async function runUcpShadowPipeline({
       sourceSession: sessionDate,
       notes: [
         'RC2 is consumed read-only from an exact-session persisted research snapshot, with a live exact-session fallback only.',
-        'A zero-candidate RC2 scan is a valid research outcome and never causes an invented recommendation.',
+        'A zero-candidate frozen RC2 scan is a valid research outcome and never causes an invented Champion recommendation.',
+        'RR68 is an isolated research comparison path selected from documented sensitivity analysis; it never mutates the frozen RC2 policy.',
+        'RR68 candidates can enter the V17/V2.4 research observation path but remain non-executable and require their own prospective validation.',
         'V17 UCP governance is fail-closed and requires an exact current-session snapshot with safe permissions.',
         'External consensus is diagnostic only and cannot make an exact-session V17 snapshot stale.',
         'V2.4 morning confirmation never re-ranks the frozen RC2 list.',
@@ -209,6 +247,23 @@ async function runUcpShadowPipeline({
         summary: rc2.summary || null,
         rejectionReasonCounts: rc2.rejectionReasonCounts || {},
         rejectedSample: rc2.rejectedSample || [],
+        challenger: Object.freeze({
+          published: rr68.published === true,
+          available: rr68.available === true,
+          status: rr68.status || 'NOT_PUBLISHED',
+          id: rr68.id || null,
+          baseEngine: rr68.baseEngine || null,
+          sessionDate: rr68.sessionDate || null,
+          sessionAligned: rr68.sessionAligned === true,
+          researchOnly: rr68.researchOnly === true,
+          executionAllowed: false,
+          automaticPromotionAllowed: false,
+          policyDiff: rr68.policyDiff || null,
+          historicalEvidenceRef: rr68.historicalEvidenceRef || null,
+          candidateCount: rr68Candidates.length,
+          candidates: rr68Candidates,
+          error: rr68.error || null
+        }),
         error: rc2.error || null
       }),
       v17: Object.freeze({
