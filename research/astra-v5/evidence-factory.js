@@ -6,6 +6,7 @@ const crypto = require('crypto');
 
 const { trainProspectiveModel } = require('./prospective-calibration');
 const { DEFAULT_POLICY: MODEL_POLICY } = require('./institutional-decision-engine');
+const SECTOR_MAP = require('./sector-map.json');
 
 const ROOT = __dirname;
 const LEDGER_PATH = path.join(ROOT, 'data', 'prospective-evidence.json');
@@ -104,6 +105,15 @@ async function fetchJson(url, attempts = 4) {
   throw lastError || new Error('FETCH_FAILED');
 }
 
+function sectorForTicker(ticker) {
+  const key = String(ticker || '').toUpperCase();
+  const mapped = SECTOR_MAP?.symbolToSector?.[key] || null;
+  return {
+    sector: mapped || SECTOR_MAP.unknownLabel || 'غير مصنف',
+    sectorSource: mapped ? 'LEGACY_SECTOR_MAP_EXACT' : 'UNCLASSIFIED'
+  };
+}
+
 function tradePlan(row = {}) {
   const entryLow = finite(row.entryLow ?? row.entry);
   const entryHigh = finite(row.entryHigh ?? row.entry);
@@ -176,8 +186,13 @@ function eligibleObservationRows(board = {}) {
       crossSectionalScore: finite(row.crossSectionalScore),
       scoreCoveragePct: finite(row.scoreCoveragePct),
       riskLevel: row.riskLevel || 'UNKNOWN',
-      sector: row.sector || row.sectorName || null,
-      sectorSource: row.sector || row.sectorName ? (row.sectorSource || 'UNIFIED_BOARD') : 'UNAVAILABLE',
+      ...(() => {
+        if (row.sector || row.sectorName) return {
+          sector: row.sector || row.sectorName,
+          sectorSource: row.sectorSource || 'UNIFIED_BOARD'
+        };
+        return sectorForTicker(row.ticker);
+      })(),
       morningAtCapture: row.morningStatus || 'NOT_PREPARED',
       reasonCodes: Array.isArray(row.reasonCodes) ? [...row.reasonCodes] : [],
       tradePlan: plan,
@@ -594,6 +609,50 @@ async function resolveLedger(ledger, now = new Date().toISOString()) {
   return { changed, updated };
 }
 
+function backfillObservationMetadata(ledger) {
+  let changed = 0;
+  for (const cohort of ledger.cohorts || []) {
+    for (const candidate of cohort.candidates || []) {
+      if (!candidate.sector || candidate.sectorSource === 'UNAVAILABLE') {
+        const mapped = sectorForTicker(candidate.ticker);
+        candidate.sector = mapped.sector;
+        candidate.sectorSource = mapped.sectorSource;
+        changed += 1;
+      }
+      if (!candidate.decisionMarketState) {
+        candidate.decisionMarketState = {
+          sessionDate: cohort.decisionSessionDate || null,
+          generatedAt: cohort.boardGeneratedAt || null,
+          regime: cohort.marketRegime?.regime || 'UNKNOWN',
+          regimeScore: finite(cohort.marketRegime?.score),
+          regimeRiskMultiplier: finite(cohort.marketRegime?.riskMultiplier),
+          maxTradeRiskPct: finite(cohort.marketRegime?.maxTradeRiskPct),
+          unifiedRank: finite(candidate.unifiedRank),
+          unifiedScore: finite(candidate.unifiedScore),
+          crossSectionalRank: finite(candidate.crossSectionalRank),
+          crossSectionalScore: finite(candidate.crossSectionalScore),
+          dataQualityScore: finite(candidate.features?.dataQualityScore),
+          liquidityScore: finite(candidate.features?.liquidityScore)
+        };
+        changed += 1;
+      }
+      if (!candidate.slippage) {
+        candidate.slippage = {
+          estimatedPct: finite(candidate.tradePlan?.slippagePct) ?? POLICY.slippagePct,
+          realizedProxyPct: finite(candidate.outcome?.entrySlippageProxyPct),
+          measurement: candidate.outcome?.slippageMeasurement || 'NOT_YET_OBSERVED'
+        };
+        changed += 1;
+      }
+      if (candidate.evidenceVersion !== 2) {
+        candidate.evidenceVersion = 2;
+        changed += 1;
+      }
+    }
+  }
+  return changed;
+}
+
 function trainingRecords(ledger) {
   const records = [];
   for (const cohort of ledger.cohorts || []) {
@@ -659,7 +718,9 @@ function summarize(ledger) {
     negativeOutcomes: negative,
     notEntered: candidates.filter(c => c.outcome?.status === 'NOT_ENTERED').length,
     open: candidates.filter(c => c.outcome?.status === 'OPEN').length,
-    sectorCoverage: candidates.filter(c => Boolean(c.sector)).length,
+    sectorCoverage: candidates.filter(c => Boolean(c.sector) && c.sectorSource !== 'UNCLASSIFIED').length,
+    sectorRecorded: candidates.filter(c => Boolean(c.sector)).length,
+    sectorUnclassified: candidates.filter(c => c.sectorSource === 'UNCLASSIFIED').length,
     morningEvidenceCaptured: candidates.filter(c => Array.isArray(c.morningEvidence) && c.morningEvidence.length > 0).length,
     slippageProxyObserved: candidates.filter(c => finite(c.outcome?.entrySlippageProxyPct) !== null).length,
     observedCalendarDays: observedCalendarDays(ledger.cohorts || []),
@@ -700,6 +761,7 @@ async function cycle() {
   });
 
   const { board, ucp } = await fetchProductionEvidence();
+  const metadataBackfillCount = backfillObservationMetadata(ledger);
   const capture = captureCohort(ledger, board, ucp, now);
   const morning = enrichMorning(ledger, board, ucp, now);
   const resolution = await resolveLedger(ledger, now);
@@ -724,6 +786,7 @@ async function cycle() {
     productionSessionDate: board.sessionDate,
     targetSessionDate: ucp?.snapshot?.morningConfirmation?.targetSessionDate || null,
     productionDeploymentCommit: board.deploymentCommit || ucp.deploymentCommit || null,
+    metadataBackfillCount,
     capture: {
       changed: capture.changed,
       reason: capture.reason,
@@ -763,11 +826,13 @@ module.exports = {
   tradePlan,
   featureSnapshot,
   eligibleObservationRows,
+  sectorForTicker,
   captureCohort,
   enrichMorning,
   historyRows,
   simulatedFill,
   resolveOutcome,
+  backfillObservationMetadata,
   trainingRecords,
   summarize,
   finalize,
