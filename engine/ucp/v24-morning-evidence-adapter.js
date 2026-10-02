@@ -56,6 +56,10 @@ function normalizeFullEvidence(payload = {}, candidates = []) {
     latestSourceMinute: Number.isFinite(Number(payload.latestSourceMinute)) ? Number(payload.latestSourceMinute) : null,
     marketCoveragePct: Number.isFinite(Number(payload.marketCoveragePct)) ? Number(payload.marketCoveragePct) : null,
     evidenceByTicker: Object.freeze(output),
+    policy: Object.freeze({ ...(payload.policy || {}) }),
+    resilience: Object.freeze({ ...(payload.resilience || {}) }),
+    collectorMinute: Number.isFinite(Number(payload.collectorMinute)) ? Number(payload.collectorMinute) : null,
+    sourceTimingModes: Object.freeze(Array.isArray(payload.sourceTimingModes) ? [...payload.sourceTimingModes] : []),
     reason: payload.completeSource === true ? null : 'REAL_MORNING_EVIDENCE_INCOMPLETE'
   });
 }
