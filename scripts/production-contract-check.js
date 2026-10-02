@@ -55,9 +55,12 @@ function assertUcpShadowContract(ucp) {
 
   const snapshotSession = ucp.snapshot?.sessionDate || null;
   const rc2 = ucp.diagnostics?.rc2;
+  const rr68 = rc2?.challenger;
   const v17 = ucp.diagnostics?.v17;
   assert(rc2 && typeof rc2 === 'object', JSON.stringify(ucp));
+  assert(rr68 && typeof rr68 === 'object', JSON.stringify(ucp));
   assert(v17 && typeof v17 === 'object', JSON.stringify(ucp));
+  assert(Array.isArray(ucp.snapshot?.alpha?.challengers), JSON.stringify(ucp));
 
   if (ucp.status === 'SHADOW_READY') {
     assert.strictEqual(rc2.engineId, 'TFE_V20_FUSION_RC2', JSON.stringify(ucp));
@@ -73,6 +76,37 @@ function assertUcpShadowContract(ucp) {
     assert(!ucp.snapshot.decision.blockers.includes('RC2_SESSION_ALIGNMENT_REQUIRED'), JSON.stringify(ucp));
     assert(!ucp.snapshot.decision.blockers.includes('V17_SESSION_ALIGNMENT_REQUIRED'), JSON.stringify(ucp));
     assert(!ucp.snapshot.decision.blockers.includes('V17_SOURCE_STATUS_NOT_CURRENT'), JSON.stringify(ucp));
+  }
+
+  if (rr68.published === true) {
+    assert.strictEqual(rr68.id, 'TFE_V20_FUSION_RC2_RR68_CHALLENGER', JSON.stringify(rr68));
+    assert.strictEqual(rr68.baseEngine, 'TFE_V20_FUSION_RC2', JSON.stringify(rr68));
+    assert.strictEqual(rr68.available, true, JSON.stringify(rr68));
+    assert.strictEqual(rr68.sessionAligned, true, JSON.stringify(rr68));
+    assert.strictEqual(rr68.sessionDate, snapshotSession, JSON.stringify({ snapshotSession, rr68 }));
+    assert.strictEqual(rr68.researchOnly, true, JSON.stringify(rr68));
+    assert.strictEqual(rr68.executionAllowed, false, JSON.stringify(rr68));
+    assert.strictEqual(rr68.automaticPromotionAllowed, false, JSON.stringify(rr68));
+    assert.strictEqual(Number(rr68.policyDiff?.minStructuralNetRR?.frozenChampion), 0.70, JSON.stringify(rr68));
+    assert.strictEqual(Number(rr68.policyDiff?.minStructuralNetRR?.challenger), 0.68, JSON.stringify(rr68));
+
+    const alphaRr68 = ucp.snapshot.alpha.challengers.find((item) => item.id === rr68.id);
+    assert(alphaRr68, JSON.stringify(ucp.snapshot.alpha));
+    assert.strictEqual(alphaRr68.executionAllowed, false, JSON.stringify(alphaRr68));
+    assert.strictEqual(alphaRr68.candidates.length, Number(rr68.candidateCount || 0), JSON.stringify({ alphaRr68, rr68 }));
+
+    for (const item of rr68.candidates || []) {
+      assert.strictEqual(item.candidateSource, 'TFE_V20_FUSION_RC2_RR68_CHALLENGER', JSON.stringify(item));
+      assert.strictEqual(item.challengerResearchOnly, true, JSON.stringify(item));
+      assert(Number(item.structuralNetRR) >= 0.68, JSON.stringify(item));
+      assert.strictEqual(item.publicationHold, false, JSON.stringify(item));
+    }
+
+    if (Number(rr68.candidateCount || 0) > 0) {
+      assert(ucp.snapshot.decision.blockers.includes('RR68_CHALLENGER_FORWARD_VALIDATION_REQUIRED'), JSON.stringify(ucp));
+      const preparedTickers = new Set((ucp.snapshot.morningConfirmation.preparedCandidates || []).map((item) => item.ticker));
+      for (const item of rr68.candidates || []) assert(preparedTickers.has(item.ticker), JSON.stringify({ preparedTickers:[...preparedTickers], rr68 }));
+    }
   }
 
   assert.strictEqual(ucp.snapshot?.governance?.executionAllowed, false, JSON.stringify(ucp));
@@ -206,6 +240,9 @@ async function main() {
     ucpRc2Session: ucp.diagnostics?.rc2?.sessionDate,
     ucpRc2SessionAligned: ucp.diagnostics?.rc2?.sessionAligned,
     ucpRc2Candidates: ucp.snapshot?.alpha?.candidates?.length || 0,
+    ucpRr68Published: ucp.diagnostics?.rc2?.challenger?.published,
+    ucpRr68Available: ucp.diagnostics?.rc2?.challenger?.available,
+    ucpRr68Candidates: ucp.diagnostics?.rc2?.challenger?.candidateCount || 0,
     ucpV17Available: ucp.diagnostics?.v17?.available,
     ucpV17SourceCurrent: ucp.diagnostics?.v17?.sourceCurrent,
     ucpV17SessionAligned: ucp.diagnostics?.v17?.sessionAligned,
