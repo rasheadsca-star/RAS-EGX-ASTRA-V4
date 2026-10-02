@@ -4,7 +4,10 @@
     "repository": "rasheadsca-star/RAS-EGX-PRO2026-NEXT",
     "path": "config/egx-sector-map.json",
     "sourceVersion": "5.5.0-sector-map-seed",
-    "purpose": "Research-only sector stratification; no production selection impact."
+    "purpose": "Research-only sector stratification; no production selection impact.",
+    "inferenceRepository": "rasheadsca-star/RAS-EGX-PRO2026-NEXT",
+    "inferencePath": "data/egx-sector-map-suggestions.json",
+    "inferenceGeneratedAt": "2026-07-15T05:25:54.208Z"
   },
   "unknownLabel": "غير مصنف",
   "symbolToSector": {
@@ -88,5 +91,494 @@
     "CCAP": "استثمارات قابضة ومتنوعة",
     "EKHO": "استثمارات قابضة ومتنوعة",
     "GBCO": "سيارات وتجارة وتوزيع"
+  },
+  "inferredSymbolToSector": {
+    "UBEE": {
+      "sector": "بنوك وخدمات مالية مصرفية",
+      "confidence": 90,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "QNBE": {
+      "sector": "بنوك وخدمات مالية مصرفية",
+      "confidence": 90,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "FAITA": {
+      "sector": "بنوك وخدمات مالية مصرفية",
+      "confidence": 90,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "SIPC": {
+      "sector": "رعاية صحية وأدوية",
+      "confidence": 88,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "MEPA": {
+      "sector": "رعاية صحية وأدوية",
+      "confidence": 88,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "PHGC": {
+      "sector": "رعاية صحية وأدوية",
+      "confidence": 88,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "OCPH": {
+      "sector": "رعاية صحية وأدوية",
+      "confidence": 88,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "SPMD": {
+      "sector": "رعاية صحية وأدوية",
+      "confidence": 88,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "AMES": {
+      "sector": "رعاية صحية وأدوية",
+      "confidence": 88,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ADCI": {
+      "sector": "رعاية صحية وأدوية",
+      "confidence": 88,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ISMQ": {
+      "sector": "معادن ومواد أساسية",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "SVCE": {
+      "sector": "أسمنت ومواد بناء",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "BONY": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "PRDC": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "OBRI": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "TANM": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "NHPS": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "AREH": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "EHDR": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ZMID": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "IDRE": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "DAPH": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "AALR": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "KRDI": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ACAMD": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "INFI": {
+      "sector": "أغذية ومشروبات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "MPCO": {
+      "sector": "أغذية ومشروبات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "CCRS": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "UEGC": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "SCTS": {
+      "sector": "اتصالات وإعلام وتكنولوجيا",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "MPRC": {
+      "sector": "اتصالات وإعلام وتكنولوجيا",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ELKA": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "CERA": {
+      "sector": "أسمنت ومواد بناء",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "MAAL": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "AIDC": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ELSH": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "MENA": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ALUM": {
+      "sector": "معادن ومواد أساسية",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "COPR": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ATQA": {
+      "sector": "معادن ومواد أساسية",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "RREI": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "DGTZ": {
+      "sector": "اتصالات وإعلام وتكنولوجيا",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "FERC": {
+      "sector": "بتروكيماويات وكيماويات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "GDWA": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "RTVC": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "AJWA": {
+      "sector": "أغذية ومشروبات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "UNIT": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ISMA": {
+      "sector": "أغذية ومشروبات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "SNFC": {
+      "sector": "أغذية ومشروبات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "NARE": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "EPCO": {
+      "sector": "أغذية ومشروبات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ELWA": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "GIHD": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "NEDA": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "CRST": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ICID": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "AFDI": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "LUTS": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "MMAT": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "AIFI": {
+      "sector": "أغذية ومشروبات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ADRI": {
+      "sector": "عقارات وإنشاءات",
+      "confidence": 86,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "SEIG": {
+      "sector": "خدمات مالية غير مصرفية",
+      "confidence": 84,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "OFH": {
+      "sector": "خدمات مالية غير مصرفية",
+      "confidence": 84,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "EFIC": {
+      "sector": "خدمات مالية غير مصرفية",
+      "confidence": 84,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ASPI": {
+      "sector": "خدمات مالية غير مصرفية",
+      "confidence": 84,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "VALU": {
+      "sector": "خدمات مالية غير مصرفية",
+      "confidence": 84,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "GMCI": {
+      "sector": "خدمات مالية غير مصرفية",
+      "confidence": 84,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "TYCN": {
+      "sector": "خدمات مالية غير مصرفية",
+      "confidence": 84,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "EOSB": {
+      "sector": "خدمات مالية غير مصرفية",
+      "confidence": 84,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "SEIGA": {
+      "sector": "خدمات مالية غير مصرفية",
+      "confidence": 84,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ICLE": {
+      "sector": "خدمات مالية غير مصرفية",
+      "confidence": 84,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ACTF": {
+      "sector": "خدمات مالية غير مصرفية",
+      "confidence": 84,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "MHOT": {
+      "sector": "سياحة وترفيه",
+      "confidence": 80,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ROTO": {
+      "sector": "سياحة وترفيه",
+      "confidence": 80,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "PHTV": {
+      "sector": "سياحة وترفيه",
+      "confidence": 80,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "SDTI": {
+      "sector": "سياحة وترفيه",
+      "confidence": 80,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "ALCN": {
+      "sector": "نقل وخدمات لوجستية",
+      "confidence": 80,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "TRTO": {
+      "sector": "سياحة وترفيه",
+      "confidence": 80,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "SPHT": {
+      "sector": "سياحة وترفيه",
+      "confidence": 80,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    },
+    "POCO": {
+      "sector": "نقل وخدمات لوجستية",
+      "confidence": 80,
+      "reason": "matched company name keywords",
+      "source": "data/egx-sector-map-suggestions.json"
+    }
+  },
+  "policy": {
+    "exactMapPreferred": true,
+    "inferenceMinimumConfidence": 80,
+    "inferredSectorsForStratificationOnly": true,
+    "inferredSectorsAllowedAsModelFeature": false,
+    "unknownsRemainExplicit": true
   }
 }
