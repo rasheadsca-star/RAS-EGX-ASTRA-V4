@@ -357,7 +357,11 @@ async function resolve(ledger) {
   let changed = false;
   const cache = new Map();
 
-  for (const entry of ledger.entries || []) {
+  const tracks = [
+    ...(ledger.entries || []),
+    ...(ledger.challengerEntries || [])
+  ];
+  for (const entry of tracks) {
     if (!Array.isArray(entry.candidates) || !entry.candidates.length) continue;
     if (!Array.isArray(entry.outcomes)) entry.outcomes = [];
 
@@ -395,11 +399,19 @@ async function resolve(ledger) {
 function finalizeLedger(ledger) {
   const summary = summarizeForwardLedger(ledger);
   const promotion = evaluatePromotionEligibility(summary);
-  ledger.schemaVersion = 'rasheed-egx-ucp-forward-ledger/v1';
+  const rr68 = summarizeRr68Challenger(ledger);
+  ledger.schemaVersion = 'rasheed-egx-ucp-forward-ledger/v2';
   ledger.policyVersion = FORWARD_POLICY.version;
   ledger.updatedAt = new Date().toISOString();
   ledger.summary = summary;
   ledger.promotion = promotion;
+  ledger.challengerSummary = {
+    id: rr68.id,
+    calibrationSession: rr68.calibrationSession,
+    observationSummary: rr68.observationSummary,
+    promotionEvidenceSummary: rr68.promotionEvidenceSummary,
+    promotion: rr68.promotion
+  };
   return ledger;
 }
 
