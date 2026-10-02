@@ -16,6 +16,34 @@ function safeNumber(value) {
   return Number.isFinite(number) ? number : null;
 }
 
+function normalizeScoreboardRow(item = {}) {
+  return Object.freeze({
+    ticker: item.ticker || null,
+    sessionDate: item.sessionDate || null,
+    eligible: item.eligible === true,
+    publicationEligible: item.publicationEligible === true,
+    qualityState: item.qualityState || null,
+    publicationHold: item.publicationHold === true,
+    coreScore: safeNumber(item.scores?.core ?? item.core),
+    researchScore: safeNumber(item.scores?.research ?? item.research),
+    liquidityScore: safeNumber(item.scores?.liquidity ?? item.liquidity),
+    srScore: safeNumber(item.scores?.supportResistance ?? item.sr),
+    dataQualityScore: safeNumber(item.scores?.dataQuality ?? item.quality),
+    structuralNetRR: safeNumber(item.structuralNetRR ?? item.tradePlan?.structuralNetRR),
+    alignmentState: item.alignmentState || item.tradePlan?.alignmentState || null,
+    price: safeNumber(item.price),
+    entryLow: safeNumber(item.tradePlan?.entryLow),
+    entryHigh: safeNumber(item.tradePlan?.entryHigh),
+    stopLoss: safeNumber(item.tradePlan?.stop),
+    target1: safeNumber(item.tradePlan?.target1),
+    target2: safeNumber(item.tradePlan?.target2),
+    reasonCodes: Object.freeze(Array.isArray(item.reasonCodes) ? [...item.reasonCodes] : []),
+    nearMiss: item.nearMiss === true,
+    gateDistance: safeNumber(item.gateDistance),
+    closeness: safeNumber(item.closeness)
+  });
+}
+
 function normalizeCandidate(item = {}) {
   const entryLow = safeNumber(item.tradePlan?.entryLow ?? item.entryLow ?? item.tradePlan?.entry ?? item.entry);
   const entryHigh = safeNumber(item.tradePlan?.entryHigh ?? item.entryHigh ?? item.tradePlan?.entry ?? item.entry);
@@ -187,6 +215,9 @@ function normalizePersistedSnapshot(payload = {}, expectedSession = null) {
   const sessionDate = payload.sessionDate || null;
   const sessionAligned = sessionMatches(sessionDate, expectedSession, payload.sessionAligned !== false);
   const candidates = Array.isArray(payload.recommendations) ? payload.recommendations.map(normalizeCandidate) : [];
+  const marketScoreboard = Array.isArray(payload?.calibrationDiagnostics?.marketScoreboard)
+    ? payload.calibrationDiagnostics.marketScoreboard.map(normalizeScoreboardRow).filter((item) => item.ticker)
+    : [];
   const challenger = normalizeRr68Challenger(
     payload?.calibrationDiagnostics?.challenger || null,
     sessionDate,
@@ -223,6 +254,7 @@ function normalizePersistedSnapshot(payload = {}, expectedSession = null) {
     rejectionReasonCounts: Object.freeze({ ...(payload.rejectionReasonCounts || {}) }),
     rejectedSample: Object.freeze(Array.isArray(payload.rejectedSample) ? payload.rejectedSample.slice(0, 50).map(Object.freeze) : []),
     candidates: Object.freeze(sessionAligned ? candidates : []),
+    marketScoreboard: Object.freeze(sessionAligned ? marketScoreboard : []),
     challenger: sessionAligned ? challenger : unavailableChallenger('RR68_CHALLENGER_PARENT_SESSION_MISMATCH', challenger.published),
     endpoint: DEFAULT_RC2_SNAPSHOT_URL,
     sourceType: 'PERSISTED_CURRENT_SESSION'
@@ -267,6 +299,7 @@ function normalizeLiveScan(payload = {}, expectedSession = null, baseUrl = DEFAU
     rejectionReasonCounts: Object.freeze({ ...(payload.rejectionReasonCounts || {}) }),
     rejectedSample: Object.freeze(Array.isArray(payload.rejectedSample) ? payload.rejectedSample.slice(0, 50).map(Object.freeze) : []),
     candidates: Object.freeze(sessionAligned ? candidates : []),
+    marketScoreboard: Object.freeze([]),
     challenger: unavailableChallenger('RR68_CHALLENGER_REQUIRES_PERSISTED_SNAPSHOT', false),
     endpoint: baseUrl.replace(/\/$/, ''),
     sourceType: 'LIVE_SCAN_FALLBACK'
@@ -288,6 +321,7 @@ async function loadRc2ShadowScan({
       sessionAligned: false,
       error: 'FETCH_NOT_AVAILABLE',
       candidates: Object.freeze([]),
+      marketScoreboard: Object.freeze([]),
       challenger: unavailableChallenger('FETCH_NOT_AVAILABLE', false)
     });
   }
@@ -321,6 +355,7 @@ async function loadRc2ShadowScan({
         ? 'RC2_TIMEOUT'
         : error?.message || persistedError?.message || 'RC2_SHADOW_ERROR',
       candidates: Object.freeze([]),
+      marketScoreboard: Object.freeze([]),
       challenger: unavailableChallenger('RC2_SHADOW_UNAVAILABLE', false),
       endpoint: baseUrl.replace(/\/$/, '')
     });
@@ -334,6 +369,7 @@ module.exports = {
   EXPECTED_RR68_CHALLENGER,
   loadRc2ShadowScan,
   normalizeCandidate,
+  normalizeScoreboardRow,
   normalizePersistedSnapshot,
   normalizeLiveScan,
   normalizeRr68Challenger,
