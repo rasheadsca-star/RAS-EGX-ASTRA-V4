@@ -107,6 +107,7 @@ function assertAtomicSource({
   currentSessionRows
 }) {
   const regimeSession = regime?.metrics?.sessionDate || regime?.sessionDate || null;
+  const sourceSessionDataHash = primary?.basketPlan?.sourceSessionDataHash || primary?.sourceSessionDataHash || null;
   const v17RequiredFreshAt = maxTime(
     primary?.generatedAt,
     regime?.generatedAt,
@@ -142,13 +143,13 @@ function assertAtomicSource({
   ) {
     failures.push('V17_SESSION_NOT_ALIGNED');
   }
-  if (time(v17?.generatedAt) < v17RequiredFreshAt) {
+  if (sourceSessionDataHash ? v17?.sourceSessionDataHash !== sourceSessionDataHash : time(v17?.generatedAt) < v17RequiredFreshAt) {
     failures.push('V17_STALE_WITHIN_SESSION');
   }
   if (rc2?.sessionDate !== expectedSession || rc2?.sessionAligned !== true) {
     failures.push('RC2_SESSION_NOT_ALIGNED');
   }
-  if (time(rc2?.generatedAt) < rc2RequiredFreshAt) {
+  if (sourceSessionDataHash ? rc2?.sourceSessionDataHash !== sourceSessionDataHash : time(rc2?.generatedAt) < rc2RequiredFreshAt) {
     failures.push('RC2_STALE_WITHIN_SESSION');
   }
 
