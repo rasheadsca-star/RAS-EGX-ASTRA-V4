@@ -105,12 +105,20 @@ async function fetchJson(url, attempts = 4) {
   throw lastError || new Error('FETCH_FAILED');
 }
 
+function canonicalSector(value) {
+  const raw = String(value || '').trim();
+  const aliases = {
+    'رعاية صحية وأدوية': 'رعاية صحية ودواء'
+  };
+  return aliases[raw] || raw || null;
+}
+
 function sectorForTicker(ticker) {
   const key = String(ticker || '').toUpperCase();
   const mapped = SECTOR_MAP?.symbolToSector?.[key] || null;
   if (mapped) {
     return {
-      sector: mapped,
+      sector: canonicalSector(mapped),
       sectorSource: 'LEGACY_SECTOR_MAP_EXACT',
       sectorConfidence: 100
     };
@@ -118,13 +126,13 @@ function sectorForTicker(ticker) {
   const inferred = SECTOR_MAP?.inferredSymbolToSector?.[key] || null;
   if (inferred?.sector) {
     return {
-      sector: inferred.sector,
+      sector: canonicalSector(inferred.sector),
       sectorSource: 'LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE',
       sectorConfidence: finite(inferred.confidence)
     };
   }
   return {
-    sector: SECTOR_MAP.unknownLabel || 'غير مصنف',
+    sector: canonicalSector(SECTOR_MAP.unknownLabel || 'غير مصنف'),
     sectorSource: 'UNCLASSIFIED',
     sectorConfidence: null
   };
@@ -204,7 +212,7 @@ function eligibleObservationRows(board = {}) {
       riskLevel: row.riskLevel || 'UNKNOWN',
       ...(() => {
         if (row.sector || row.sectorName) return {
-          sector: row.sector || row.sectorName,
+          sector: canonicalSector(row.sector || row.sectorName),
           sectorSource: row.sectorSource || 'UNIFIED_BOARD',
           sectorConfidence: finite(row.sectorConfidence) ?? 100
         };
@@ -630,6 +638,11 @@ function backfillObservationMetadata(ledger) {
   let changed = 0;
   for (const cohort of ledger.cohorts || []) {
     for (const candidate of cohort.candidates || []) {
+      const normalizedSector = canonicalSector(candidate.sector);
+      if (normalizedSector && normalizedSector !== candidate.sector) {
+        candidate.sector = normalizedSector;
+        changed += 1;
+      }
       if (!candidate.sector || candidate.sectorSource === 'UNAVAILABLE' || candidate.sectorSource === 'UNCLASSIFIED') {
         const mapped = sectorForTicker(candidate.ticker);
         candidate.sector = mapped.sector;
