@@ -1,7 +1,7 @@
 {
   "schemaVersion": "astra-v5-prospective-evidence/v2",
   "policyVersion": "astra-v5-prospective-evidence-policy/v2",
-  "updatedAt": "2026-10-02T20:45:13.015Z",
+  "updatedAt": "2026-10-02T21:04:41.504Z",
   "cohorts": [
     {
       "schemaVersion": "astra-v5-prospective-cohort/v1",
@@ -126,8 +126,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "أغذية ومشروبات",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -491,8 +491,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "عقارات وإنشاءات",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -703,8 +703,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "نقل وخدمات لوجستية",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -1341,8 +1341,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "أغذية ومشروبات",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -1768,8 +1768,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "أغذية ومشروبات",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -1982,8 +1982,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "عقارات وإنشاءات",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -2516,8 +2516,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "أسمنت ومواد بناء",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -3158,8 +3158,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "سياحة وترفيه",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -3585,8 +3585,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "خدمات مالية غير مصرفية",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -3692,8 +3692,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "عقارات وإنشاءات",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -4013,8 +4013,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "عقارات وإنشاءات",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -4227,8 +4227,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "رعاية صحية وأدوية",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -4334,8 +4334,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "اتصالات وإعلام وتكنولوجيا",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -4869,8 +4869,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "عقارات وإنشاءات",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -5618,8 +5618,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "سياحة وترفيه",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -5831,8 +5831,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "عقارات وإنشاءات",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -6152,8 +6152,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "أغذية ومشروبات",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -6474,8 +6474,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "عقارات وإنشاءات",
+          "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -6508,13 +6508,288 @@
     "negativeOutcomes": 0,
     "notEntered": 0,
     "open": 60,
-    "sectorCoverage": 30,
+    "sectorCoverage": 48,
+    "sectorExact": 30,
+    "sectorInferredHighConfidence": 18,
     "sectorRecorded": 60,
-    "sectorUnclassified": 30,
+    "sectorUnclassified": 12,
     "morningEvidenceCaptured": 60,
     "slippageProxyObserved": 0,
     "observedCalendarDays": 1,
-    "criticalBreaches": 0
+    "criticalBreaches": 0,
+    "stratifiedDiagnostics": {
+      "bySector": {
+        "أسمنت ومواد بناء": {
+          "captured": 4,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "أغذية ومشروبات": {
+          "captured": 5,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "اتصالات وإعلام وتكنولوجيا": {
+          "captured": 2,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "استثمارات قابضة ومتنوعة": {
+          "captured": 1,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "بتروكيماويات وكيماويات": {
+          "captured": 3,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "بنوك وخدمات مالية مصرفية": {
+          "captured": 2,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "تجارة وتوزيع": {
+          "captured": 2,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "تعليم وخدمات": {
+          "captured": 2,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "تكنولوجيا ومدفوعات": {
+          "captured": 2,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "خدمات مالية غير مصرفية": {
+          "captured": 3,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "رعاية صحية وأدوية": {
+          "captured": 1,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "رعاية صحية ودواء": {
+          "captured": 2,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "سياحة وترفيه": {
+          "captured": 2,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "سيارات وتجارة وتوزيع": {
+          "captured": 1,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "صناعة وطاقة وبنية تحتية": {
+          "captured": 3,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "عقارات وإنشاءات": {
+          "captured": 9,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "غير مصنف": {
+          "captured": 12,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "معادن ومواد أساسية": {
+          "captured": 1,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "منسوجات وملابس": {
+          "captured": 2,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "نقل وخدمات لوجستية": {
+          "captured": 1,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        }
+      },
+      "byRegime": {
+        "RISK_OFF": {
+          "captured": 60,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        }
+      },
+      "bySetupSource": {
+        "ASTRA_NATIVE_ENTRY": {
+          "captured": 2,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "ASTRA_NATIVE_WATCH": {
+          "captured": 25,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "RC2_NEAR_MISS": {
+          "captured": 1,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "REJECTED": {
+          "captured": 31,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
+        "RR68_CHALLENGER": {
+          "captured": 1,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        }
+      },
+      "policy": {
+        "descriptiveOnly": true,
+        "usedAsModelFeature": false,
+        "minimumResolvedForInterpretation": 20
+      }
+    }
   },
   "safety": {
     "prospectiveOnly": true,
