@@ -245,6 +245,7 @@ async function runUcpShadowPipeline({
         sessionDate: rc2.sessionDate || null,
         sessionAligned: rc2.sessionAligned === true,
         summary: rc2.summary || null,
+        marketScoreboard: rc2.marketScoreboard || [],
         rejectionReasonCounts: rc2.rejectionReasonCounts || {},
         rejectedSample: rc2.rejectedSample || [],
         challenger: Object.freeze({
