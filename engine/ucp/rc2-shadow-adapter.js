@@ -7,6 +7,7 @@ const DEFAULT_RC2_SNAPSHOT_URL = process.env.UCP_RC2_SNAPSHOT_URL ||
   'https://raw.githubusercontent.com/rasheadsca-star/RAS-EGX-PRO2026-NEXT/main/data/rc2/current-session.json';
 
 const EXPECTED_ENGINE = 'TFE_V20_FUSION_RC2';
+const EXPECTED_RR68_CHALLENGER = 'TFE_V20_FUSION_RC2_RR68_CHALLENGER';
 const REQUEST_TIMEOUT_MS = Number(process.env.UCP_RC2_TIMEOUT_MS || 20000);
 
 function safeNumber(value) {
@@ -24,6 +25,9 @@ function normalizeCandidate(item = {}) {
   );
   return Object.freeze({
     ticker: item.ticker || null,
+    rank: Number.isFinite(Number(item.rank)) ? Number(item.rank) : null,
+    candidateSource: item.candidateSource || EXPECTED_ENGINE,
+    challengerResearchOnly: item.challengerResearchOnly === true,
     nameAr: item.nameAr || null,
     nameEn: item.nameEn || null,
     decision: item.decision || item.publicationState || 'RESEARCH_CANDIDATE',
@@ -42,6 +46,7 @@ function normalizeCandidate(item = {}) {
     target1: safeNumber(item.tradePlan?.target1 ?? item.target1),
     target2: safeNumber(item.tradePlan?.target2 ?? item.target2),
     reasonCodes: Object.freeze(Array.isArray(item.reasonCodes) ? [...item.reasonCodes] : []),
+    frozenPolicyReasonCodes: Object.freeze(Array.isArray(item.frozenPolicyReasonCodes) ? [...item.frozenPolicyReasonCodes] : []),
     qualityState: item.quality?.state || item.qualityState || null,
     publicationHold: item.quality?.publicationHold === true || item.publicationHold === true
   });
@@ -55,6 +60,100 @@ function validateResearchPermissions(permissions = {}) {
     permissions.automaticOrders === false &&
     permissions.automaticChampionPromotion === false
   );
+}
+
+function unavailableChallenger(error = null, published = false) {
+  return Object.freeze({
+    published,
+    available: false,
+    status: published ? 'CHALLENGER_BLOCKED' : 'NOT_PUBLISHED',
+    id: EXPECTED_RR68_CHALLENGER,
+    baseEngine: EXPECTED_ENGINE,
+    mode: 'RESEARCH_ONLY',
+    sessionDate: null,
+    sessionAligned: false,
+    researchOnly: true,
+    executionAllowed: false,
+    automaticPromotionAllowed: false,
+    candidates: Object.freeze([]),
+    error
+  });
+}
+
+function normalizeRr68Challenger(raw = null, parentSession = null, expectedSession = null) {
+  if (!raw || typeof raw !== 'object') return unavailableChallenger(null, false);
+
+  try {
+    if (raw.id !== EXPECTED_RR68_CHALLENGER) throw new Error('RR68_CHALLENGER_ID_MISMATCH');
+    if (raw.baseEngine !== EXPECTED_ENGINE) throw new Error('RR68_CHALLENGER_BASE_ENGINE_MISMATCH');
+    if (raw.mode !== 'RESEARCH_ONLY' || raw.researchOnly !== true) throw new Error('RR68_CHALLENGER_NOT_RESEARCH_ONLY');
+    if (raw.executionAllowed !== false || raw.automaticPromotionAllowed !== false) throw new Error('RR68_CHALLENGER_PERMISSION_BREACH');
+
+    const frozenRr = safeNumber(raw?.policyDiff?.minStructuralNetRR?.frozenChampion);
+    const challengerRr = safeNumber(raw?.policyDiff?.minStructuralNetRR?.challenger);
+    if (frozenRr !== 0.70 || challengerRr !== 0.68) throw new Error('RR68_CHALLENGER_POLICY_MISMATCH');
+    if (raw?.policyDiff?.allOtherHardGates !== 'UNCHANGED') throw new Error('RR68_CHALLENGER_SCOPE_MISMATCH');
+
+    const sessionDate = raw.sessionDate || parentSession || null;
+    const sessionAligned = Boolean(
+      sessionDate &&
+      (!parentSession || sessionDate === parentSession) &&
+      (!expectedSession || sessionDate === expectedSession)
+    );
+    if (!sessionAligned) throw new Error('RR68_CHALLENGER_SESSION_MISMATCH');
+
+    const candidates = [];
+    for (const item of Array.isArray(raw.candidates) ? raw.candidates : []) {
+      if (!validateResearchPermissions(item.permissions || {})) throw new Error(`RR68_CHALLENGER_CANDIDATE_PERMISSION_BREACH:${item.ticker || 'UNKNOWN'}`);
+      if (item.quality?.publicationHold === true || item.publicationHold === true) throw new Error(`RR68_CHALLENGER_PUBLICATION_HOLD:${item.ticker || 'UNKNOWN'}`);
+      if (safeNumber(item.tradePlan?.structuralNetRR ?? item.structuralNetRR) < 0.68) throw new Error(`RR68_CHALLENGER_RR_BELOW_POLICY:${item.ticker || 'UNKNOWN'}`);
+      const frozenReasons = Array.isArray(item.frozenPolicyReasonCodes) ? item.frozenPolicyReasonCodes : [];
+      if (!frozenReasons.length || frozenReasons.some((reason) => reason !== 'STRUCTURAL_RR_LOW')) {
+        throw new Error(`RR68_CHALLENGER_NOT_INCREMENTAL_RR_ONLY:${item.ticker || 'UNKNOWN'}`);
+      }
+
+      const entryLow = safeNumber(item.tradePlan?.entryLow);
+      const entryHigh = safeNumber(item.tradePlan?.entryHigh);
+      const stop = safeNumber(item.tradePlan?.stop);
+      const target1 = safeNumber(item.tradePlan?.target1);
+      if (!(entryLow > 0 && entryHigh >= entryLow && stop > 0 && stop < entryLow && target1 > entryLow)) {
+        throw new Error(`RR68_CHALLENGER_TRADE_PLAN_INVALID:${item.ticker || 'UNKNOWN'}`);
+      }
+
+      candidates.push(normalizeCandidate({
+        ...item,
+        candidateSource: EXPECTED_RR68_CHALLENGER,
+        challengerResearchOnly: true
+      }));
+    }
+
+    return Object.freeze({
+      published: true,
+      available: true,
+      status: 'RESEARCH_CHALLENGER_READY',
+      id: EXPECTED_RR68_CHALLENGER,
+      baseEngine: EXPECTED_ENGINE,
+      mode: 'RESEARCH_ONLY',
+      sessionDate,
+      sessionAligned: true,
+      researchOnly: true,
+      executionAllowed: false,
+      automaticPromotionAllowed: false,
+      historicalEvidenceRef: raw.historicalEvidenceRef || null,
+      policyDiff: Object.freeze({
+        minStructuralNetRR: Object.freeze({
+          frozenChampion: frozenRr,
+          challenger: challengerRr,
+          delta: safeNumber(raw?.policyDiff?.minStructuralNetRR?.delta)
+        }),
+        allOtherHardGates: 'UNCHANGED'
+      }),
+      candidates: Object.freeze(candidates),
+      error: null
+    });
+  } catch (error) {
+    return unavailableChallenger(error?.message || 'RR68_CHALLENGER_CONTRACT_FAILED', true);
+  }
 }
 
 async function fetchJson(url, fetchImpl) {
@@ -88,6 +187,11 @@ function normalizePersistedSnapshot(payload = {}, expectedSession = null) {
   const sessionDate = payload.sessionDate || null;
   const sessionAligned = sessionMatches(sessionDate, expectedSession, payload.sessionAligned !== false);
   const candidates = Array.isArray(payload.recommendations) ? payload.recommendations.map(normalizeCandidate) : [];
+  const challenger = normalizeRr68Challenger(
+    payload?.calibrationDiagnostics?.challenger || null,
+    sessionDate,
+    expectedSession
+  );
   return Object.freeze({
     available: true,
     status: sessionAligned ? 'SHADOW_READY' : 'SHADOW_SESSION_MISMATCH',
@@ -119,6 +223,7 @@ function normalizePersistedSnapshot(payload = {}, expectedSession = null) {
     rejectionReasonCounts: Object.freeze({ ...(payload.rejectionReasonCounts || {}) }),
     rejectedSample: Object.freeze(Array.isArray(payload.rejectedSample) ? payload.rejectedSample.slice(0, 50).map(Object.freeze) : []),
     candidates: Object.freeze(sessionAligned ? candidates : []),
+    challenger: sessionAligned ? challenger : unavailableChallenger('RR68_CHALLENGER_PARENT_SESSION_MISMATCH', challenger.published),
     endpoint: DEFAULT_RC2_SNAPSHOT_URL,
     sourceType: 'PERSISTED_CURRENT_SESSION'
   });
@@ -162,6 +267,7 @@ function normalizeLiveScan(payload = {}, expectedSession = null, baseUrl = DEFAU
     rejectionReasonCounts: Object.freeze({ ...(payload.rejectionReasonCounts || {}) }),
     rejectedSample: Object.freeze(Array.isArray(payload.rejectedSample) ? payload.rejectedSample.slice(0, 50).map(Object.freeze) : []),
     candidates: Object.freeze(sessionAligned ? candidates : []),
+    challenger: unavailableChallenger('RR68_CHALLENGER_REQUIRES_PERSISTED_SNAPSHOT', false),
     endpoint: baseUrl.replace(/\/$/, ''),
     sourceType: 'LIVE_SCAN_FALLBACK'
   });
@@ -181,7 +287,8 @@ async function loadRc2ShadowScan({
       engineId: EXPECTED_ENGINE,
       sessionAligned: false,
       error: 'FETCH_NOT_AVAILABLE',
-      candidates: Object.freeze([])
+      candidates: Object.freeze([]),
+      challenger: unavailableChallenger('FETCH_NOT_AVAILABLE', false)
     });
   }
 
@@ -214,6 +321,7 @@ async function loadRc2ShadowScan({
         ? 'RC2_TIMEOUT'
         : error?.message || persistedError?.message || 'RC2_SHADOW_ERROR',
       candidates: Object.freeze([]),
+      challenger: unavailableChallenger('RC2_SHADOW_UNAVAILABLE', false),
       endpoint: baseUrl.replace(/\/$/, '')
     });
   }
@@ -223,10 +331,13 @@ module.exports = {
   DEFAULT_RC2_BASE_URL,
   DEFAULT_RC2_SNAPSHOT_URL,
   EXPECTED_ENGINE,
+  EXPECTED_RR68_CHALLENGER,
   loadRc2ShadowScan,
   normalizeCandidate,
   normalizePersistedSnapshot,
   normalizeLiveScan,
+  normalizeRr68Challenger,
+  unavailableChallenger,
   sessionMatches,
   validateResearchPermissions
 };

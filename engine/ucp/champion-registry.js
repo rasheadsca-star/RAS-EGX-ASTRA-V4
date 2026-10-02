@@ -33,6 +33,7 @@ const REGISTRY = Object.freeze({
   }),
 
   challengers: Object.freeze([
+    'TFE_V20_FUSION_RC2_RR68_CHALLENGER',
     'GANN_FUSION_X',
     'SEPA_X_QVUA',
     'TRIPLE_ENGINE_CONSENSUS_V1',

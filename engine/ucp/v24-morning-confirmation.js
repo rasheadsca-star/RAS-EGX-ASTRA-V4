@@ -68,6 +68,8 @@ function normalizePreparedCandidate(candidate = {}, context = {}) {
   return Object.freeze({
     ticker,
     rank: Number.isFinite(Number(candidate.rank)) ? Number(candidate.rank) : null,
+    candidateSource: candidate.candidateSource || 'TFE_V20_FUSION_RC2',
+    challengerResearchOnly: candidate.challengerResearchOnly === true,
     researchScore: Number.isFinite(Number(candidate.researchScore)) ? Number(candidate.researchScore) : null,
     fusionRankScore: Number.isFinite(Number(candidate.fusionRankScore)) ? Number(candidate.fusionRankScore) : null,
     entry: Number.isFinite(Number(candidate.entry)) ? Number(candidate.entry) : null,

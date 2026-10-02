@@ -6,7 +6,11 @@ const {
   evaluateDataQuality,
   buildDecisionSnapshot
 } = require('../engine/ucp');
-const { loadRc2ShadowScan } = require('../engine/ucp/rc2-shadow-adapter');
+const {
+  loadRc2ShadowScan,
+  normalizePersistedSnapshot,
+  EXPECTED_RR68_CHALLENGER
+} = require('../engine/ucp/rc2-shadow-adapter');
 const { loadUpstreamQuality } = require('../engine/ucp/upstream-quality');
 const { runUcpShadowPipeline } = require('../engine/ucp/shadow-pipeline');
 const { evaluateV17Governance } = require('../engine/ucp/v17-governance-adapter');
@@ -45,6 +49,111 @@ function qualityPayload() {
     currentSessionRows: 199,
     rejectedCurrentSessionRows: 13,
     droppedCurrentSessionRows: 0
+  };
+}
+
+function rr68Candidate(overrides = {}) {
+  return {
+    rank: 1,
+    ticker: 'BINV',
+    sessionDate: '2026-10-01',
+    decision: 'RESEARCH_PENDING_PULLBACK_CHALLENGER',
+    publicationState: 'RESEARCH_CHALLENGER',
+    publicationEligible: false,
+    technicalEligible: false,
+    challengerEligible: true,
+    candidateSource: 'TFE_V20_FUSION_RC2_RR68_CHALLENGER',
+    scores: {
+      core: 75.3,
+      technical: 75.3,
+      research: 73.5,
+      liquidity: 98,
+      supportResistance: 69.9,
+      dataQuality: 78,
+      fusionRank: null
+    },
+    price: 59.42,
+    tradePlan: {
+      entryLow: 57.52,
+      entryHigh: 59.0013,
+      stop: 54.7913,
+      target1: 62.48,
+      target2: 62.48,
+      structuralNetRR: 0.685,
+      precisionNetRR: 0.68,
+      alignmentState: 'NEAR_ENTRY_PULLBACK',
+      distanceAtr: 0.2,
+      entryExpirySessions: 3,
+      maxHoldSessions: 10,
+      roundTripCostPct: 0.6
+    },
+    reasonCodes: ['RR68_CHALLENGER_ONLY'],
+    frozenPolicyReasonCodes: ['STRUCTURAL_RR_LOW'],
+    quality: { state: 'REVIEW', publicationHold: false },
+    permissions: {
+      researchOnly: true,
+      executionAllowed: false,
+      productionAllocation: false,
+      automaticOrders: false,
+      automaticChampionPromotion: false
+    },
+    ...overrides
+  };
+}
+
+function persistedRc2Payload(overrides = {}) {
+  return {
+    schemaVersion: 'rasheed-egx-ucp-rc2-current-session/v1',
+    generatedAt: '2026-10-02T08:55:00.000Z',
+    engine: 'TFE_V20_FUSION_RC2',
+    mode: 'RESEARCH_ONLY',
+    sessionDate: '2026-10-01',
+    marketSessionDate: '2026-10-01',
+    universeSessionDate: '2026-10-01',
+    sessionAligned: true,
+    sourceCommit: 'rc2-production-test',
+    permissions: {
+      researchOnly: true,
+      executionAllowed: false,
+      productionAllocation: false,
+      automaticOrders: false,
+      automaticChampionPromotion: false
+    },
+    summary: {
+      scanned: 177,
+      technicalEligibleTotal: 0,
+      publicationEligibleTotal: 0,
+      withheldForPriceReconciliation: 0,
+      rejected: 177,
+      returned: 0,
+      marketSymbols: 242
+    },
+    rejectionReasonCounts: { STRUCTURAL_RR_LOW: 154 },
+    rejectedSample: [],
+    recommendations: [],
+    calibrationDiagnostics: {
+      challenger: {
+        id: 'TFE_V20_FUSION_RC2_RR68_CHALLENGER',
+        baseEngine: 'TFE_V20_FUSION_RC2',
+        mode: 'RESEARCH_ONLY',
+        researchOnly: true,
+        executionAllowed: false,
+        automaticPromotionAllowed: false,
+        sessionDate: '2026-10-01',
+        policyDiff: {
+          minStructuralNetRR: {
+            frozenChampion: 0.70,
+            challenger: 0.68,
+            delta: -0.02
+          },
+          allOtherHardGates: 'UNCHANGED'
+        },
+        historicalEvidenceRef: 'data/rc2/rr-calibration-2026-10-01.json',
+        candidateCount: 1,
+        candidates: [rr68Candidate()]
+      }
+    },
+    ...overrides
   };
 }
 
@@ -211,6 +320,35 @@ async function main() {
   assert.strictEqual(rc2.candidates.length, 1);
   assert.strictEqual(rc2.candidates[0].ticker, 'COPR');
   assert.strictEqual(rc2.candidates[0].fusionRankScore, 86);
+
+  const persistedRc2 = normalizePersistedSnapshot(persistedRc2Payload(), '2026-10-01');
+  assert.strictEqual(persistedRc2.available, true);
+  assert.strictEqual(persistedRc2.candidates.length, 0);
+  assert.strictEqual(persistedRc2.challenger.available, true);
+  assert.strictEqual(persistedRc2.challenger.id, EXPECTED_RR68_CHALLENGER);
+  assert.strictEqual(persistedRc2.challenger.sessionAligned, true);
+  assert.strictEqual(persistedRc2.challenger.executionAllowed, false);
+  assert.strictEqual(persistedRc2.challenger.candidates.length, 1);
+  assert.strictEqual(persistedRc2.challenger.candidates[0].ticker, 'BINV');
+  assert.strictEqual(persistedRc2.challenger.candidates[0].candidateSource, EXPECTED_RR68_CHALLENGER);
+  assert.strictEqual(persistedRc2.challenger.candidates[0].challengerResearchOnly, true);
+  assert.strictEqual(persistedRc2.challenger.candidates[0].structuralNetRR, 0.685);
+  assert.strictEqual(persistedRc2.challenger.candidates[0].entryLow, 57.52);
+  assert.strictEqual(persistedRc2.challenger.candidates[0].stopLoss, 54.7913);
+
+  const unsafePersistedRc2 = normalizePersistedSnapshot(persistedRc2Payload({
+    calibrationDiagnostics: {
+      challenger: {
+        ...persistedRc2Payload().calibrationDiagnostics.challenger,
+        executionAllowed: true
+      }
+    }
+  }), '2026-10-01');
+  assert.strictEqual(unsafePersistedRc2.available, true);
+  assert.strictEqual(unsafePersistedRc2.challenger.published, true);
+  assert.strictEqual(unsafePersistedRc2.challenger.available, false);
+  assert.strictEqual(unsafePersistedRc2.challenger.candidates.length, 0);
+  assert.strictEqual(unsafePersistedRc2.challenger.error, 'RR68_CHALLENGER_PERMISSION_BREACH');
 
   const unsafeRc2 = await loadRc2ShadowScan({
     fetchImpl: async () => jsonResponse(rc2Payload({
@@ -383,6 +521,43 @@ async function main() {
   assert.strictEqual(shadow.diagnostics.v24.targetSessionDate, '2026-10-04');
   assert.strictEqual(shadow.diagnostics.v24.status, 'WAITING_NEXT_SESSION');
   assert.strictEqual(shadow.diagnostics.v24.evidenceAvailable, false);
+
+  const challengerFetchImpl = async (url) => {
+    const value = String(url);
+    if (value.includes('fetch-status.json')) return jsonResponse(qualityPayload());
+    if (value.includes('data/rc2/current-session.json')) return jsonResponse(persistedRc2Payload());
+    if (value.includes('data/v17/ucp-current-session.json')) return jsonResponse(v17Payload('2026-10-01'));
+    if (value.includes('v16-main-app-consensus.json')) return jsonResponse(consensusPayload('2026-10-01', true));
+    return jsonResponse({}, 404);
+  };
+
+  const challengerShadow = await runUcpShadowPipeline({
+    generatedAt: '2026-10-02T09:00:00.000Z',
+    rc2Options: { fetchImpl: challengerFetchImpl },
+    qualityOptions: { fetchImpl: challengerFetchImpl },
+    v17Options: { fetchImpl: challengerFetchImpl },
+    morningOptions: { fetchImpl: challengerFetchImpl }
+  });
+
+  assert.strictEqual(challengerShadow.status, 'SHADOW_READY');
+  assert.strictEqual(challengerShadow.snapshot.alpha.candidates.length, 0);
+  assert.strictEqual(challengerShadow.snapshot.alpha.challengers.length, 1);
+  assert.strictEqual(challengerShadow.snapshot.alpha.challengers[0].id, EXPECTED_RR68_CHALLENGER);
+  assert.strictEqual(challengerShadow.snapshot.alpha.challengers[0].candidates.length, 1);
+  assert.strictEqual(challengerShadow.snapshot.alpha.challengers[0].candidates[0].ticker, 'BINV');
+  assert.strictEqual(challengerShadow.snapshot.morningConfirmation.preparedCandidates.length, 1);
+  assert.strictEqual(challengerShadow.snapshot.morningConfirmation.preparedCandidates[0].ticker, 'BINV');
+  assert.strictEqual(challengerShadow.snapshot.morningConfirmation.preparedCandidates[0].candidateSource, EXPECTED_RR68_CHALLENGER);
+  assert.strictEqual(challengerShadow.snapshot.morningConfirmation.preparedCandidates[0].challengerResearchOnly, true);
+  assert.strictEqual(challengerShadow.snapshot.morningConfirmation.targetSessionDate, '2026-10-04');
+  assert.strictEqual(challengerShadow.snapshot.morningConfirmation.status, 'WAITING_NEXT_SESSION');
+  assert.deepStrictEqual(challengerShadow.snapshot.decision.finalRecommendations, []);
+  assert.deepStrictEqual(challengerShadow.snapshot.decision.watchlist, ['BINV']);
+  assert.ok(challengerShadow.snapshot.decision.blockers.includes('RR68_CHALLENGER_FORWARD_VALIDATION_REQUIRED'));
+  assert.ok(challengerShadow.snapshot.decision.blockers.includes('FORWARD_VALIDATION_REQUIRED'));
+  assert.strictEqual(challengerShadow.executionAllowed, false);
+  assert.strictEqual(challengerShadow.diagnostics.rc2.challenger.available, true);
+  assert.strictEqual(challengerShadow.diagnostics.rc2.challenger.candidateCount, 1);
 
   console.log('Rasheed EGX UCP validation passed');
 }
