@@ -15,6 +15,5 @@
         }
       ]
     }
-  ],
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ':!data/canonical-market.json' ':!data/history-index.json'"
+  ]
 }
