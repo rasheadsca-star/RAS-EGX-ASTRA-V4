@@ -1,26 +1,42 @@
 {
-  "schemaVersion": "4.1.0",
-  "generatedAt": "2026-10-01T20:53:09.391Z",
+  "schemaVersion": "5.0.0",
+  "generatedAt": "2026-10-02T09:03:38.589Z",
   "source": {
     "repository": "rasheadsca-star/RAS-EGX-PRO2026-NEXT",
     "branch": "main",
     "expectedSession": "2026-10-01",
-    "marketGeneratedAt": "2026-10-01T18:55:50.403Z",
-    "fetchStatusGeneratedAt": "2026-10-01T18:57:00.626Z",
-    "sourceHealthGeneratedAt": "2026-10-01T18:55:50.403Z",
-    "sessionEvidenceGeneratedAt": "2026-10-01T18:57:00.625Z"
+    "sourceName": "mubasher_symbol_pages_precise_enriched",
+    "executionGrade": true,
+    "currentSessionRows": 199,
+    "sourceSessionVerifiedRows": 202,
+    "coveragePct": 93.43,
+    "sourceSessionDataHash": "b7213f8c9105658cdb782319d568a119c64ba919280a5ad46be02cd49cead6d7",
+    "marketGeneratedAt": "2026-10-02T09:02:30.750Z",
+    "fetchStatusGeneratedAt": "2026-10-02T09:03:38.589Z",
+    "priceTruthGeneratedAt": "2026-10-02T09:03:38.589Z",
+    "primaryDecisionGeneratedAt": "2026-10-02T09:03:59.561Z",
+    "regimeGeneratedAt": "2026-10-02T09:04:02.681Z",
+    "v17GeneratedAt": "2026-10-02T11:47:31.007Z",
+    "rc2GeneratedAt": "2026-10-02T11:46:59.832Z",
+    "v17Session": "2026-10-01",
+    "rc2Session": "2026-10-01",
+    "v17FreshRequiredAt": "2026-10-02T09:04:02.681Z",
+    "rc2FreshRequiredAt": "2026-10-02T09:03:59.561Z",
+    "delayed": true,
+    "atomicHandoff": true
   },
   "coverage": {
     "registeredSymbols": 201,
     "loadedSymbols": 201,
     "coveragePct": 100,
-    "retainedSessionsPerSymbol": 60
+    "retainedSessionsPerSymbol": 60,
+    "currentSessionSymbols": 177
   },
   "symbols": {
     "AALR": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.239Z",
+      "generatedAt": "2026-10-02T09:03:38.218Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -633,7 +649,7 @@
     "ABUK": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.228Z",
+      "generatedAt": "2026-10-02T09:03:38.207Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -1246,7 +1262,7 @@
     "ACAMD": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.277Z",
+      "generatedAt": "2026-10-02T09:03:38.254Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -1859,7 +1875,7 @@
     "ACGC": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.415Z",
+      "generatedAt": "2026-10-02T09:03:38.385Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -2472,7 +2488,7 @@
     "ADCI": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.568Z",
+      "generatedAt": "2026-10-02T09:03:38.532Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -3085,7 +3101,7 @@
     "ADIB": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.515Z",
+      "generatedAt": "2026-10-02T09:03:38.479Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -3698,7 +3714,7 @@
     "ADPC": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.471Z",
+      "generatedAt": "2026-10-02T09:03:38.438Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -4311,7 +4327,7 @@
     "ADRI": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.622Z",
+      "generatedAt": "2026-10-02T09:03:38.585Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -4924,7 +4940,7 @@
     "AFDI": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.599Z",
+      "generatedAt": "2026-10-02T09:03:38.564Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -5537,7 +5553,7 @@
     "AFMC": {
       "lastSession": "2026-10-01",
       "availableSessions": 143,
-      "generatedAt": "2026-10-01T18:57:00.497Z",
+      "generatedAt": "2026-10-02T09:03:38.464Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -6150,7 +6166,7 @@
     "AIFI": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.624Z",
+      "generatedAt": "2026-10-02T09:03:38.587Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -6763,7 +6779,7 @@
     "AJWA": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.562Z",
+      "generatedAt": "2026-10-02T09:03:38.527Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -7376,7 +7392,7 @@
     "ALCN": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.512Z",
+      "generatedAt": "2026-10-02T09:03:38.477Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -7989,7 +8005,7 @@
     "ALUM": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.382Z",
+      "generatedAt": "2026-10-02T09:03:38.354Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -8602,7 +8618,7 @@
     "AMER": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.173Z",
+      "generatedAt": "2026-10-02T09:03:38.153Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -9215,7 +9231,7 @@
     "AMES": {
       "lastSession": "2026-10-01",
       "availableSessions": 142,
-      "generatedAt": "2026-10-01T18:57:00.545Z",
+      "generatedAt": "2026-10-02T09:03:38.508Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -9829,7 +9845,7 @@
     "AMIA": {
       "lastSession": "2026-10-01",
       "availableSessions": 142,
-      "generatedAt": "2026-10-01T18:57:00.361Z",
+      "generatedAt": "2026-10-02T09:03:38.335Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -10442,7 +10458,7 @@
     "AMOC": {
       "lastSession": "2026-10-01",
       "availableSessions": 142,
-      "generatedAt": "2026-10-01T18:57:00.263Z",
+      "generatedAt": "2026-10-02T09:03:38.240Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -11055,7 +11071,7 @@
     "APSW": {
       "lastSession": "2026-10-01",
       "availableSessions": 140,
-      "generatedAt": "2026-10-01T18:57:00.245Z",
+      "generatedAt": "2026-10-02T09:03:38.223Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -11668,7 +11684,7 @@
     "ARAB": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.508Z",
+      "generatedAt": "2026-10-02T09:03:38.474Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -12281,7 +12297,7 @@
     "ARCC": {
       "lastSession": "2026-10-01",
       "availableSessions": 142,
-      "generatedAt": "2026-10-01T18:57:00.391Z",
+      "generatedAt": "2026-10-02T09:03:38.363Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -12894,7 +12910,7 @@
     "AREH": {
       "lastSession": "2026-10-01",
       "availableSessions": 142,
-      "generatedAt": "2026-10-01T18:57:00.187Z",
+      "generatedAt": "2026-10-02T09:03:38.168Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -14120,7 +14136,7 @@
     "ASCM": {
       "lastSession": "2026-10-01",
       "availableSessions": 142,
-      "generatedAt": "2026-10-01T18:57:00.379Z",
+      "generatedAt": "2026-10-02T09:03:38.352Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -14733,7 +14749,7 @@
     "ASPI": {
       "lastSession": "2026-10-01",
       "availableSessions": 142,
-      "generatedAt": "2026-10-01T18:57:00.503Z",
+      "generatedAt": "2026-10-02T09:03:38.469Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -15346,7 +15362,7 @@
     "ATLC": {
       "lastSession": "2026-10-01",
       "availableSessions": 142,
-      "generatedAt": "2026-10-01T18:57:00.338Z",
+      "generatedAt": "2026-10-02T09:03:38.312Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -15959,7 +15975,7 @@
     "ATQA": {
       "lastSession": "2026-10-01",
       "availableSessions": 142,
-      "generatedAt": "2026-10-01T18:57:00.438Z",
+      "generatedAt": "2026-10-02T09:03:38.408Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -16572,7 +16588,7 @@
     "AXPH": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.167Z",
+      "generatedAt": "2026-10-02T09:03:38.147Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -17185,7 +17201,7 @@
     "BINV": {
       "lastSession": "2026-10-01",
       "availableSessions": 142,
-      "generatedAt": "2026-10-01T18:57:00.536Z",
+      "generatedAt": "2026-10-02T09:03:38.499Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -17798,7 +17814,7 @@
     "BIOC": {
       "lastSession": "2026-10-01",
       "availableSessions": 134,
-      "generatedAt": "2026-10-01T18:57:00.297Z",
+      "generatedAt": "2026-10-02T09:03:38.274Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -18412,7 +18428,7 @@
     "BTFH": {
       "lastSession": "2026-10-01",
       "availableSessions": 142,
-      "generatedAt": "2026-10-01T18:57:00.291Z",
+      "generatedAt": "2026-10-02T09:03:38.268Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -19025,7 +19041,7 @@
     "CAED": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.594Z",
+      "generatedAt": "2026-10-02T09:03:38.557Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -19638,7 +19654,7 @@
     "CANA": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.479Z",
+      "generatedAt": "2026-10-02T09:03:38.447Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -20252,7 +20268,7 @@
     "CCAP": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.205Z",
+      "generatedAt": "2026-10-02T09:03:38.184Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -20865,7 +20881,7 @@
     "CCRS": {
       "lastSession": "2026-10-01",
       "availableSessions": 140,
-      "generatedAt": "2026-10-01T18:57:00.303Z",
+      "generatedAt": "2026-10-02T09:03:38.279Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -21478,7 +21494,7 @@
     "CEFM": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.370Z",
+      "generatedAt": "2026-10-02T09:03:38.343Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -22091,7 +22107,7 @@
     "CERA": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.325Z",
+      "generatedAt": "2026-10-02T09:03:38.298Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -22867,7 +22883,7 @@
     "CICH": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.526Z",
+      "generatedAt": "2026-10-02T09:03:38.490Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -23480,7 +23496,7 @@
     "CIEB": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.257Z",
+      "generatedAt": "2026-10-02T09:03:38.235Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -24093,7 +24109,7 @@
     "CIRA": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.161Z",
+      "generatedAt": "2026-10-02T09:03:38.140Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -24706,7 +24722,7 @@
     "CLHO": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.520Z",
+      "generatedAt": "2026-10-02T09:03:38.485Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -25319,7 +25335,7 @@
     "CNFN": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.271Z",
+      "generatedAt": "2026-10-02T09:03:38.249Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -25932,7 +25948,7 @@
     "COMI": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.347Z",
+      "generatedAt": "2026-10-02T09:03:38.320Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -26545,7 +26561,7 @@
     "COPR": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.417Z",
+      "generatedAt": "2026-10-02T09:03:38.388Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -27158,7 +27174,7 @@
     "COSG": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.185Z",
+      "generatedAt": "2026-10-02T09:03:38.165Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -27771,7 +27787,7 @@
     "CPCI": {
       "lastSession": "2026-10-01",
       "availableSessions": 140,
-      "generatedAt": "2026-10-01T18:57:00.441Z",
+      "generatedAt": "2026-10-02T09:03:38.410Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -28384,7 +28400,7 @@
     "CSAG": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.539Z",
+      "generatedAt": "2026-10-02T09:03:38.502Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -28997,7 +29013,7 @@
     "DAPH": {
       "lastSession": "2026-10-01",
       "availableSessions": 139,
-      "generatedAt": "2026-10-01T18:57:00.234Z",
+      "generatedAt": "2026-10-02T09:03:38.212Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -30836,7 +30852,7 @@
     "DOMT": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.268Z",
+      "generatedAt": "2026-10-02T09:03:38.246Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -31449,7 +31465,7 @@
     "DSCW": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.350Z",
+      "generatedAt": "2026-10-02T09:03:38.324Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -32062,7 +32078,7 @@
     "DTPP": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.134Z",
+      "generatedAt": "2026-10-02T09:03:38.115Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -32676,7 +32692,7 @@
     "EALR": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.477Z",
+      "generatedAt": "2026-10-02T09:03:38.444Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -33289,7 +33305,7 @@
     "EASB": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.196Z",
+      "generatedAt": "2026-10-02T09:03:38.176Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -33902,7 +33918,7 @@
     "EAST": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.459Z",
+      "generatedAt": "2026-10-02T09:03:38.427Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -34515,7 +34531,7 @@
     "EBSC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.251Z",
+      "generatedAt": "2026-10-02T09:03:38.230Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -35128,7 +35144,7 @@
     "ECAP": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.467Z",
+      "generatedAt": "2026-10-02T09:03:38.435Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -35741,7 +35757,7 @@
     "EDFM": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.619Z",
+      "generatedAt": "2026-10-02T09:03:38.582Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -36354,7 +36370,7 @@
     "EEII": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.283Z",
+      "generatedAt": "2026-10-02T09:03:38.260Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -36967,7 +36983,7 @@
     "EFIC": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.432Z",
+      "generatedAt": "2026-10-02T09:03:38.401Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -37580,7 +37596,7 @@
     "EFID": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.384Z",
+      "generatedAt": "2026-10-02T09:03:38.357Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -38193,7 +38209,7 @@
     "EFIH": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.152Z",
+      "generatedAt": "2026-10-02T09:03:38.132Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -38806,7 +38822,7 @@
     "EGAL": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.373Z",
+      "generatedAt": "2026-10-02T09:03:38.346Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -39419,7 +39435,7 @@
     "EGAS": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.492Z",
+      "generatedAt": "2026-10-02T09:03:38.457Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -40032,7 +40048,7 @@
     "EGBE": {
       "lastSession": "2026-10-01",
       "availableSessions": 154,
-      "generatedAt": "2026-10-01T18:57:00.529Z",
+      "generatedAt": "2026-10-02T09:03:38.493Z",
       "primarySource": "mixed_history_with_starta_ohlc_api",
       "staleData": false,
       "updateFailed": false,
@@ -40649,7 +40665,7 @@
     "EGCH": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.389Z",
+      "generatedAt": "2026-10-02T09:03:38.360Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -41877,7 +41893,7 @@
     "EGTS": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.248Z",
+      "generatedAt": "2026-10-02T09:03:38.227Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -42491,7 +42507,7 @@
     "EHDR": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.193Z",
+      "generatedAt": "2026-10-02T09:03:38.173Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -43104,7 +43120,7 @@
     "ELEC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.318Z",
+      "generatedAt": "2026-10-02T09:03:38.293Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -43717,7 +43733,7 @@
     "ELKA": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.321Z",
+      "generatedAt": "2026-10-02T09:03:38.296Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -44943,7 +44959,7 @@
     "ELSH": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.353Z",
+      "generatedAt": "2026-10-02T09:03:38.327Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -45557,7 +45573,7 @@
     "ELWA": {
       "lastSession": "2026-10-01",
       "availableSessions": 141,
-      "generatedAt": "2026-10-01T18:57:00.582Z",
+      "generatedAt": "2026-10-02T09:03:38.546Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -46170,7 +46186,7 @@
     "EMFD": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.356Z",
+      "generatedAt": "2026-10-02T09:03:38.329Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -46783,7 +46799,7 @@
     "ENGC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.554Z",
+      "generatedAt": "2026-10-02T09:03:38.518Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -48009,7 +48025,7 @@
     "EPCO": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.579Z",
+      "generatedAt": "2026-10-02T09:03:38.544Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -49851,7 +49867,7 @@
     "ETEL": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.157Z",
+      "generatedAt": "2026-10-02T09:03:38.138Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -50464,7 +50480,7 @@
     "ETRS": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.336Z",
+      "generatedAt": "2026-10-02T09:03:38.310Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -51077,7 +51093,7 @@
     "EXPA": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.155Z",
+      "generatedAt": "2026-10-02T09:03:38.135Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -51690,7 +51706,7 @@
     "FAIT": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.358Z",
+      "generatedAt": "2026-10-02T09:03:38.332Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -52918,7 +52934,7 @@
     "FERC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.482Z",
+      "generatedAt": "2026-10-02T09:03:38.449Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -53531,7 +53547,7 @@
     "FWRY": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.327Z",
+      "generatedAt": "2026-10-02T09:03:38.301Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -54144,7 +54160,7 @@
     "GBCO": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.506Z",
+      "generatedAt": "2026-10-02T09:03:38.471Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -54757,7 +54773,7 @@
     "GDWA": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.495Z",
+      "generatedAt": "2026-10-02T09:03:38.460Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -55370,7 +55386,7 @@
     "GGCC": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.420Z",
+      "generatedAt": "2026-10-02T09:03:38.391Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -55983,7 +55999,7 @@
     "GIHD": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.585Z",
+      "generatedAt": "2026-10-02T09:03:38.549Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -57827,7 +57843,7 @@
     "GRCA": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.577Z",
+      "generatedAt": "2026-10-02T09:03:38.540Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -58440,7 +58456,7 @@
     "GSSC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.474Z",
+      "generatedAt": "2026-10-02T09:03:38.440Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -59053,7 +59069,7 @@
     "GTWL": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.219Z",
+      "generatedAt": "2026-10-02T09:03:38.198Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -59666,7 +59682,7 @@
     "HDBK": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.164Z",
+      "generatedAt": "2026-10-02T09:03:38.144Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -60280,7 +60296,7 @@
     "HELI": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.333Z",
+      "generatedAt": "2026-10-02T09:03:38.307Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -60893,7 +60909,7 @@
     "HRHO": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.125Z",
+      "generatedAt": "2026-10-02T09:03:38.107Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -61506,7 +61522,7 @@
     "ICID": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.597Z",
+      "generatedAt": "2026-10-02T09:03:38.560Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -62732,7 +62748,7 @@
     "IDRE": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.216Z",
+      "generatedAt": "2026-10-02T09:03:38.195Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -63345,7 +63361,7 @@
     "IFAP": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.265Z",
+      "generatedAt": "2026-10-02T09:03:38.243Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -63958,7 +63974,7 @@
     "INFI": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.279Z",
+      "generatedAt": "2026-10-02T09:03:38.257Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -64571,7 +64587,7 @@
     "IRON": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.518Z",
+      "generatedAt": "2026-10-02T09:03:38.483Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -65184,7 +65200,7 @@
     "ISMA": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.570Z",
+      "generatedAt": "2026-10-02T09:03:38.535Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -65797,7 +65813,7 @@
     "ISMQ": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.113Z",
+      "generatedAt": "2026-10-02T09:03:38.095Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -66410,7 +66426,7 @@
     "ISPH": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.461Z",
+      "generatedAt": "2026-10-02T09:03:38.430Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -67023,7 +67039,7 @@
     "JUFO": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.430Z",
+      "generatedAt": "2026-10-02T09:03:38.399Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -67636,7 +67652,7 @@
     "KABO": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.364Z",
+      "generatedAt": "2026-10-02T09:03:38.337Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -68249,7 +68265,7 @@
     "KWIN": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.610Z",
+      "generatedAt": "2026-10-02T09:03:38.574Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -68862,7 +68878,7 @@
     "KZPC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.446Z",
+      "generatedAt": "2026-10-02T09:03:38.415Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -69475,7 +69491,7 @@
     "LCSW": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.202Z",
+      "generatedAt": "2026-10-02T09:03:38.181Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -70088,7 +70104,7 @@
     "LUTS": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.602Z",
+      "generatedAt": "2026-10-02T09:03:38.566Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -70701,7 +70717,7 @@
     "MAAL": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.341Z",
+      "generatedAt": "2026-10-02T09:03:38.315Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -71314,7 +71330,7 @@
     "MASR": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.210Z",
+      "generatedAt": "2026-10-02T09:03:38.190Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -71927,7 +71943,7 @@
     "MBSC": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.435Z",
+      "generatedAt": "2026-10-02T09:03:38.405Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -72538,7 +72554,7 @@
     "MCQE": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.394Z",
+      "generatedAt": "2026-10-02T09:03:38.366Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -73151,7 +73167,7 @@
     "MCRO": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.199Z",
+      "generatedAt": "2026-10-02T09:03:38.178Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -74377,7 +74393,7 @@
     "MENA": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.367Z",
+      "generatedAt": "2026-10-02T09:03:38.340Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -74990,7 +75006,7 @@
     "MEPA": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.288Z",
+      "generatedAt": "2026-10-02T09:03:38.266Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -75603,7 +75619,7 @@
     "MFPC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.143Z",
+      "generatedAt": "2026-10-02T09:03:38.124Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -76216,7 +76232,7 @@
     "MFSC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.274Z",
+      "generatedAt": "2026-10-02T09:03:38.252Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -76829,7 +76845,7 @@
     "MHOT": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.400Z",
+      "generatedAt": "2026-10-02T09:03:38.371Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -77443,7 +77459,7 @@
     "MICH": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.464Z",
+      "generatedAt": "2026-10-02T09:03:38.432Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -78056,7 +78072,7 @@
     "MILS": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.345Z",
+      "generatedAt": "2026-10-02T09:03:38.317Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -78669,7 +78685,7 @@
     "MIPH": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.542Z",
+      "generatedAt": "2026-10-02T09:03:38.505Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -79282,7 +79298,7 @@
     "MMAT": {
       "lastSession": "2026-10-01",
       "availableSessions": 110,
-      "generatedAt": "2026-10-01T18:57:00.614Z",
+      "generatedAt": "2026-10-02T09:03:38.577Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -79895,7 +79911,7 @@
     "MOED": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.608Z",
+      "generatedAt": "2026-10-02T09:03:38.571Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -80506,7 +80522,7 @@
     "MOIL": {
       "lastSession": "2026-10-01",
       "availableSessions": 153,
-      "generatedAt": "2026-10-01T18:57:00.533Z",
+      "generatedAt": "2026-10-02T09:03:38.496Z",
       "primarySource": "mixed_history_with_starta_ohlc_api",
       "staleData": false,
       "updateFailed": false,
@@ -81123,7 +81139,7 @@
     "MOIN": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.547Z",
+      "generatedAt": "2026-10-02T09:03:38.512Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -81736,7 +81752,7 @@
     "MOSC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.587Z",
+      "generatedAt": "2026-10-02T09:03:38.552Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -82350,7 +82366,7 @@
     "MPCI": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.131Z",
+      "generatedAt": "2026-10-02T09:03:38.112Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -82963,7 +82979,7 @@
     "MPCO": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.299Z",
+      "generatedAt": "2026-10-02T09:03:38.276Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -83576,7 +83592,7 @@
     "MPRC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.314Z",
+      "generatedAt": "2026-10-02T09:03:38.290Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -84189,7 +84205,7 @@
     "MTIE": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.146Z",
+      "generatedAt": "2026-10-02T09:03:38.127Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -84802,7 +84818,7 @@
     "NAHO": {
       "lastSession": "2026-10-01",
       "availableSessions": 147,
-      "generatedAt": "2026-10-01T18:57:00.616Z",
+      "generatedAt": "2026-10-02T09:03:38.579Z",
       "primarySource": "mixed_history_with_starta_ohlc_api",
       "staleData": false,
       "updateFailed": false,
@@ -85419,7 +85435,7 @@
     "NCCW": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.190Z",
+      "generatedAt": "2026-10-02T09:03:38.170Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -87257,7 +87273,7 @@
     "NHPS": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.169Z",
+      "generatedAt": "2026-10-02T09:03:38.150Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -87870,7 +87886,7 @@
     "NINH": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.550Z",
+      "generatedAt": "2026-10-02T09:03:38.515Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -88483,7 +88499,7 @@
     "NIPH": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.122Z",
+      "generatedAt": "2026-10-02T09:03:38.104Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -89096,7 +89112,7 @@
     "OBRI": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.140Z",
+      "generatedAt": "2026-10-02T09:03:38.121Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -89709,7 +89725,7 @@
     "OCDI": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.110Z",
+      "generatedAt": "2026-10-02T09:03:38.092Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -90322,7 +90338,7 @@
     "OCPH": {
       "lastSession": "2026-10-01",
       "availableSessions": 137,
-      "generatedAt": "2026-10-01T18:57:00.409Z",
+      "generatedAt": "2026-10-02T09:03:38.379Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -90935,7 +90951,7 @@
     "ODIN": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.306Z",
+      "generatedAt": "2026-10-02T09:03:38.281Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -91548,7 +91564,7 @@
     "OFH": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.412Z",
+      "generatedAt": "2026-10-02T09:03:38.383Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -92161,7 +92177,7 @@
     "OIH": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.294Z",
+      "generatedAt": "2026-10-02T09:03:38.271Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -92774,7 +92790,7 @@
     "OLFI": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.405Z",
+      "generatedAt": "2026-10-02T09:03:38.377Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -93387,7 +93403,7 @@
     "ORAS": {
       "lastSession": "2026-10-01",
       "availableSessions": 133,
-      "generatedAt": "2026-10-01T18:57:00.179Z",
+      "generatedAt": "2026-10-02T09:03:38.159Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -94000,7 +94016,7 @@
     "ORHD": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.286Z",
+      "generatedAt": "2026-10-02T09:03:38.262Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -94613,7 +94629,7 @@
     "ORWE": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.523Z",
+      "generatedAt": "2026-10-02T09:03:38.488Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -95226,7 +95242,7 @@
     "PHAR": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.397Z",
+      "generatedAt": "2026-10-02T09:03:38.369Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -95839,7 +95855,7 @@
     "PHDC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.330Z",
+      "generatedAt": "2026-10-02T09:03:38.304Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -97991,7 +98007,7 @@
     "PRCL": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.137Z",
+      "generatedAt": "2026-10-02T09:03:38.118Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -98604,7 +98620,7 @@
     "PRDC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.128Z",
+      "generatedAt": "2026-10-02T09:03:38.110Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -99217,7 +99233,7 @@
     "PRMH": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.254Z",
+      "generatedAt": "2026-10-02T09:03:38.232Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -99830,7 +99846,7 @@
     "RACC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.236Z",
+      "generatedAt": "2026-10-02T09:03:38.215Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -101056,7 +101072,7 @@
     "RAYA": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.176Z",
+      "generatedAt": "2026-10-02T09:03:38.156Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -101669,7 +101685,7 @@
     "RMDA": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.148Z",
+      "generatedAt": "2026-10-02T09:03:38.130Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -102282,7 +102298,7 @@
     "ROTO": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.423Z",
+      "generatedAt": "2026-10-02T09:03:38.393Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -102895,7 +102911,7 @@
     "RREI": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.450Z",
+      "generatedAt": "2026-10-02T09:03:38.418Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -103508,7 +103524,7 @@
     "RTVC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.500Z",
+      "generatedAt": "2026-10-02T09:03:38.466Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -104121,7 +104137,7 @@
     "RUBX": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.119Z",
+      "generatedAt": "2026-10-02T09:03:38.100Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -105352,7 +105368,7 @@
     "SAUD": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.488Z",
+      "generatedAt": "2026-10-02T09:03:38.455Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -105965,7 +105981,7 @@
     "SCEM": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.259Z",
+      "generatedAt": "2026-10-02T09:03:38.237Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -106578,7 +106594,7 @@
     "SCFM": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.590Z",
+      "generatedAt": "2026-10-02T09:03:38.554Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -107191,7 +107207,7 @@
     "SCTS": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.311Z",
+      "generatedAt": "2026-10-02T09:03:38.288Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -107805,7 +107821,7 @@
     "SDTI": {
       "lastSession": "2026-10-01",
       "availableSessions": 143,
-      "generatedAt": "2026-10-01T18:57:00.444Z",
+      "generatedAt": "2026-10-02T09:03:38.413Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -108418,7 +108434,7 @@
     "SEIG": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.243Z",
+      "generatedAt": "2026-10-02T09:03:38.220Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -109644,7 +109660,7 @@
     "SIPC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.222Z",
+      "generatedAt": "2026-10-02T09:03:38.201Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -110257,7 +110273,7 @@
     "SKPC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.485Z",
+      "generatedAt": "2026-10-02T09:03:38.452Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -110870,7 +110886,7 @@
     "SMFR": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.456Z",
+      "generatedAt": "2026-10-02T09:03:38.424Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -111483,7 +111499,7 @@
     "SNFC": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.574Z",
+      "generatedAt": "2026-10-02T09:03:38.537Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -112711,7 +112727,7 @@
     "SPIN": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.557Z",
+      "generatedAt": "2026-10-02T09:03:38.520Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -113324,7 +113340,7 @@
     "SPMD": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.426Z",
+      "generatedAt": "2026-10-02T09:03:38.396Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -113937,7 +113953,7 @@
     "SUGR": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.376Z",
+      "generatedAt": "2026-10-02T09:03:38.349Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -114550,7 +114566,7 @@
     "SVCE": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.115Z",
+      "generatedAt": "2026-10-02T09:03:38.098Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -115163,7 +115179,7 @@
     "SWDY": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.213Z",
+      "generatedAt": "2026-10-02T09:03:38.192Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -115776,7 +115792,7 @@
     "TALM": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.402Z",
+      "generatedAt": "2026-10-02T09:03:38.374Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -116389,7 +116405,7 @@
     "TMGH": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.225Z",
+      "generatedAt": "2026-10-02T09:03:38.204Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -117619,7 +117635,7 @@
     "UEFM": {
       "lastSession": "2026-10-01",
       "availableSessions": 143,
-      "generatedAt": "2026-10-01T18:57:00.230Z",
+      "generatedAt": "2026-10-02T09:03:38.210Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -118232,7 +118248,7 @@
     "UEGC": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.308Z",
+      "generatedAt": "2026-10-02T09:03:38.285Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -118845,7 +118861,7 @@
     "UNIP": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.605Z",
+      "generatedAt": "2026-10-02T09:03:38.569Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -119458,7 +119474,7 @@
     "UNIT": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.565Z",
+      "generatedAt": "2026-10-02T09:03:38.529Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -120071,7 +120087,7 @@
     "WCDF": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.559Z",
+      "generatedAt": "2026-10-02T09:03:38.524Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -120684,7 +120700,7 @@
     "WKOL": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.453Z",
+      "generatedAt": "2026-10-02T09:03:38.421Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -121297,7 +121313,7 @@
     "ZEOT": {
       "lastSession": "2026-10-01",
       "availableSessions": 145,
-      "generatedAt": "2026-10-01T18:57:00.182Z",
+      "generatedAt": "2026-10-02T09:03:38.161Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
@@ -121910,7 +121926,7 @@
     "ZMID": {
       "lastSession": "2026-10-01",
       "availableSessions": 144,
-      "generatedAt": "2026-10-01T18:57:00.207Z",
+      "generatedAt": "2026-10-02T09:03:38.187Z",
       "primarySource": "yahoo",
       "staleData": false,
       "updateFailed": false,
