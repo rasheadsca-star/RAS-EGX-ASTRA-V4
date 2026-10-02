@@ -216,6 +216,11 @@ function buildUnifiedOpportunityBoard({ runtime = {}, ucp = {} } = {}) {
   const nativeByTicker = nativeMap(runtime);
   const morningByTicker = morningMap(snapshot);
   const rr68Set = rr68TickerSet(snapshot);
+  const metaLabelByTicker = new Map(
+    (ucp?.diagnostics?.v24?.metaLabel?.results || [])
+      .filter(item => item?.ticker)
+      .map(item => [item.ticker, item])
+  );
 
   const tickers = new Set([
     ...rc2Rows.map((row) => row.ticker).filter(Boolean),
@@ -281,7 +286,7 @@ function buildUnifiedOpportunityBoard({ runtime = {}, ucp = {} } = {}) {
         target1: finite(rc2.target1 ?? native.target1),
         roundTripCostPct: finite(rc2.roundTripCostPct) ?? 0.60
       }),
-      metaLabel: metaLabelStatus(),
+      metaLabel: metaLabelByTicker.get(ticker) || metaLabelStatus(),
       nativeStatus: native.nativeStatus || 'NONE',
       morningStatus: morning?.lifecycleState || snapshot?.morningConfirmation?.status || 'NOT_PREPARED',
       reasonCodes: Array.isArray(rc2.reasonCodes) ? rc2.reasonCodes : [],
