@@ -69,6 +69,11 @@ async function handler(req, res) {
       rejectedCount,
       checkedAt: now,
       snapshotTime: pipeline.generatedAt,
+      marketSessionDate: pipeline.marketSessionDate || null,
+      historySessionDate: pipeline.historySessionDate || null,
+      sessionAligned: pipeline.sessionAligned === true,
+      snapshotMode: pipeline.snapshotMode || null,
+      marketSnapshotGeneratedAt: pipeline.marketSnapshotGeneratedAt || null,
       deploymentCommit: process.env.VERCEL_GIT_COMMIT_SHA || null,
       recommendationsReady:
         recommendationCount + watchlistCount + rejectedCount > 0,
