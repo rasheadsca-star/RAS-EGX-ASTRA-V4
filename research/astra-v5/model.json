@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "astra-v5-prospective-model/v1",
+  "modelVersion": "bootstrap-not-calibrated",
+  "status": "NOT_CALIBRATED",
+  "prospectiveOnly": true,
+  "target": "TARGET1_BEFORE_STOP_WITHIN_MAX_HOLD",
+  "features": [
+    "technicalScore",
+    "researchScore",
+    "liquidityScore",
+    "supportResistanceScore",
+    "dataQualityScore",
+    "structuralNetRR",
+    "riskSafetyScore",
+    "technicalPercentile",
+    "researchPercentile",
+    "liquidityPercentile",
+    "supportResistancePercentile",
+    "structuralRrPercentile",
+    "riskSafetyPercentile",
+    "crossSectionalScore",
+    "regimeScore",
+    "regimeRiskMultiplier"
+  ],
+  "trainingSample": {
+    "prospectiveOnly": true,
+    "resolvedTrades": 0,
+    "forwardSessions": 0,
+    "observedCalendarDays": 0,
+    "positiveOutcomes": 0,
+    "negativeOutcomes": 0
+  },
+  "intercept": null,
+  "coefficients": {},
+  "normalization": {},
+  "calibration": {
+    "method": "ISOTONIC_PAV",
+    "points": []
+  },
+  "validationMetrics": {
+    "brierScore": null,
+    "baseRateBrierScore": null,
+    "brierSkillScore": null,
+    "ece": null
+  },
+  "safety": {
+    "probabilityPublished": false,
+    "expectedValuePublished": false,
+    "uncertaintyGateRequired": true,
+    "usedForCurrentAppSelection": false,
+    "executionAllowed": false,
+    "automaticPromotionAllowed": false
+  },
+  "notes": [
+    "Research sidecar only. This file is not imported by ASTRA V4 production runtime.",
+    "Probability and EV remain null until strict prospective chronological validation passes.",
+    "Retrospective/backtest results cannot satisfy V5 calibration readiness."
+  ]
+}
