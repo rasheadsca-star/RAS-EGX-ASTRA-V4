@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "astra-v5-training-records/v1",
-  "generatedAt": "2026-10-02T20:27:35.091Z",
+  "schemaVersion": "astra-v5-training-records/v2",
+  "generatedAt": "2026-10-02T20:43:22.429Z",
   "prospectiveOnly": true,
   "target": "TARGET1_BEFORE_STOP_WITHIN_MAX_HOLD",
   "count": 0,
