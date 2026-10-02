@@ -210,7 +210,7 @@ async function main() {
     snapshotMode: recommendations.snapshotMode
   }));
   assert.strictEqual(recommendations.marketSessionDate, recommendations.historySessionDate, JSON.stringify(recommendations));
-  assert.strictEqual(recommendations.snapshotMode, 'LOCAL_ATOMIC_SNAPSHOT', JSON.stringify(recommendations));
+  assert(['REMOTE_ATOMIC_SNAPSHOT','LOCAL_ATOMIC_SNAPSHOT'].includes(recommendations.snapshotMode), JSON.stringify(recommendations));
 
   assert.strictEqual(recommendations.market, 'EGX', JSON.stringify(recommendations));
   assert(READY_STATUSES.has(recommendations.status), JSON.stringify(recommendations));
@@ -226,7 +226,7 @@ async function main() {
   assert.strictEqual(health.sessionAligned, true, JSON.stringify(health));
   assert.strictEqual(health.marketSessionDate, recommendations.marketSessionDate, JSON.stringify({ health, recommendations }));
   assert.strictEqual(health.historySessionDate, recommendations.historySessionDate, JSON.stringify({ health, recommendations }));
-  assert.strictEqual(health.snapshotMode, 'LOCAL_ATOMIC_SNAPSHOT', JSON.stringify(health));
+  assert(['REMOTE_ATOMIC_SNAPSHOT','LOCAL_ATOMIC_SNAPSHOT'].includes(health.snapshotMode), JSON.stringify(health));
   assert.strictEqual(health.market, 'EGX', JSON.stringify(health));
   assert(READY_STATUSES.has(health.engineStatus), JSON.stringify(health));
   assert.strictEqual(system.success, true, JSON.stringify(system));

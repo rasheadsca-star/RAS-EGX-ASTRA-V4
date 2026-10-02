@@ -1,7 +1,8 @@
 'use strict';
 
 const assert = require('assert');
-const { quotesFromPayload } = require('../data-engine/providers/canonical-market-provider');
+const { quotesFromPayload, sourceModeToSnapshotMode } = require('../data-engine/providers/canonical-market-provider');
+const { validatePair } = require('../data-engine/atomic-remote-store');
 const { normalizeQuote, getMarketSnapshot } = require('../data-engine/egx-adapter');
 
 async function main() {
@@ -33,6 +34,29 @@ async function main() {
       }
     ]
   };
+
+  const marketCoverageFixture = {
+    ...payload,
+    rows: Array.from({ length: 80 }, (_, i) => ({
+      symbol: i === 0 ? 'AAA' : `T${i}`,
+      price: 10 + i / 10,
+      previousClose: 9.8 + i / 10,
+      volume: 1000 + i,
+      sourceSessionDate: '2026-10-01',
+      updatedAt: '2026-10-01T13:00:00.000Z'
+    }))
+  };
+
+  const pairValidation = validatePair(marketCoverageFixture, {
+    schemaVersion: '5.0.0',
+    generatedAt: payload.generatedAt,
+    source: { ...payload.source },
+    coverage: { coveragePct: 95 },
+    symbols: { AAA: { sessions: [{ date: '2026-10-01', close: 10 }] } }
+  });
+  assert.strictEqual(pairValidation.valid, true, JSON.stringify(pairValidation));
+  assert.strictEqual(sourceModeToSnapshotMode('ASTRA_REMOTE_ATOMIC_GITHUB'), 'REMOTE_ATOMIC_SNAPSHOT');
+  assert.strictEqual(sourceModeToSnapshotMode('ASTRA_ATOMIC_LOCAL'), 'LOCAL_ATOMIC_SNAPSHOT');
 
   const quotes = quotesFromPayload(payload, 'ASTRA_ATOMIC_LOCAL');
   assert.strictEqual(quotes.length, 1);
