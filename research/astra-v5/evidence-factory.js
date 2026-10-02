@@ -17,7 +17,7 @@ const HISTORY_BASE = process.env.ASTRA_V5_HISTORY_BASE ||
   'https://raw.githubusercontent.com/rasheadsca-star/RAS-EGX-PRO2026-NEXT/main/data/history';
 
 const POLICY = Object.freeze({
-  version: 'astra-v5-prospective-evidence-policy/v1',
+  version: 'astra-v5-prospective-evidence-policy/v2',
   maxCandidatesPerSession: 60,
   minScoreCoveragePct: 70,
   minDataQualityScore: 40,
@@ -176,11 +176,32 @@ function eligibleObservationRows(board = {}) {
       crossSectionalScore: finite(row.crossSectionalScore),
       scoreCoveragePct: finite(row.scoreCoveragePct),
       riskLevel: row.riskLevel || 'UNKNOWN',
+      sector: row.sector || row.sectorName || null,
+      sectorSource: row.sector || row.sectorName ? (row.sectorSource || 'UNIFIED_BOARD') : 'UNAVAILABLE',
       morningAtCapture: row.morningStatus || 'NOT_PREPARED',
       reasonCodes: Array.isArray(row.reasonCodes) ? [...row.reasonCodes] : [],
       tradePlan: plan,
+      decisionMarketState: Object.freeze({
+        sessionDate: dateOnly(board.sessionDate),
+        generatedAt: board.generatedAt || null,
+        regime: regime.regime || 'UNKNOWN',
+        regimeScore: finite(regime.score),
+        regimeRiskMultiplier: finite(regime.riskMultiplier),
+        maxTradeRiskPct: finite(regime.maxTradeRiskPct),
+        unifiedRank: finite(row.unifiedRank),
+        unifiedScore: finite(row.unifiedScore),
+        crossSectionalRank: finite(row.crossSectionalRank),
+        crossSectionalScore: finite(row.crossSectionalScore),
+        dataQualityScore: finite(row.dataQualityScore),
+        liquidityScore: finite(row.liquidityScore)
+      }),
+      slippage: {
+        estimatedPct: plan.slippagePct,
+        realizedProxyPct: null,
+        measurement: 'NOT_YET_OBSERVED'
+      },
       features: featureSnapshot(row, regime),
-      evidenceVersion: 1,
+      evidenceVersion: 2,
       prospectiveOnly: true,
       executionAllowed: false,
       morningEvidence: [],
@@ -192,6 +213,9 @@ function eligibleObservationRows(board = {}) {
         exitSession: null,
         fillPrice: null,
         exitPrice: null,
+        entryReferencePrice: null,
+        entrySlippageProxyPct: null,
+        slippageMeasurement: 'NOT_YET_OBSERVED',
         grossReturnPct: null,
         netReturnPct: null,
         sourceLastSession: null,
@@ -276,25 +300,67 @@ function captureCohort(ledger, board, ucp, now = new Date().toISOString()) {
   return { changed: true, reason: 'COHORT_CAPTURED', cohort: frozen };
 }
 
-function enrichMorning(ledger, board, now = new Date().toISOString()) {
-  const boardByTicker = new Map((board.rows || []).filter(x => x?.ticker).map(x => [x.ticker, x]));
+function morningCandidateMap(ucp = {}) {
+  const confirmation = ucp?.snapshot?.morningConfirmation || {};
+  const map = new Map();
+  for (const item of confirmation.preparedCandidates || []) {
+    if (item?.ticker) map.set(String(item.ticker).toUpperCase(), item);
+  }
+  return { confirmation, map };
+}
+
+function compactMorningObservation({ row = {}, item = null, confirmation = {}, now }) {
+  const status = item?.lifecycleState || row.morningStatus || confirmation.status || 'NOT_PREPARED';
+  const payload = item ? stable(item) : null;
+  return {
+    observedAt: now,
+    status,
+    targetSessionDate: dateOnly(confirmation.targetSessionDate),
+    sourceSessionDate: dateOnly(confirmation.sourceSessionDate || confirmation.sessionDate),
+    source: confirmation.source || item?.source || null,
+    generatedAt: confirmation.generatedAt || item?.generatedAt || null,
+    latestSourceMinute: finite(confirmation.latestSourceMinute ?? item?.latestSourceMinute),
+    marketCoveragePct: finite(confirmation.marketCoveragePct ?? item?.marketCoveragePct),
+    currentPrice: finite(item?.currentPrice ?? item?.price),
+    changePct: finite(item?.changePct),
+    turnover: finite(item?.turnover),
+    volumeRatio: finite(item?.volumeRatio ?? item?.relativeVolume),
+    openingGapPct: finite(item?.openingGapPct ?? item?.gapPct),
+    candidateEvidenceHash: payload ? hashObject(payload) : null,
+    candidateEvidence: payload
+  };
+}
+
+function enrichMorning(ledger, board, ucpOrNow = {}, maybeNow = null) {
+  const backwardCompatibleNow = typeof ucpOrNow === 'string' ? ucpOrNow : null;
+  const ucp = typeof ucpOrNow === 'object' && ucpOrNow !== null ? ucpOrNow : {};
+  const now = maybeNow || backwardCompatibleNow || new Date().toISOString();
+  const boardByTicker = new Map((board.rows || []).filter(x => x?.ticker).map(x => [String(x.ticker).toUpperCase(), x]));
+  const morning = morningCandidateMap(ucp);
   let changed = false;
   let updates = 0;
 
   for (const cohort of ledger.cohorts || []) {
-    if (cohort.decisionSessionDate !== dateOnly(board.sessionDate)) continue;
+    const targetSessionDate = dateOnly(cohort.targetSessionDate);
+    const observedTargetSession = dateOnly(morning.confirmation.targetSessionDate);
+    const boardSessionDate = dateOnly(board.sessionDate);
+    if (targetSessionDate && observedTargetSession && targetSessionDate !== observedTargetSession) continue;
+    if (!observedTargetSession && cohort.decisionSessionDate !== boardSessionDate) continue;
+
     for (const candidate of cohort.candidates || []) {
-      const row = boardByTicker.get(candidate.ticker);
-      if (!row) continue;
-      const status = row.morningStatus || 'NOT_PREPARED';
-      const last = candidate.morningEvidence?.at(-1);
-      if (last?.status === status) continue;
-      candidate.morningEvidence = Array.isArray(candidate.morningEvidence) ? candidate.morningEvidence : [];
-      candidate.morningEvidence.push({
-        observedAt: now,
-        status,
-        boardSessionDate: dateOnly(board.sessionDate)
+      const ticker = String(candidate.ticker || '').toUpperCase();
+      const row = boardByTicker.get(ticker) || {};
+      const item = morning.map.get(ticker) || null;
+      const observation = compactMorningObservation({
+        row,
+        item,
+        confirmation: morning.confirmation,
+        now
       });
+      const last = candidate.morningEvidence?.at(-1);
+      if (last && hashObject({ ...last, observedAt: null }) === hashObject({ ...observation, observedAt: null })) continue;
+      candidate.morningEvidence = Array.isArray(candidate.morningEvidence) ? candidate.morningEvidence : [];
+      candidate.morningEvidence.push(observation);
       changed = true;
       updates += 1;
     }
@@ -347,6 +413,7 @@ function resolveOutcome(cohort, candidate, rows, now = new Date().toISOString())
   const stop = finite(plan.stopLoss);
   const target = finite(plan.target1);
   const sourceLastSession = rows.at(-1)?.date || null;
+  const entryReferencePrice = low > 0 && high > 0 ? (low + high) / 2 : null;
 
   if (!targetSessionDate || !(low > 0) || !(high >= low) || !(stop > 0) || !(target > 0)) {
     return {
@@ -387,6 +454,9 @@ function resolveOutcome(cohort, candidate, rows, now = new Date().toISOString())
         exitSession: entryWindow.at(-1)?.date || null,
         fillPrice: null,
         exitPrice: null,
+        entryReferencePrice: round(entryReferencePrice),
+        entrySlippageProxyPct: null,
+        slippageMeasurement: 'NOT_ENTERED',
         grossReturnPct: null,
         netReturnPct: null,
         sourceLastSession,
@@ -397,6 +467,15 @@ function resolveOutcome(cohort, candidate, rows, now = new Date().toISOString())
   }
 
   const entryRow = entryWindow[entryRowIndex];
+  const entrySlippageProxyPct = entryReferencePrice > 0
+    ? round(((fillPrice - entryReferencePrice) / entryReferencePrice) * 100, 4)
+    : null;
+  const slippageMeasurement = 'DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY';
+  candidate.slippage = {
+    estimatedPct: finite(plan.slippagePct) ?? POLICY.slippagePct,
+    realizedProxyPct: entrySlippageProxyPct,
+    measurement: slippageMeasurement
+  };
   const absoluteEntryIndex = future.findIndex(row => row.date === entryRow.date);
   const holdRows = future.slice(absoluteEntryIndex, absoluteEntryIndex + POLICY.maxHoldSessions);
 
@@ -414,6 +493,9 @@ function resolveOutcome(cohort, candidate, rows, now = new Date().toISOString())
         exitSession: row.date,
         fillPrice: round(fillPrice),
         exitPrice: round(stop),
+        entryReferencePrice: round(entryReferencePrice),
+        entrySlippageProxyPct,
+        slippageMeasurement,
         ...returns,
         sourceLastSession,
         sameBarAmbiguity: targetHit ? POLICY.sameBarAmbiguity : null,
@@ -431,6 +513,9 @@ function resolveOutcome(cohort, candidate, rows, now = new Date().toISOString())
         exitSession: row.date,
         fillPrice: round(fillPrice),
         exitPrice: round(target),
+        entryReferencePrice: round(entryReferencePrice),
+        entrySlippageProxyPct,
+        slippageMeasurement,
         ...returns,
         sourceLastSession,
         sameBarAmbiguity: null,
@@ -450,7 +535,10 @@ function resolveOutcome(cohort, candidate, rows, now = new Date().toISOString())
       exitSession: exit.date,
       fillPrice: round(fillPrice),
       exitPrice: round(exit.close),
-      ...returns,
+      entryReferencePrice: round(entryReferencePrice),
+        entrySlippageProxyPct,
+        slippageMeasurement,
+        ...returns,
       sourceLastSession,
       sameBarAmbiguity: null,
       resolvedAt: now
@@ -464,6 +552,9 @@ function resolveOutcome(cohort, candidate, rows, now = new Date().toISOString())
     entered: true,
     entrySession: entryRow.date,
     fillPrice: round(fillPrice),
+    entryReferencePrice: round(entryReferencePrice),
+    entrySlippageProxyPct,
+    slippageMeasurement,
     sourceLastSession
   };
 }
@@ -524,6 +615,16 @@ function trainingRecords(ledger) {
         entrySession: outcome.entrySession,
         exitSession: outcome.exitSession,
         netReturnPct: outcome.netReturnPct,
+        sector: candidate.sector || null,
+        sectorSource: candidate.sectorSource || 'UNAVAILABLE',
+        marketRegime: cohort.marketRegime || {},
+        decisionMarketState: candidate.decisionMarketState || {},
+        morningEvidence: candidate.morningEvidence?.at(-1) || null,
+        slippage: {
+          estimatedPct: candidate.slippage?.estimatedPct ?? candidate.tradePlan?.slippagePct ?? null,
+          realizedProxyPct: outcome.entrySlippageProxyPct ?? candidate.slippage?.realizedProxyPct ?? null,
+          measurement: outcome.slippageMeasurement || candidate.slippage?.measurement || null
+        },
         features: candidate.features,
         frozenTradePlan: candidate.tradePlan,
         captureHash: cohort.captureHash
@@ -558,13 +659,16 @@ function summarize(ledger) {
     negativeOutcomes: negative,
     notEntered: candidates.filter(c => c.outcome?.status === 'NOT_ENTERED').length,
     open: candidates.filter(c => c.outcome?.status === 'OPEN').length,
+    sectorCoverage: candidates.filter(c => Boolean(c.sector)).length,
+    morningEvidenceCaptured: candidates.filter(c => Array.isArray(c.morningEvidence) && c.morningEvidence.length > 0).length,
+    slippageProxyObserved: candidates.filter(c => finite(c.outcome?.entrySlippageProxyPct) !== null).length,
     observedCalendarDays: observedCalendarDays(ledger.cohorts || []),
     criticalBreaches: 0
   };
 }
 
 function finalize(ledger, now = new Date().toISOString()) {
-  ledger.schemaVersion = 'astra-v5-prospective-evidence/v1';
+  ledger.schemaVersion = 'astra-v5-prospective-evidence/v2';
   ledger.policyVersion = POLICY.version;
   ledger.updatedAt = now;
   ledger.summary = summarize(ledger);
@@ -590,14 +694,14 @@ function trainFromLedger(ledger) {
 async function cycle() {
   const now = new Date().toISOString();
   const ledger = readJson(LEDGER_PATH, {
-    schemaVersion: 'astra-v5-prospective-evidence/v1',
+    schemaVersion: 'astra-v5-prospective-evidence/v2',
     policyVersion: POLICY.version,
     cohorts: []
   });
 
   const { board, ucp } = await fetchProductionEvidence();
   const capture = captureCohort(ledger, board, ucp, now);
-  const morning = enrichMorning(ledger, board, now);
+  const morning = enrichMorning(ledger, board, ucp, now);
   const resolution = await resolveLedger(ledger, now);
   finalize(ledger, now);
 
@@ -605,7 +709,7 @@ async function cycle() {
 
   writeJson(LEDGER_PATH, ledger);
   writeJson(TRAINING_PATH, {
-    schemaVersion: 'astra-v5-training-records/v1',
+    schemaVersion: 'astra-v5-training-records/v2',
     generatedAt: now,
     prospectiveOnly: true,
     target: POLICY.targetDefinition,
