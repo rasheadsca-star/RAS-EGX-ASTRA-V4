@@ -179,6 +179,7 @@ async function main() {
   const health = await getJson('/api/data-health?ci=' + encodeURIComponent(expectedCommit));
   const system = await getJson('/api/system-health?ci=' + encodeURIComponent(expectedCommit));
   const ucp = await getJson('/api/ucp-shadow?ci=' + encodeURIComponent(expectedCommit));
+  const unified = await getJson('/api/unified-opportunities?ci=' + encodeURIComponent(expectedCommit));
 
   assert.strictEqual(recommendations.success, true, JSON.stringify(recommendations));
   assert.strictEqual(recommendations.market, 'EGX', JSON.stringify(recommendations));
@@ -199,6 +200,41 @@ async function main() {
   assert.strictEqual(system.healthy, true, JSON.stringify(system));
   assert.strictEqual(ucp.deploymentCommit, expectedCommit, JSON.stringify(ucp));
   assertUcpShadowContract(ucp);
+
+  assert.strictEqual(unified.success, true, JSON.stringify(unified));
+  assert.strictEqual(unified.schemaVersion, 'rasheed-egx-unified-opportunity-board/v1', JSON.stringify(unified));
+  assert.strictEqual(unified.deploymentCommit, expectedCommit, JSON.stringify(unified));
+  assert.strictEqual(unified.executionAllowed, false, JSON.stringify(unified));
+  assert.strictEqual(unified.sessionDate, ucp.snapshot?.sessionDate, JSON.stringify({ unified, ucpSession: ucp.snapshot?.sessionDate }));
+  assert(Array.isArray(unified.rows), JSON.stringify(unified));
+  assert(unified.rows.length >= 100, 'Unified board must expose broad current-session market coverage');
+  assert.strictEqual(unified.confidencePolicy?.usedInUnifiedScore, false, JSON.stringify(unified.confidencePolicy));
+  assert.strictEqual(Number(unified.weights?.technical), 0.20, JSON.stringify(unified.weights));
+  assert.strictEqual(Number(unified.weights?.research), 0.25, JSON.stringify(unified.weights));
+  assert.strictEqual(Number(unified.weights?.structuralRR), 0.15, JSON.stringify(unified.weights));
+  assert.strictEqual(Number(unified.weights?.riskSafety), 0.15, JSON.stringify(unified.weights));
+
+  for (let index = 0; index < unified.rows.length; index += 1) {
+    const item = unified.rows[index];
+    assert.strictEqual(item.executionAllowed, false, JSON.stringify(item));
+    assert.strictEqual(item.unifiedRank, index + 1, JSON.stringify(item));
+    assert(Number(item.unifiedScore) >= 0 && Number(item.unifiedScore) <= 100, JSON.stringify(item));
+    assert(Number(item.scoreCoveragePct) >= 0 && Number(item.scoreCoveragePct) <= 100, JSON.stringify(item));
+    assert.strictEqual(item.confidence?.usedInUnifiedScore, false, JSON.stringify(item));
+    if (index > 0) {
+      assert(Number(unified.rows[index - 1].unifiedScore) >= Number(item.unifiedScore), 'Unified rows must remain score-sorted');
+    }
+  }
+
+  const binv = unified.rows.find((item) => item.ticker === 'BINV');
+  if (ucp.diagnostics?.rc2?.challenger?.candidateCount > 0) {
+    assert(binv, JSON.stringify(unified.rows.slice(0, 20)));
+    assert.strictEqual(binv.source, 'RR68_CHALLENGER', JSON.stringify(binv));
+    assert.strictEqual(binv.selectedByUcp, true, JSON.stringify(binv));
+    assert(Number(binv.researchScore) >= 72, JSON.stringify(binv));
+    assert(Number(binv.structuralNetRR) >= 0.68, JSON.stringify(binv));
+    assert.strictEqual(binv.morningStatus, 'PREPARED', JSON.stringify(binv));
+  }
 
   assert(recommendations.recommendations.every((item) => item.signal === 'BUY'), JSON.stringify(recommendations));
   assert(recommendations.watchlist.every((item) => item.signal === 'WATCH'), JSON.stringify(recommendations));
@@ -240,6 +276,13 @@ async function main() {
     ucpRc2Session: ucp.diagnostics?.rc2?.sessionDate,
     ucpRc2SessionAligned: ucp.diagnostics?.rc2?.sessionAligned,
     ucpRc2Candidates: ucp.snapshot?.alpha?.candidates?.length || 0,
+    unifiedRows: unified.rows?.length || 0,
+    unifiedTop: unified.rows?.slice(0, 5).map((item) => ({
+      rank: item.unifiedRank,
+      ticker: item.ticker,
+      score: item.unifiedScore,
+      source: item.source
+    })),
     ucpRr68Published: ucp.diagnostics?.rc2?.challenger?.published,
     ucpRr68Available: ucp.diagnostics?.rc2?.challenger?.available,
     ucpRr68Candidates: ucp.diagnostics?.rc2?.challenger?.candidateCount || 0,

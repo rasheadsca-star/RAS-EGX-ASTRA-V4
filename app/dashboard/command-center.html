@@ -41,7 +41,34 @@ th{color:#94a3b8;font-size:11px;text-transform:uppercase}
 </div>
 
 <div class="card">
-  <h2>Entry Opportunities</h2>
+  <h2>Unified Opportunity Board</h2>
+  <div class="small" id="unifiedSummary">Combines ASTRA Native + RC2 + RR68 on one comparable scale. Confidence is shown separately because it currently duplicates ASTRA technical score.</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Symbol</th>
+        <th>Source</th>
+        <th>Unified</th>
+        <th>Technical</th>
+        <th>Research</th>
+        <th>Confidence</th>
+        <th>Risk</th>
+        <th>Liq.</th>
+        <th>S/R</th>
+        <th>Struct. RR</th>
+        <th>Morning</th>
+      </tr>
+    </thead>
+    <tbody id="unifiedBoard">
+      <tr><td colspan="12">Loading unified opportunity board...</td></tr>
+    </tbody>
+  </table>
+  <div class="small">Unified weights: Technical 20% · Research 25% · Liquidity 10% · S/R 10% · Structural RR 15% · Risk Safety 15% · Data Quality 5%. This is a research ranking, not an execution instruction.</div>
+</div>
+
+<div class="card">
+  <h2>Entry Opportunities — ASTRA Native</h2>
   <div class="small" id="summary">Loading...</div>
   <table>
     <thead>
@@ -81,6 +108,19 @@ function esc(value){
   return String(value??'-').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+function sourceBadge(source){
+  const label=source||'UNKNOWN';
+  const cls=label==='RC2_FROZEN'?'ready':
+    label==='RR68_CHALLENGER'?'warn':
+    label==='RC2_NEAR_MISS'?'warn':'muted';
+  return '<span class="badge '+cls+'">'+esc(label)+'</span>';
+}
+
+function scoreCell(value){
+  if(value===null||value===undefined) return '-';
+  return Number(value).toFixed(1);
+}
+
 function paperCell(item){
   if(item.executionReady===true){
     return '<span class="badge ready">PAPER READY</span>';
@@ -93,13 +133,15 @@ async function loadSignals(){
   document.getElementById('deployment').innerText='Deployment: checking...';
 
   try{
-    const [data,h]=await Promise.all([
+    const [data,h,unified]=await Promise.all([
       api('/api/recommendations'),
-      api('/api/data-health')
+      api('/api/data-health'),
+      api('/api/unified-opportunities')
     ]);
 
     const rows=data.recommendations||[];
     const watch=data.watchlist||[];
+    const unifiedRows=(unified.rows||[]).slice(0,30);
 
     document.getElementById('mode').innerText=data.mode||'-';
     document.getElementById('live').innerText=h.liveFeed||'-';
@@ -111,6 +153,36 @@ async function loadSignals(){
       (rows.length||0)+' entry opportunities · '+
       (data.dataSource||'-')+' · updated '+
       new Date(data.updatedAt||Date.now()).toLocaleString();
+
+    document.getElementById('unifiedSummary').innerText=
+      (unifiedRows.length||0)+' ranked rows shown · session '+
+      (unified.sessionDate||'-')+
+      ' · UCP '+(unified.ucpStatus||'-')+
+      ' · Confidence displayed separately, not double-counted';
+
+    document.getElementById('unifiedBoard').innerHTML=unifiedRows.length
+      ? unifiedRows.map(x=>{
+          const conf=x.confidence&&x.confidence.value!=null?x.confidence.value:'-';
+          const risk=(x.riskLevel||'UNKNOWN')+
+            (x.stopRiskPct!=null?' / '+Number(x.stopRiskPct).toFixed(1)+'% stop':'');
+          const morning=x.morningStatus||'NOT_PREPARED';
+          const selected=x.selectedByUcp===true?' ★':'';
+          return '<tr>'+
+            '<td>'+esc(x.unifiedRank)+'</td>'+
+            '<td><b>'+esc(x.ticker)+selected+'</b></td>'+
+            '<td>'+sourceBadge(x.source)+'</td>'+
+            '<td><b>'+scoreCell(x.unifiedScore)+'</b></td>'+
+            '<td>'+scoreCell(x.technicalScore)+'</td>'+
+            '<td>'+scoreCell(x.researchScore)+'</td>'+
+            '<td>'+esc(conf)+'</td>'+
+            '<td>'+esc(risk)+'</td>'+
+            '<td>'+scoreCell(x.liquidityScore)+'</td>'+
+            '<td>'+scoreCell(x.supportResistanceScore)+'</td>'+
+            '<td>'+scoreCell(x.structuralNetRR)+'</td>'+
+            '<td>'+esc(morning)+'</td>'+
+          '</tr>';
+        }).join('')
+      : '<tr><td colspan="12">Unified board unavailable or waiting for the RC2 scoreboard snapshot.</td></tr>';
 
     document.getElementById('signals').innerHTML=rows.length
       ? rows.map(x=>{
@@ -157,6 +229,8 @@ async function loadSignals(){
     document.getElementById('deployment').innerText=
       'Deployment: '+(data.deploymentCommit||'unknown');
   }catch(e){
+    document.getElementById('unifiedBoard').innerHTML=
+      '<tr><td colspan="12">Unified board unavailable</td></tr>';
     document.getElementById('signals').innerHTML=
       '<tr><td colspan="10">Runtime data unavailable</td></tr>';
     document.getElementById('watchlist').innerText='Runtime data unavailable';
