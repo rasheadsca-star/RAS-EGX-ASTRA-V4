@@ -124,6 +124,8 @@ const AR={
   },
   signal:{
     BUY:'شراء',
+    ENTRY:'دخول',
+    LONG:'شراء',
     STRONG_BUY:'شراء قوي',
     WATCH:'مراقبة',
     HOLD:'احتفاظ',
@@ -202,7 +204,7 @@ function scoreCell(value){
 
 function priceCell(value){
   if(value===null||value===undefined||!Number.isFinite(Number(value))) return '-';
-  return Number(value).toFixed(4).replace(/0+$/,'').replace(/.$/,'');
+  return Number(value).toFixed(4).replace(/0+$/,'').replace(/\.$/,'');
 }
 
 function entryZoneCell(item){
@@ -281,7 +283,7 @@ async function loadSignals(){
             '<td>'+esc(morning)+'</td>'+
           '</tr>';
         }).join('')
-      : '<tr><td colspan="16">Unified board unavailable or waiting for the RC2 scoreboard snapshot.</td></tr>';
+      : '<tr><td colspan="16">لوحة الفرص الموحدة غير متاحة حاليًا أو في انتظار تحديث بيانات RC2.</td></tr>';
 
     document.getElementById('signals').innerHTML=rows.length
       ? rows.map(x=>{
@@ -301,7 +303,7 @@ async function loadSignals(){
       : '<tr><td colspan="10">لا توجد فرص دخول مؤهلة حاليًا. ASTRA لا يحول الإشارات الضعيفة أو الهابطة تلقائيًا إلى توصيات بيع.</td></tr>';
 
     document.getElementById('watchlist').innerHTML=watch.length
-      ? '<table><thead><tr><th>السهم</th><th>Status</th><th>الثقة</th><th>المخاطرة</th><th>Reason</th></tr></thead><tbody>'+
+      ? '<table><thead><tr><th>السهم</th><th>الحالة</th><th>الثقة</th><th>المخاطرة</th><th>السبب</th></tr></thead><tbody>'+
         watch.map(x=>'<tr>'+
           '<td><b>'+esc(x.symbol)+'</b></td>'+
           '<td class="watch">مراقبة</td>'+
