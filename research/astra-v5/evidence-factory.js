@@ -108,9 +108,25 @@ async function fetchJson(url, attempts = 4) {
 function sectorForTicker(ticker) {
   const key = String(ticker || '').toUpperCase();
   const mapped = SECTOR_MAP?.symbolToSector?.[key] || null;
+  if (mapped) {
+    return {
+      sector: mapped,
+      sectorSource: 'LEGACY_SECTOR_MAP_EXACT',
+      sectorConfidence: 100
+    };
+  }
+  const inferred = SECTOR_MAP?.inferredSymbolToSector?.[key] || null;
+  if (inferred?.sector) {
+    return {
+      sector: inferred.sector,
+      sectorSource: 'LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE',
+      sectorConfidence: finite(inferred.confidence)
+    };
+  }
   return {
-    sector: mapped || SECTOR_MAP.unknownLabel || 'غير مصنف',
-    sectorSource: mapped ? 'LEGACY_SECTOR_MAP_EXACT' : 'UNCLASSIFIED'
+    sector: SECTOR_MAP.unknownLabel || 'غير مصنف',
+    sectorSource: 'UNCLASSIFIED',
+    sectorConfidence: null
   };
 }
 
@@ -189,7 +205,8 @@ function eligibleObservationRows(board = {}) {
       ...(() => {
         if (row.sector || row.sectorName) return {
           sector: row.sector || row.sectorName,
-          sectorSource: row.sectorSource || 'UNIFIED_BOARD'
+          sectorSource: row.sectorSource || 'UNIFIED_BOARD',
+          sectorConfidence: finite(row.sectorConfidence) ?? 100
         };
         return sectorForTicker(row.ticker);
       })(),
@@ -613,7 +630,7 @@ function backfillObservationMetadata(ledger) {
   let changed = 0;
   for (const cohort of ledger.cohorts || []) {
     for (const candidate of cohort.candidates || []) {
-      if (!candidate.sector || candidate.sectorSource === 'UNAVAILABLE') {
+      if (!candidate.sector || candidate.sectorSource === 'UNAVAILABLE' || candidate.sectorSource === 'UNCLASSIFIED') {
         const mapped = sectorForTicker(candidate.ticker);
         candidate.sector = mapped.sector;
         candidate.sectorSource = mapped.sectorSource;
@@ -676,6 +693,7 @@ function trainingRecords(ledger) {
         netReturnPct: outcome.netReturnPct,
         sector: candidate.sector || null,
         sectorSource: candidate.sectorSource || 'UNAVAILABLE',
+        sectorConfidence: finite(candidate.sectorConfidence),
         marketRegime: cohort.marketRegime || {},
         decisionMarketState: candidate.decisionMarketState || {},
         morningEvidence: candidate.morningEvidence?.at(-1) || null,
@@ -719,6 +737,8 @@ function summarize(ledger) {
     notEntered: candidates.filter(c => c.outcome?.status === 'NOT_ENTERED').length,
     open: candidates.filter(c => c.outcome?.status === 'OPEN').length,
     sectorCoverage: candidates.filter(c => Boolean(c.sector) && c.sectorSource !== 'UNCLASSIFIED').length,
+    sectorExact: candidates.filter(c => c.sectorSource === 'LEGACY_SECTOR_MAP_EXACT' || c.sectorSource === 'UNIFIED_BOARD').length,
+    sectorInferredHighConfidence: candidates.filter(c => c.sectorSource === 'LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE').length,
     sectorRecorded: candidates.filter(c => Boolean(c.sector)).length,
     sectorUnclassified: candidates.filter(c => c.sectorSource === 'UNCLASSIFIED').length,
     morningEvidenceCaptured: candidates.filter(c => Array.isArray(c.morningEvidence) && c.morningEvidence.length > 0).length,
