@@ -105,6 +105,59 @@ function assertSafeSnapshot(ucp) {
   }
 }
 
+function captureRr68Observation(ledger, snapshot, ucp) {
+  const rr68 = (snapshot?.alpha?.challengers || []).find((item) => item?.id === RR68_CHALLENGER_ID);
+  if (!rr68) return { changed: false, reason: 'RR68_NOT_PUBLISHED' };
+  if (rr68.researchOnly !== true || rr68.executionAllowed !== false || rr68.automaticPromotionAllowed !== false) {
+    throw new Error('RR68_FORWARD_PERMISSION_CONTRACT_FAILED');
+  }
+  if (rr68.sessionAligned !== true || rr68.sessionDate !== snapshot.sessionDate) {
+    throw new Error('RR68_FORWARD_SESSION_ALIGNMENT_FAILED');
+  }
+
+  if (!Array.isArray(ledger.challengerEntries)) ledger.challengerEntries = [];
+  const existing = ledger.challengerEntries.find((entry) =>
+    entry?.challengerId === RR68_CHALLENGER_ID && entry?.sessionDate === snapshot.sessionDate
+  );
+  if (existing) return { changed: false, reason: 'RR68_SESSION_ALREADY_CAPTURED' };
+
+  const candidates = (rr68.candidates || []).map(safeCandidate).filter((item) => item.ticker);
+  const promotionEvidenceEligible = snapshot.sessionDate > RR68_CALIBRATION_SESSION;
+  ledger.challengerEntries.push({
+    recordId: `${RR68_CHALLENGER_ID}:${snapshot.sessionDate}:${snapshot.decisionHash.slice(0, 16)}`,
+    capturedAt: new Date().toISOString(),
+    source: 'UCP_PRODUCTION_SHADOW',
+    challengerId: RR68_CHALLENGER_ID,
+    sessionDate: snapshot.sessionDate,
+    targetSessionDate: snapshot.morningConfirmation?.targetSessionDate || null,
+    decisionHash: snapshot.decisionHash,
+    deploymentCommit: ucp.deploymentCommit || null,
+    promotionEvidenceEligible,
+    calibrationSessionObservation: promotionEvidenceEligible !== true,
+    policyDiff: rr68.policyDiff || null,
+    candidates,
+    outcomes: candidates.map((candidate) => ({
+      ticker: candidate.ticker,
+      outcome: 'OPEN',
+      entered: false,
+      entrySession: null,
+      exitSession: null,
+      entryPrice: null,
+      exitPrice: null,
+      netReturnPct: null,
+      resolvedAt: null,
+      sourceLastSession: null
+    })),
+    criticalBreaches: []
+  });
+  return {
+    changed: true,
+    reason: promotionEvidenceEligible ? 'RR68_CAPTURED_PROSPECTIVE' : 'RR68_CAPTURED_CALIBRATION_OBSERVATION',
+    candidateCount: candidates.length,
+    promotionEvidenceEligible
+  };
+}
+
 async function capture(ledger) {
   const ucp = await waitForProductionSnapshot();
   assertSafeSnapshot(ucp);
@@ -113,16 +166,18 @@ async function capture(ledger) {
   const decisionHash = snapshot.decisionHash;
   if (!decisionHash || !snapshot.sessionDate) throw new Error('UCP_DECISION_IDENTITY_MISSING');
 
+  const rr68Capture = captureRr68Observation(ledger, snapshot, ucp);
   const frozenSession = ledger.entries.find((entry) => entry.sessionDate === snapshot.sessionDate);
   if (frozenSession) {
     return {
-      changed: false,
+      changed: rr68Capture.changed === true,
       reason: frozenSession.decisionHash === decisionHash
         ? 'NOOP_SESSION_ALREADY_CAPTURED'
         : 'NOOP_SESSION_ALREADY_FROZEN_HASH_CHANGED',
       decisionHash,
       frozenDecisionHash: frozenSession.decisionHash,
-      sessionDate: snapshot.sessionDate
+      sessionDate: snapshot.sessionDate,
+      rr68: rr68Capture
     };
   }
 
@@ -171,7 +226,8 @@ async function capture(ledger) {
     decisionHash,
     sessionDate: snapshot.sessionDate,
     candidateCount: candidates.length,
-    deploymentCommit: ucp.deploymentCommit || null
+    deploymentCommit: ucp.deploymentCommit || null,
+    rr68: rr68Capture
   };
 }
 
