@@ -112,6 +112,12 @@ async function handler(req, res) {
       dataSource: pipeline.dataSource,
       deploymentCommit: process.env.VERCEL_GIT_COMMIT_SHA || null,
       updatedAt: pipeline.generatedAt,
+      marketSessionDate: pipeline.marketSessionDate || null,
+      expectedSession: pipeline.expectedSession || null,
+      marketSessionAligned: pipeline.marketSessionAligned === true,
+      atomicHandoff: pipeline.atomicHandoff === true,
+      sourceGeneratedAt: pipeline.sourceGeneratedAt || null,
+      sourceSessionDataHash: pipeline.sourceSessionDataHash || null,
 
       scanSummary: {
         scannedSymbols: pipeline.symbolsAnalyzed || 0,

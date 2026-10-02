@@ -195,7 +195,13 @@ async function buildRuntimeRecommendations(snapshot = {}) {
       historyCount: 0,
       morningConfirmedCount: 0,
       watchlistCount: 0,
-      executionReadyCount: 0
+      executionReadyCount: 0,
+      marketSessionDate: liveSnapshot?.sessionDate || null,
+      expectedSession: liveSnapshot?.expectedSession || null,
+      marketSessionAligned: liveSnapshot?.sessionAligned === true,
+      atomicHandoff: liveSnapshot?.atomicHandoff === true,
+      sourceGeneratedAt: liveSnapshot?.sourceGeneratedAt || null,
+      sourceSessionDataHash: liveSnapshot?.sourceSessionDataHash || null
     };
   }
 
@@ -270,6 +276,13 @@ async function buildRuntimeRecommendations(snapshot = {}) {
 
     liveSource:
       liveSnapshot?.source || 'NONE',
+
+    marketSessionDate: liveSnapshot?.sessionDate || null,
+    expectedSession: liveSnapshot?.expectedSession || null,
+    marketSessionAligned: liveSnapshot?.sessionAligned === true,
+    atomicHandoff: liveSnapshot?.atomicHandoff === true,
+    sourceGeneratedAt: liveSnapshot?.sourceGeneratedAt || null,
+    sourceSessionDataHash: liveSnapshot?.sourceSessionDataHash || null,
 
     ...recommendationBundle
   };

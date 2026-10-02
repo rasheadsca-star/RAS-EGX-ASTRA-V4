@@ -33,7 +33,13 @@ function normalizeQuote(quote = {}) {
     delayed: Boolean(quote.delayed),
     intradayCandles: Array.isArray(quote.intradayCandles)
       ? quote.intradayCandles
-      : []
+      : [],
+    sourceSessionDate: quote.sourceSessionDate || null,
+    expectedSession: quote.expectedSession || null,
+    sessionVerified: quote.sessionVerified === true,
+    atomicHandoff: quote.atomicHandoff === true,
+    sourceGeneratedAt: quote.sourceGeneratedAt || null,
+    sourceSessionDataHash: quote.sourceSessionDataHash || null
   };
 }
 
@@ -47,13 +53,34 @@ async function getMarketSnapshot(provider) {
     };
   }
 
-  const quotes = await provider.fetchQuotes();
+  const rawQuotes = await provider.fetchQuotes();
+  const quotes = Array.isArray(rawQuotes) ? rawQuotes.map(normalizeQuote) : [];
+  const sessions = [...new Set(quotes.map(item => item.sourceSessionDate).filter(Boolean))].sort();
+  const expectedSessions = [...new Set(quotes.map(item => item.expectedSession).filter(Boolean))].sort();
+  const sourceGeneratedAts = quotes.map(item => item.sourceGeneratedAt).filter(Boolean).sort();
+  const fingerprints = [...new Set(quotes.map(item => item.sourceSessionDataHash).filter(Boolean))];
+
+  const sessionDate = sessions.length === 1 ? sessions[0] : sessions.at(-1) || null;
+  const expectedSession = expectedSessions.length === 1 ? expectedSessions[0] : expectedSessions.at(-1) || null;
+  const sessionAligned = Boolean(
+    quotes.length &&
+    expectedSession &&
+    sessions.length === 1 &&
+    sessionDate === expectedSession &&
+    quotes.every(item => item.sessionVerified === true)
+  );
 
   return {
     status: quotes.length ? 'CONNECTED' : 'NO_QUOTES',
     source: provider.name || 'EGX_PROVIDER',
-    quotes: Array.isArray(quotes) ? quotes.map(normalizeQuote) : [],
-    timestamp: new Date().toISOString()
+    quotes,
+    timestamp: new Date().toISOString(),
+    sessionDate,
+    expectedSession,
+    sessionAligned,
+    atomicHandoff: quotes.length > 0 && quotes.every(item => item.atomicHandoff === true),
+    sourceGeneratedAt: sourceGeneratedAts.at(-1) || null,
+    sourceSessionDataHash: fingerprints.length === 1 ? fingerprints[0] : null
   };
 }
 
