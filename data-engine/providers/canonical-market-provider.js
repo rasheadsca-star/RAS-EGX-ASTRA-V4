@@ -1,6 +1,7 @@
-// ASTRA V4 Canonical Market Provider
-// Primary path: atomically synchronized local market snapshot committed together
-// with the local history index. Remote source is emergency fallback only.
+// ASTRA V4 Atomic Canonical Market Provider
+// Runtime prefers the deployed local snapshot created by the atomic data-sync
+// workflow. Remote PRO data is fallback-only, preventing a moving market feed
+// from drifting away from the deployed history index.
 
 const fs = require('fs');
 const path = require('path');
@@ -14,31 +15,35 @@ const LOCAL_MARKET_PATH =
 
 const REQUEST_TIMEOUT_MS = 12000;
 
-async function fetchJson(remotePath) {
+async function fetchJson(relativePath) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
   try {
-    const response = await fetch(`${SOURCE_BASE}/${remotePath}`, {
-      headers: { 'User-Agent': 'ASTRA-V4/4.2-CONTINUITY' },
-      signal: controller.signal
-    });
+    const response = await fetch(
+      `${SOURCE_BASE}/${relativePath}?fallback=${Date.now()}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          'Cache-Control': 'no-cache',
+          'User-Agent': 'ASTRA-V4-REMOTE-FALLBACK/5.0'
+        },
+        signal: controller.signal
+      }
+    );
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status} for ${remotePath}`);
-    }
-
+    if (!response.ok) throw new Error(`HTTP ${response.status} for ${relativePath}`);
     return await response.json();
   } finally {
     clearTimeout(timeout);
   }
 }
 
-function readLocalMarket() {
+function loadLocalMarket() {
   try {
     if (!fs.existsSync(LOCAL_MARKET_PATH)) return null;
     const payload = JSON.parse(fs.readFileSync(LOCAL_MARKET_PATH, 'utf8'));
-    if (!Array.isArray(payload?.rows) || !payload.rows.length) return null;
+    if (!Array.isArray(payload?.rows) || !payload?.source?.expectedSession) return null;
     return payload;
   } catch (error) {
     console.log('ASTRA LOCAL CANONICAL MARKET ERROR', error?.message || error);
@@ -54,30 +59,25 @@ function ageSeconds(timestamp) {
 
 function latestSession(rows) {
   return rows
-    .map((row) => row?.sourceSessionDate || row?.marketSessionDate || null)
+    .map(row => row?.sourceSessionDate || row?.marketSessionDate || null)
     .filter(Boolean)
     .sort()
     .pop() || null;
 }
 
-function normalizeRow(row, expectedSession, snapshotMeta = {}) {
+function sourceModeToSnapshotMode(sourceMode) {
+  return sourceMode === 'ASTRA_ATOMIC_LOCAL'
+    ? 'LOCAL_ATOMIC_SNAPSHOT'
+    : 'REMOTE_EMERGENCY_FALLBACK';
+}
+
+function normalizeRow(row, expectedSession, metadata = {}) {
   const symbol = String(row?.symbol || row?.ticker || '').trim().toUpperCase();
   const price = Number(row?.price ?? row?.last ?? 0);
-
   if (!symbol || !Number.isFinite(price) || price <= 0) return null;
 
-  const sessionDate =
-    row?.sourceSessionDate ||
-    row?.marketSessionDate ||
-    expectedSession ||
-    null;
-
-  const updatedAt =
-    row?.sourceSessionCheckedAt ||
-    row?.updatedAt ||
-    snapshotMeta.generatedAt ||
-    null;
-
+  const sessionDate = row?.sourceSessionDate || row?.marketSessionDate || null;
+  const updatedAt = row?.sourceSessionCheckedAt || row?.updatedAt || null;
   const sourceLatencySeconds = ageSeconds(updatedAt);
   const sessionVerified = Boolean(expectedSession) && sessionDate === expectedSession;
 
@@ -91,9 +91,9 @@ function normalizeRow(row, expectedSession, snapshotMeta = {}) {
     high: Number(row?.high || price),
     low: Number(row?.low || price),
     timestamp: updatedAt,
-    source: 'MUBASHER_CANONICAL_DELAYED',
+    source: metadata.sourceMode || 'ASTRA_ATOMIC_LOCAL',
     sourceUrl: row?.sourceUrl || null,
-    sourceVerified: sessionVerified,
+    sourceVerified: sessionVerified && metadata.executionGrade === true,
     sourceLatencySeconds,
     confidence: sessionVerified ? 90 : 50,
     delayed: true,
@@ -101,64 +101,59 @@ function normalizeRow(row, expectedSession, snapshotMeta = {}) {
     sourceSessionDate: sessionDate,
     expectedSession,
     sessionVerified,
-    snapshotGeneratedAt: snapshotMeta.generatedAt || null,
-    snapshotMode: snapshotMeta.mode || null
+    atomicHandoff: metadata.atomicHandoff === true,
+    sourceGeneratedAt: metadata.generatedAt || null,
+    sourceSessionDataHash: metadata.sourceSessionDataHash || null,
+    snapshotGeneratedAt: metadata.generatedAt || null,
+    snapshotMode: sourceModeToSnapshotMode(metadata.sourceMode)
   };
 }
 
-function normalizePayload(payload = {}, mode = 'LOCAL_ATOMIC_SNAPSHOT') {
+function quotesFromPayload(payload, sourceMode) {
   const rows = Array.isArray(payload?.rows) ? payload.rows : [];
-  const expectedSession =
-    payload?.source?.expectedSession ||
-    payload?.expectedSession ||
-    latestSession(rows);
+  const source = payload?.source || {};
+  const expectedSession = source?.expectedSession || latestSession(rows);
 
-  const quotes = rows
-    .map((row) => normalizeRow(row, expectedSession, {
-      generatedAt: payload?.generatedAt || null,
-      mode
-    }))
-    .filter(Boolean)
-    .filter((quote) => !expectedSession || quote.sourceSessionDate === expectedSession);
-
-  return {
-    quotes,
-    expectedSession,
-    generatedAt: payload?.generatedAt || null,
-    executionGrade: payload?.source?.executionGrade === true,
-    mode
+  const metadata = {
+    sourceMode,
+    executionGrade: source?.executionGrade === true,
+    atomicHandoff: source?.atomicHandoff === true,
+    generatedAt: payload?.generatedAt || source?.fetchStatusGeneratedAt || null,
+    sourceSessionDataHash: source?.sourceSessionDataHash || null
   };
+
+  return rows
+    .map(row => normalizeRow(row, expectedSession, metadata))
+    .filter(Boolean)
+    .filter(quote => !expectedSession || quote.sourceSessionDate === expectedSession);
 }
 
 const canonicalMarketProvider = {
-  name: 'MUBASHER_CANONICAL_DELAYED',
+  name: 'ASTRA_ATOMIC_CANONICAL',
 
   async fetchQuotes() {
-    const local = readLocalMarket();
+    const local = loadLocalMarket();
+    if (local) return quotesFromPayload(local, 'ASTRA_ATOMIC_LOCAL');
 
-    if (local) {
-      const normalized = normalizePayload(local, 'LOCAL_ATOMIC_SNAPSHOT');
-      if (normalized.quotes.length) return normalized.quotes;
-    }
-
-    // Emergency fallback only. It protects availability when a deployment is
-    // missing/corrupt, but normal production remains pinned to synchronized
-    // market+history files committed in one refresh transaction.
+    // Emergency availability fallback only. It is visibly marked non-atomic
+    // and remains non-executable through the existing freshness gates.
     const [market, status] = await Promise.all([
       fetchJson('market.json'),
       fetchJson('fetch-status.json').catch(() => ({}))
     ]);
 
     const payload = {
-      generatedAt: market?.generatedAt || status?.generatedAt || null,
+      generatedAt: status?.generatedAt || market?.generatedAt || null,
       source: {
         expectedSession: status?.expectedSession || latestSession(market?.rows || []),
-        executionGrade: status?.executionGrade === true
+        executionGrade: status?.executionGrade === true,
+        atomicHandoff: false,
+        sourceSessionDataHash: null
       },
       rows: Array.isArray(market?.rows) ? market.rows : []
     };
 
-    return normalizePayload(payload, 'REMOTE_EMERGENCY_FALLBACK').quotes;
+    return quotesFromPayload(payload, 'ASTRA_REMOTE_FALLBACK');
   },
 
   async getQuotes() {
@@ -168,7 +163,8 @@ const canonicalMarketProvider = {
 
 module.exports = {
   canonicalMarketProvider,
-  LOCAL_MARKET_PATH,
-  readLocalMarket,
-  normalizePayload
+  loadLocalMarket,
+  normalizeRow,
+  quotesFromPayload,
+  sourceModeToSnapshotMode
 };
