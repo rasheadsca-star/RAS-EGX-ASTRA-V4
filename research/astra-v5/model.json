@@ -1,6 +1,6 @@
 {
   "schemaVersion": "astra-v5-prospective-model/v1",
-  "modelVersion": "bootstrap-not-calibrated",
+  "modelVersion": "astra-v5-forward-2026-10-02",
   "status": "NOT_CALIBRATED",
   "prospectiveOnly": true,
   "target": "TARGET1_BEFORE_STOP_WITHIN_MAX_HOLD",
@@ -43,17 +43,6 @@
     "brierSkillScore": null,
     "ece": null
   },
-  "safety": {
-    "probabilityPublished": false,
-    "expectedValuePublished": false,
-    "uncertaintyGateRequired": true,
-    "usedForCurrentAppSelection": false,
-    "executionAllowed": false,
-    "automaticPromotionAllowed": false
-  },
-  "notes": [
-    "Research sidecar only. This file is not imported by ASTRA V4 production runtime.",
-    "Probability and EV remain null until strict prospective chronological validation passes.",
-    "Retrospective/backtest results cannot satisfy V5 calibration readiness."
-  ]
+  "executionAllowed": false,
+  "usedForCurrentAppSelection": false
 }

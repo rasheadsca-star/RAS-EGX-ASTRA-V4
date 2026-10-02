@@ -1,17 +1,4188 @@
 {
   "schemaVersion": "astra-v5-prospective-evidence/v1",
   "policyVersion": "astra-v5-prospective-evidence-policy/v1",
-  "updatedAt": null,
-  "cohorts": [],
+  "updatedAt": "2026-10-02T20:27:35.091Z",
+  "cohorts": [
+    {
+      "schemaVersion": "astra-v5-prospective-cohort/v1",
+      "cohortId": "2026-10-01:c2d712d5da7e9641",
+      "decisionSessionDate": "2026-10-01",
+      "targetSessionDate": "2026-10-04",
+      "capturedAt": "2026-10-02T20:27:35.091Z",
+      "boardGeneratedAt": "2026-10-02T20:27:36.528Z",
+      "sourceIdentity": {
+        "productionDeploymentCommit": "2688333003ca171b93892154cac6278b58b349bb",
+        "ucpDecisionHash": "09dd3a6912d05eb94b1ef38ca4219bb456d3c2652e2a85f5f23769a1d5be2131",
+        "boardSessionDate": "2026-10-01",
+        "ucpSessionDate": "2026-10-01",
+        "targetSessionDate": "2026-10-04",
+        "ucpStatus": "SHADOW_READY"
+      },
+      "marketRegime": {
+        "regime": "RISK_OFF",
+        "score": 8,
+        "riskMultiplier": 0.35,
+        "maxTradeRiskPct": 0.09,
+        "affectsHardGatesAutomatically": false,
+        "usedForContextOnly": true
+      },
+      "observationPolicy": {
+        "version": "astra-v5-prospective-evidence-policy/v1",
+        "maxCandidatesPerSession": 60,
+        "minScoreCoveragePct": 70,
+        "minDataQualityScore": 40,
+        "minLiquidityScore": 30,
+        "entryExpirySessions": 3,
+        "maxHoldSessions": 10,
+        "roundTripCostPct": 0.6,
+        "slippagePct": 0.15,
+        "sameBarAmbiguity": "STOP_FIRST",
+        "targetDefinition": "TARGET1_BEFORE_STOP_WITHIN_MAX_HOLD",
+        "prospectiveOnly": true,
+        "executionAllowed": false
+      },
+      "candidateCount": 60,
+      "candidates": [
+        {
+          "ticker": "SNFC",
+          "source": "RC2_NEAR_MISS",
+          "selectedByUcp": false,
+          "nearMiss": true,
+          "unifiedRank": 1,
+          "unifiedScore": 71.06,
+          "crossSectionalRank": 1,
+          "crossSectionalScore": 90.55,
+          "scoreCoveragePct": 100,
+          "riskLevel": "MEDIUM",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 11.2733,
+            "entryHigh": 11.3805,
+            "stopLoss": 11.0759,
+            "target1": 11.6551,
+            "target2": 11.6551,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 75.3,
+            "researchScore": 72.4,
+            "liquidityScore": 94.3,
+            "supportResistanceScore": 79.8,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.553,
+            "riskSafetyScore": 81.18,
+            "technicalPercentile": 98.21,
+            "researchPercentile": 99.43,
+            "liquidityPercentile": 69.73,
+            "supportResistancePercentile": 94.32,
+            "structuralRrPercentile": 78.86,
+            "riskSafetyPercentile": 99.1,
+            "crossSectionalScore": 90.55,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "BINV",
+          "source": "RR68_CHALLENGER",
+          "selectedByUcp": true,
+          "nearMiss": true,
+          "unifiedRank": 2,
+          "unifiedScore": 67.01,
+          "crossSectionalRank": 8,
+          "crossSectionalScore": 80.25,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "PREPARED",
+          "reasonCodes": [
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 57.52,
+            "entryHigh": 59.0013,
+            "stopLoss": 54.7913,
+            "target1": 62.48,
+            "target2": 62.48,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 75.3,
+            "researchScore": 73.5,
+            "liquidityScore": 98,
+            "supportResistanceScore": 69.9,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.685,
+            "riskSafetyScore": 45.37,
+            "technicalPercentile": 98.21,
+            "researchPercentile": 100,
+            "liquidityPercentile": 84.98,
+            "supportResistancePercentile": 63.35,
+            "structuralRrPercentile": 87.43,
+            "riskSafetyPercentile": 31.39,
+            "crossSectionalScore": 80.25,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "PREPARED",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "CPCI",
+          "source": "ASTRA_NATIVE_ENTRY",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 3,
+          "unifiedScore": 65.44,
+          "crossSectionalRank": 9,
+          "crossSectionalScore": 78.91,
+          "scoreCoveragePct": 100,
+          "riskLevel": "LOW",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW",
+            "DO_NOT_CHASE"
+          ],
+          "tradePlan": {
+            "entryLow": 577.1267,
+            "entryHigh": 583.4961,
+            "stopLoss": 565.3935,
+            "target1": 600,
+            "target2": 600,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 63.5,
+            "researchScore": 62,
+            "liquidityScore": 89.5,
+            "supportResistanceScore": 61.6,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.602,
+            "riskSafetyScore": 88.03,
+            "technicalPercentile": 92.38,
+            "researchPercentile": 89.77,
+            "liquidityPercentile": 46.19,
+            "supportResistancePercentile": 28.13,
+            "structuralRrPercentile": 84,
+            "riskSafetyPercentile": 100,
+            "crossSectionalScore": 78.91,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "MAAL",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 4,
+          "unifiedScore": 64.12,
+          "crossSectionalRank": 10,
+          "crossSectionalScore": 78.86,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 10.1533,
+            "entryHigh": 10.4347,
+            "stopLoss": 9.6351,
+            "target1": 11.1245,
+            "target2": 11.2933,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 57.6,
+            "researchScore": 68.8,
+            "liquidityScore": 95.7,
+            "supportResistanceScore": 74.1,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.923,
+            "riskSafetyScore": 42.91,
+            "technicalPercentile": 87.22,
+            "researchPercentile": 98.3,
+            "liquidityPercentile": 77.58,
+            "supportResistancePercentile": 82.1,
+            "structuralRrPercentile": 93.43,
+            "riskSafetyPercentile": 26.01,
+            "crossSectionalScore": 78.86,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "SWDY",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 5,
+          "unifiedScore": 64.02,
+          "crossSectionalRank": 7,
+          "crossSectionalScore": 80.47,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 115,
+            "entryHigh": 117.3611,
+            "stopLoss": 110.6506,
+            "target1": 123.2928,
+            "target2": 124.9067,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 51.8,
+            "researchScore": 66.6,
+            "liquidityScore": 99.6,
+            "supportResistanceScore": 70.2,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.923,
+            "riskSafetyScore": 53.63,
+            "technicalPercentile": 78.7,
+            "researchPercentile": 97.44,
+            "liquidityPercentile": 95.07,
+            "supportResistancePercentile": 65.63,
+            "structuralRrPercentile": 93.43,
+            "riskSafetyPercentile": 48.88,
+            "crossSectionalScore": 80.47,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "ALCN",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 6,
+          "unifiedScore": 63.87,
+          "crossSectionalRank": 6,
+          "crossSectionalScore": 80.97,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 33.37,
+            "entryHigh": 33.8823,
+            "stopLoss": 32.4263,
+            "target1": 34.4401,
+            "target2": 34.4401,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 72.4,
+            "researchScore": 69.3,
+            "liquidityScore": 94.2,
+            "supportResistanceScore": 78.7,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.214,
+            "riskSafetyScore": 61.83,
+            "technicalPercentile": 96.41,
+            "researchPercentile": 98.86,
+            "liquidityPercentile": 68.61,
+            "supportResistancePercentile": 92.61,
+            "structuralRrPercentile": 41.71,
+            "riskSafetyPercentile": 77.58,
+            "crossSectionalScore": 80.97,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "NCCW",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 7,
+          "unifiedScore": 63.58,
+          "crossSectionalRank": 37,
+          "crossSectionalScore": 66.04,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 7.14,
+            "entryHigh": 7.3518,
+            "stopLoss": 6.7498,
+            "target1": 7.8687,
+            "target2": 8.85,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 40,
+            "researchScore": 66.5,
+            "liquidityScore": 88.1,
+            "supportResistanceScore": 63,
+            "dataQualityScore": 78,
+            "structuralNetRR": 2.251,
+            "riskSafetyScore": 40.46,
+            "technicalPercentile": 67.94,
+            "researchPercentile": 96.59,
+            "liquidityPercentile": 40.81,
+            "supportResistancePercentile": 32.67,
+            "structuralRrPercentile": 97.14,
+            "riskSafetyPercentile": 22.87,
+            "crossSectionalScore": 66.04,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "AMOC",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 8,
+          "unifiedScore": 63.4,
+          "crossSectionalRank": 2,
+          "crossSectionalScore": 86.07,
+          "scoreCoveragePct": 100,
+          "riskLevel": "MEDIUM",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 13.5355,
+            "entryHigh": 13.7638,
+            "stopLoss": 13.1149,
+            "target1": 14.1351,
+            "target2": 14.1351,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 60.6,
+            "researchScore": 65.8,
+            "liquidityScore": 98.4,
+            "supportResistanceScore": 76.3,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.395,
+            "riskSafetyScore": 70,
+            "technicalPercentile": 90.81,
+            "researchPercentile": 96.02,
+            "liquidityPercentile": 87.89,
+            "supportResistancePercentile": 86.93,
+            "structuralRrPercentile": 62.29,
+            "riskSafetyPercentile": 94.17,
+            "crossSectionalScore": 86.07,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "GBCO",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 9,
+          "unifiedScore": 62.73,
+          "crossSectionalRank": 3,
+          "crossSectionalScore": 84.67,
+          "scoreCoveragePct": 100,
+          "riskLevel": "MEDIUM",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 30.6,
+            "entryHigh": 31.0557,
+            "stopLoss": 29.7606,
+            "target1": 31.56,
+            "target2": 31.56,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 60.6,
+            "researchScore": 65.7,
+            "liquidityScore": 100,
+            "supportResistanceScore": 77.1,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.215,
+            "riskSafetyScore": 73.05,
+            "technicalPercentile": 90.81,
+            "researchPercentile": 95.45,
+            "liquidityPercentile": 98.43,
+            "supportResistancePercentile": 89.77,
+            "structuralRrPercentile": 42.29,
+            "riskSafetyPercentile": 96.86,
+            "crossSectionalScore": 84.67,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "ABUK",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 11,
+          "unifiedScore": 62.07,
+          "crossSectionalRank": 21,
+          "crossSectionalScore": 73.73,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 86.9124,
+            "entryHigh": 88.1283,
+            "stopLoss": 84.6725,
+            "target1": 91.3159,
+            "target2": 94.6731,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 28.2,
+            "researchScore": 61.7,
+            "liquidityScore": 88.3,
+            "supportResistanceScore": 69.5,
+            "dataQualityScore": 78,
+            "structuralNetRR": 1.51,
+            "riskSafetyScore": 63.94,
+            "technicalPercentile": 59.19,
+            "researchPercentile": 87.78,
+            "liquidityPercentile": 41.26,
+            "supportResistancePercentile": 61.36,
+            "structuralRrPercentile": 96.57,
+            "riskSafetyPercentile": 81.61,
+            "crossSectionalScore": 73.73,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "EGAL",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 12,
+          "unifiedScore": 62.03,
+          "crossSectionalRank": 4,
+          "crossSectionalScore": 82.19,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 340,
+            "entryHigh": 344.4237,
+            "stopLoss": 331.851,
+            "target1": 356.1351,
+            "target2": 358.9305,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 40,
+            "researchScore": 63.5,
+            "liquidityScore": 99.3,
+            "supportResistanceScore": 70.1,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.85,
+            "riskSafetyScore": 65.46,
+            "technicalPercentile": 67.94,
+            "researchPercentile": 92.61,
+            "liquidityPercentile": 92.15,
+            "supportResistancePercentile": 64.49,
+            "structuralRrPercentile": 91.43,
+            "riskSafetyPercentile": 87.44,
+            "crossSectionalScore": 82.19,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "AIFI",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 13,
+          "unifiedScore": 61.88,
+          "crossSectionalRank": 11,
+          "crossSectionalScore": 78.64,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 2.2267,
+            "entryHigh": 2.2752,
+            "stopLoss": 2.1372,
+            "target1": 2.3966,
+            "target2": 2.3967,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 51.8,
+            "researchScore": 65.4,
+            "liquidityScore": 98.1,
+            "supportResistanceScore": 73.4,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.711,
+            "riskSafetyScore": 51.56,
+            "technicalPercentile": 78.7,
+            "researchPercentile": 94.89,
+            "liquidityPercentile": 85.87,
+            "supportResistancePercentile": 78.98,
+            "structuralRrPercentile": 88.57,
+            "riskSafetyPercentile": 43.05,
+            "crossSectionalScore": 78.64,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "MFPC",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 14,
+          "unifiedScore": 61.24,
+          "crossSectionalRank": 15,
+          "crossSectionalScore": 75.58,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 45.2,
+            "entryHigh": 45.9066,
+            "stopLoss": 43.8984,
+            "target1": 47.7336,
+            "target2": 47.9115,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 48.8,
+            "researchScore": 63.9,
+            "liquidityScore": 87.6,
+            "supportResistanceScore": 68.8,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.757,
+            "riskSafetyScore": 61.4,
+            "technicalPercentile": 74.44,
+            "researchPercentile": 93.18,
+            "liquidityPercentile": 38.79,
+            "supportResistancePercentile": 57.39,
+            "structuralRrPercentile": 89.71,
+            "riskSafetyPercentile": 75.78,
+            "crossSectionalScore": 75.58,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "CCAP",
+          "source": "ASTRA_NATIVE_ENTRY",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 16,
+          "unifiedScore": 60.68,
+          "crossSectionalRank": 12,
+          "crossSectionalScore": 77.63,
+          "scoreCoveragePct": 100,
+          "riskLevel": "MEDIUM",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 6.7033,
+            "entryHigh": 6.7867,
+            "stopLoss": 6.5498,
+            "target1": 6.9233,
+            "target2": 6.9233,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 54.7,
+            "researchScore": 61.9,
+            "liquidityScore": 95.3,
+            "supportResistanceScore": 67.2,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.345,
+            "riskSafetyScore": 76.85,
+            "technicalPercentile": 82.06,
+            "researchPercentile": 88.92,
+            "liquidityPercentile": 75.34,
+            "supportResistancePercentile": 52.84,
+            "structuralRrPercentile": 56.57,
+            "riskSafetyPercentile": 98.21,
+            "crossSectionalScore": 77.63,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "UEFM",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 17,
+          "unifiedScore": 59.9,
+          "crossSectionalRank": 20,
+          "crossSectionalScore": 74.03,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 503.066,
+            "entryHigh": 516.6199,
+            "stopLoss": 478.0983,
+            "target1": 544.98,
+            "target2": 544.98,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 54.1,
+            "researchScore": 66.6,
+            "liquidityScore": 87.3,
+            "supportResistanceScore": 81.3,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.607,
+            "riskSafetyScore": 43.87,
+            "technicalPercentile": 81.61,
+            "researchPercentile": 97.44,
+            "liquidityPercentile": 38.12,
+            "supportResistancePercentile": 96.59,
+            "structuralRrPercentile": 84.57,
+            "riskSafetyPercentile": 28.25,
+            "crossSectionalScore": 74.03,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "AJWA",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 18,
+          "unifiedScore": 59.81,
+          "crossSectionalRank": 18,
+          "crossSectionalScore": 74.12,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 180.4879,
+            "entryHigh": 182.3628,
+            "stopLoss": 177.0341,
+            "target1": 183.1406,
+            "target2": 183.1406,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 60,
+            "researchScore": 64.6,
+            "liquidityScore": 90.1,
+            "supportResistanceScore": 83.3,
+            "dataQualityScore": 78,
+            "structuralNetRR": -0.049,
+            "riskSafetyScore": 69.48,
+            "technicalPercentile": 89.91,
+            "researchPercentile": 94.32,
+            "liquidityPercentile": 49.1,
+            "supportResistancePercentile": 98.86,
+            "structuralRrPercentile": 5.43,
+            "riskSafetyPercentile": 93.27,
+            "crossSectionalScore": 74.12,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "ORAS",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 20,
+          "unifiedScore": 58.91,
+          "crossSectionalRank": 19,
+          "crossSectionalScore": 74.1,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 795.9233,
+            "entryHigh": 807.1632,
+            "stopLoss": 775.2184,
+            "target1": 832.9133,
+            "target2": 832.9133,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 48.8,
+            "researchScore": 60.6,
+            "liquidityScore": 90.2,
+            "supportResistanceScore": 73.7,
+            "dataQualityScore": 69,
+            "structuralNetRR": 0.568,
+            "riskSafetyScore": 63.74,
+            "technicalPercentile": 74.44,
+            "researchPercentile": 86.93,
+            "liquidityPercentile": 50.45,
+            "supportResistancePercentile": 80.11,
+            "structuralRrPercentile": 80.57,
+            "riskSafetyPercentile": 79.82,
+            "crossSectionalScore": 74.1,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "ICID",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 21,
+          "unifiedScore": 58.88,
+          "crossSectionalRank": 13,
+          "crossSectionalScore": 77.24,
+          "scoreCoveragePct": 100,
+          "riskLevel": "MEDIUM",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 18.2,
+            "entryHigh": 18.5756,
+            "stopLoss": 17.5081,
+            "target1": 18.9387,
+            "target2": 18.9387,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 51.8,
+            "researchScore": 62.9,
+            "liquidityScore": 95.3,
+            "supportResistanceScore": 81.7,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.213,
+            "riskSafetyScore": 63.95,
+            "technicalPercentile": 78.7,
+            "researchPercentile": 90.91,
+            "liquidityPercentile": 75.34,
+            "supportResistancePercentile": 97.73,
+            "structuralRrPercentile": 41.14,
+            "riskSafetyPercentile": 82.29,
+            "crossSectionalScore": 77.24,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "EXPA",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 22,
+          "unifiedScore": 58.42,
+          "crossSectionalRank": 5,
+          "crossSectionalScore": 81.23,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 20.5533,
+            "entryHigh": 20.7965,
+            "stopLoss": 20.1055,
+            "target1": 21.3833,
+            "target2": 21.3833,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 34.1,
+            "researchScore": 59.5,
+            "liquidityScore": 97.3,
+            "supportResistanceScore": 84.3,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.566,
+            "riskSafetyScore": 67.29,
+            "technicalPercentile": 63.68,
+            "researchPercentile": 86.36,
+            "liquidityPercentile": 82.96,
+            "supportResistancePercentile": 100,
+            "structuralRrPercentile": 80,
+            "riskSafetyPercentile": 91.03,
+            "crossSectionalScore": 81.23,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "ORWE",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 24,
+          "unifiedScore": 57.45,
+          "crossSectionalRank": 17,
+          "crossSectionalScore": 74.2,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 27.5295,
+            "entryHigh": 27.8752,
+            "stopLoss": 26.8926,
+            "target1": 28.18,
+            "target2": 28.18,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 48.8,
+            "researchScore": 61.7,
+            "liquidityScore": 93.5,
+            "supportResistanceScore": 81.9,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.12,
+            "riskSafetyScore": 66.16,
+            "technicalPercentile": 74.44,
+            "researchPercentile": 87.78,
+            "liquidityPercentile": 65.92,
+            "supportResistancePercentile": 98.3,
+            "structuralRrPercentile": 31.14,
+            "riskSafetyPercentile": 88.79,
+            "crossSectionalScore": 74.2,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "FAIT",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 25,
+          "unifiedScore": 57.38,
+          "crossSectionalRank": 23,
+          "crossSectionalScore": 71.22,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 43.5833,
+            "entryHigh": 44.2737,
+            "stopLoss": 42.3116,
+            "target1": 45.79,
+            "target2": 45.79,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 48.8,
+            "researchScore": 59.4,
+            "liquidityScore": 83,
+            "supportResistanceScore": 69,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.561,
+            "riskSafetyScore": 61.08,
+            "technicalPercentile": 74.44,
+            "researchPercentile": 85.8,
+            "liquidityPercentile": 30.04,
+            "supportResistancePercentile": 58.81,
+            "structuralRrPercentile": 79.43,
+            "riskSafetyPercentile": 74.22,
+            "crossSectionalScore": 71.22,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "KABO",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 27,
+          "unifiedScore": 57.09,
+          "crossSectionalRank": 24,
+          "crossSectionalScore": 70.42,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 9.181,
+            "entryHigh": 9.3743,
+            "stopLoss": 8.8248,
+            "target1": 9.6167,
+            "target2": 9.6167,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 51.8,
+            "researchScore": 62.7,
+            "liquidityScore": 98.5,
+            "supportResistanceScore": 71.2,
+            "dataQualityScore": 77.4,
+            "structuralNetRR": 0.307,
+            "riskSafetyScore": 52.77,
+            "technicalPercentile": 78.7,
+            "researchPercentile": 90.34,
+            "liquidityPercentile": 88.34,
+            "supportResistancePercentile": 75,
+            "structuralRrPercentile": 52.29,
+            "riskSafetyPercentile": 47.09,
+            "crossSectionalScore": 70.42,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "CERA",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 30,
+          "unifiedScore": 56.8,
+          "crossSectionalRank": 30,
+          "crossSectionalScore": 67.35,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 1.3131,
+            "entryHigh": 1.3531,
+            "stopLoss": 1.2393,
+            "target1": 1.4467,
+            "target2": 1.4467,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 45.9,
+            "researchScore": 61.9,
+            "liquidityScore": 97,
+            "supportResistanceScore": 63.2,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.701,
+            "riskSafetyScore": 39.42,
+            "technicalPercentile": 70.63,
+            "researchPercentile": 88.92,
+            "liquidityPercentile": 82.06,
+            "supportResistancePercentile": 34.09,
+            "structuralRrPercentile": 88,
+            "riskSafetyPercentile": 21.52,
+            "crossSectionalScore": 67.35,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "NIPH",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 32,
+          "unifiedScore": 55.86,
+          "crossSectionalRank": 25,
+          "crossSectionalScore": 70.21,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 329.2073,
+            "entryHigh": 337.6182,
+            "stopLoss": 313.7134,
+            "target1": 343.0268,
+            "target2": 343.0268,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 51.8,
+            "researchScore": 63.4,
+            "liquidityScore": 99.3,
+            "supportResistanceScore": 80,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.13,
+            "riskSafetyScore": 45.63,
+            "technicalPercentile": 78.7,
+            "researchPercentile": 92.05,
+            "liquidityPercentile": 92.15,
+            "supportResistancePercentile": 94.89,
+            "structuralRrPercentile": 32.57,
+            "riskSafetyPercentile": 32.74,
+            "crossSectionalScore": 70.21,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "FWRY",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 35,
+          "unifiedScore": 55.13,
+          "crossSectionalRank": 14,
+          "crossSectionalScore": 77.09,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 18.7261,
+            "entryHigh": 18.9096,
+            "stopLoss": 18.3882,
+            "target1": 19.3,
+            "target2": 19.3,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 27.6,
+            "researchScore": 56.7,
+            "liquidityScore": 98.8,
+            "supportResistanceScore": 78.4,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.436,
+            "riskSafetyScore": 70.29,
+            "technicalPercentile": 56.95,
+            "researchPercentile": 80.11,
+            "liquidityPercentile": 89.24,
+            "supportResistancePercentile": 91.76,
+            "structuralRrPercentile": 68.57,
+            "riskSafetyPercentile": 95.52,
+            "crossSectionalScore": 77.09,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "MBSC",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 36,
+          "unifiedScore": 54.26,
+          "crossSectionalRank": 86,
+          "crossSectionalScore": 55.34,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "SR_CONFLUENCE_FAIL"
+          ],
+          "tradePlan": {
+            "entryLow": 292.42,
+            "entryHigh": 299.7131,
+            "stopLoss": 278.9854,
+            "target1": 317.7338,
+            "target2": 400,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 1.2,
+            "researchScore": 53,
+            "liquidityScore": 100,
+            "supportResistanceScore": 48.9,
+            "dataQualityScore": 78,
+            "structuralNetRR": 4.372,
+            "riskSafetyScore": 46.5,
+            "technicalPercentile": 19.51,
+            "researchPercentile": 73.01,
+            "liquidityPercentile": 98.43,
+            "supportResistancePercentile": 3.41,
+            "structuralRrPercentile": 99.14,
+            "riskSafetyPercentile": 34.53,
+            "crossSectionalScore": 55.34,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "CIRA",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 37,
+          "unifiedScore": 54.25,
+          "crossSectionalRank": 40,
+          "crossSectionalScore": 64.4,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 38.925,
+            "entryHigh": 39.5488,
+            "stopLoss": 37.776,
+            "target1": 39.6933,
+            "target2": 39.6933,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 48.8,
+            "researchScore": 59.3,
+            "liquidityScore": 89.4,
+            "supportResistanceScore": 77,
+            "dataQualityScore": 78,
+            "structuralNetRR": -0.046,
+            "riskSafetyScore": 60.8,
+            "technicalPercentile": 74.44,
+            "researchPercentile": 85.23,
+            "liquidityPercentile": 45.52,
+            "supportResistancePercentile": 89.2,
+            "structuralRrPercentile": 5.43,
+            "riskSafetyPercentile": 73.09,
+            "crossSectionalScore": 64.4,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "AMIA",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 38,
+          "unifiedScore": 54.15,
+          "crossSectionalRank": 50,
+          "crossSectionalScore": 62.64,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 18.2563,
+            "entryHigh": 18.5699,
+            "stopLoss": 17.6785,
+            "target1": 18.7533,
+            "target2": 18.7533,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 48.8,
+            "researchScore": 59.1,
+            "liquidityScore": 90.2,
+            "supportResistanceScore": 76.7,
+            "dataQualityScore": 70.6,
+            "structuralNetRR": 0.072,
+            "riskSafetyScore": 59.02,
+            "technicalPercentile": 74.44,
+            "researchPercentile": 84.09,
+            "liquidityPercentile": 50.45,
+            "supportResistancePercentile": 88.07,
+            "structuralRrPercentile": 22,
+            "riskSafetyPercentile": 60.99,
+            "crossSectionalScore": 62.64,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "SDTI",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 40,
+          "unifiedScore": 54.09,
+          "crossSectionalRank": 36,
+          "crossSectionalScore": 66.11,
+          "scoreCoveragePct": 100,
+          "riskLevel": "MEDIUM",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 82.7667,
+            "entryHigh": 84.2803,
+            "stopLoss": 79.9784,
+            "target1": 86.1467,
+            "target2": 86.1467,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 42.9,
+            "researchScore": 55.9,
+            "liquidityScore": 88,
+            "supportResistanceScore": 65.5,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.283,
+            "riskSafetyScore": 67.78,
+            "technicalPercentile": 69.96,
+            "researchPercentile": 78.13,
+            "liquidityPercentile": 40.36,
+            "supportResistancePercentile": 42.61,
+            "structuralRrPercentile": 50.29,
+            "riskSafetyPercentile": 91.93,
+            "crossSectionalScore": 66.11,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "ARCC",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 43,
+          "unifiedScore": 53.77,
+          "crossSectionalRank": 33,
+          "crossSectionalScore": 66.92,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 64.1467,
+            "entryHigh": 65.2457,
+            "stopLoss": 62.1221,
+            "target1": 68.0579,
+            "target2": 68.6967,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 18.8,
+            "researchScore": 53.3,
+            "liquidityScore": 97.5,
+            "supportResistanceScore": 65.1,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.87,
+            "riskSafetyScore": 59.09,
+            "technicalPercentile": 49.1,
+            "researchPercentile": 74.43,
+            "liquidityPercentile": 83.63,
+            "supportResistancePercentile": 40.91,
+            "structuralRrPercentile": 92,
+            "riskSafetyPercentile": 61.88,
+            "crossSectionalScore": 66.92,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "ACGC",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 44,
+          "unifiedScore": 53.68,
+          "crossSectionalRank": 48,
+          "crossSectionalScore": 62.84,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 14.513,
+            "entryHigh": 14.7521,
+            "stopLoss": 14.0726,
+            "target1": 14.78,
+            "target2": 14.78,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 48.8,
+            "researchScore": 58.5,
+            "liquidityScore": 94,
+            "supportResistanceScore": 69.8,
+            "dataQualityScore": 78,
+            "structuralNetRR": -0.079,
+            "riskSafetyScore": 60.11,
+            "technicalPercentile": 74.44,
+            "researchPercentile": 83.24,
+            "liquidityPercentile": 67.26,
+            "supportResistancePercentile": 62.22,
+            "structuralRrPercentile": 5.43,
+            "riskSafetyPercentile": 69.51,
+            "crossSectionalScore": 62.84,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "TALM",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 47,
+          "unifiedScore": 53.64,
+          "crossSectionalRank": 32,
+          "crossSectionalScore": 67.02,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 20.6,
+            "entryHigh": 21.0368,
+            "stopLoss": 19.7954,
+            "target1": 21.6567,
+            "target2": 21.6567,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 40,
+            "researchScore": 58.5,
+            "liquidityScore": 91.3,
+            "supportResistanceScore": 74,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.361,
+            "riskSafetyScore": 52.54,
+            "technicalPercentile": 67.94,
+            "researchPercentile": 83.24,
+            "liquidityPercentile": 56.28,
+            "supportResistancePercentile": 81.25,
+            "structuralRrPercentile": 59.43,
+            "riskSafetyPercentile": 46.64,
+            "crossSectionalScore": 67.02,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "EFIC",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 49,
+          "unifiedScore": 53.16,
+          "crossSectionalRank": 112,
+          "crossSectionalScore": 47.56,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "SR_CONFLUENCE_FAIL"
+          ],
+          "tradePlan": {
+            "entryLow": 166.08,
+            "entryHigh": 170.0943,
+            "stopLoss": 158.6852,
+            "target1": 180.0381,
+            "target2": 208.1337,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 0,
+            "researchScore": 51.8,
+            "liquidityScore": 86.9,
+            "supportResistanceScore": 54.9,
+            "dataQualityScore": 78,
+            "structuralNetRR": 2.978,
+            "riskSafetyScore": 47.74,
+            "technicalPercentile": 9.19,
+            "researchPercentile": 71.59,
+            "liquidityPercentile": 35.65,
+            "supportResistancePercentile": 11.36,
+            "structuralRrPercentile": 97.71,
+            "riskSafetyPercentile": 36.77,
+            "crossSectionalScore": 47.56,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "ADRI",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 50,
+          "unifiedScore": 52.99,
+          "crossSectionalRank": 39,
+          "crossSectionalScore": 64.69,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 11.524,
+            "entryHigh": 11.7875,
+            "stopLoss": 11.0387,
+            "target1": 12.2067,
+            "target2": 12.2067,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 40,
+            "researchScore": 57.2,
+            "liquidityScore": 94,
+            "supportResistanceScore": 67.2,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.425,
+            "riskSafetyScore": 49.86,
+            "technicalPercentile": 67.94,
+            "researchPercentile": 80.68,
+            "liquidityPercentile": 67.26,
+            "supportResistancePercentile": 52.84,
+            "structuralRrPercentile": 66.57,
+            "riskSafetyPercentile": 39.91,
+            "crossSectionalScore": 64.69,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "EMFD",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 51,
+          "unifiedScore": 52.9,
+          "crossSectionalRank": 27,
+          "crossSectionalScore": 69.33,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 12.6267,
+            "entryHigh": 12.8761,
+            "stopLoss": 12.1673,
+            "target1": 13.3267,
+            "target2": 13.3267,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 31.2,
+            "researchScore": 56.5,
+            "liquidityScore": 97.5,
+            "supportResistanceScore": 70.9,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.475,
+            "riskSafetyScore": 54.9,
+            "technicalPercentile": 61.66,
+            "researchPercentile": 79.55,
+            "liquidityPercentile": 83.63,
+            "supportResistancePercentile": 72.44,
+            "structuralRrPercentile": 72.57,
+            "riskSafetyPercentile": 51.12,
+            "crossSectionalScore": 69.33,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "RUBX",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 52,
+          "unifiedScore": 52.56,
+          "crossSectionalRank": 45,
+          "crossSectionalScore": 63.42,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 14.64,
+            "entryHigh": 15.0974,
+            "stopLoss": 13.7973,
+            "target1": 15.63,
+            "target2": 15.63,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 45.9,
+            "researchScore": 59.2,
+            "liquidityScore": 94.9,
+            "supportResistanceScore": 70.3,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.318,
+            "riskSafetyScore": 38.48,
+            "technicalPercentile": 70.63,
+            "researchPercentile": 84.66,
+            "liquidityPercentile": 73.77,
+            "supportResistancePercentile": 67.33,
+            "structuralRrPercentile": 53.14,
+            "riskSafetyPercentile": 20.63,
+            "crossSectionalScore": 63.42,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "COPR",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 53,
+          "unifiedScore": 52.55,
+          "crossSectionalRank": 41,
+          "crossSectionalScore": 64.34,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 0.484,
+            "entryHigh": 0.4936,
+            "stopLoss": 0.4663,
+            "target1": 0.5,
+            "target2": 0.5,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 40,
+            "researchScore": 57.8,
+            "liquidityScore": 93.2,
+            "supportResistanceScore": 78.2,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.113,
+            "riskSafetyScore": 54.74,
+            "technicalPercentile": 67.94,
+            "researchPercentile": 81.82,
+            "liquidityPercentile": 64.8,
+            "supportResistancePercentile": 90.91,
+            "structuralRrPercentile": 28.29,
+            "riskSafetyPercentile": 50.22,
+            "crossSectionalScore": 64.34,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "LCSW",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 55,
+          "unifiedScore": 52.43,
+          "crossSectionalRank": 38,
+          "crossSectionalScore": 65.24,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 33.1315,
+            "entryHigh": 33.7606,
+            "stopLoss": 31.9727,
+            "target1": 34.0667,
+            "target2": 34.0667,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 39.4,
+            "researchScore": 57.5,
+            "liquidityScore": 99.3,
+            "supportResistanceScore": 75.3,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.052,
+            "riskSafetyScore": 56.14,
+            "technicalPercentile": 65.92,
+            "researchPercentile": 81.25,
+            "liquidityPercentile": 92.15,
+            "supportResistancePercentile": 84.94,
+            "structuralRrPercentile": 19.14,
+            "riskSafetyPercentile": 54.71,
+            "crossSectionalScore": 65.24,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "SPMD",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 56,
+          "unifiedScore": 52.42,
+          "crossSectionalRank": 124,
+          "crossSectionalScore": 46.02,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "SR_CONFLUENCE_FAIL"
+          ],
+          "tradePlan": {
+            "entryLow": 0.3767,
+            "entryHigh": 0.3868,
+            "stopLoss": 0.358,
+            "target1": 0.4117,
+            "target2": 0.6,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 0,
+            "researchScore": 51.6,
+            "liquidityScore": 85.7,
+            "supportResistanceScore": 54.6,
+            "dataQualityScore": 78,
+            "structuralNetRR": 6.768,
+            "riskSafetyScore": 43.92,
+            "technicalPercentile": 9.19,
+            "researchPercentile": 70.45,
+            "liquidityPercentile": 33.63,
+            "supportResistancePercentile": 10.8,
+            "structuralRrPercentile": 99.14,
+            "riskSafetyPercentile": 28.7,
+            "crossSectionalScore": 46.02,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "MPRC",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 59,
+          "unifiedScore": 52,
+          "crossSectionalRank": 34,
+          "crossSectionalScore": 66.67,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 38.4333,
+            "entryHigh": 38.9632,
+            "stopLoss": 37.4573,
+            "target1": 39.3133,
+            "target2": 39.3133,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 36.5,
+            "researchScore": 54.9,
+            "liquidityScore": 96,
+            "supportResistanceScore": 73.3,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.067,
+            "riskSafetyScore": 64.26,
+            "technicalPercentile": 64.8,
+            "researchPercentile": 77.27,
+            "liquidityPercentile": 78.48,
+            "supportResistancePercentile": 78.13,
+            "structuralRrPercentile": 20.86,
+            "riskSafetyPercentile": 84.3,
+            "crossSectionalScore": 66.67,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "MTIE",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 61,
+          "unifiedScore": 51.48,
+          "crossSectionalRank": 43,
+          "crossSectionalScore": 64.07,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 8.1946,
+            "entryHigh": 8.3092,
+            "stopLoss": 7.9835,
+            "target1": 8.4033,
+            "target2": 8.4033,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 36.5,
+            "researchScore": 54.6,
+            "liquidityScore": 94.9,
+            "supportResistanceScore": 66.6,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.118,
+            "riskSafetyScore": 63.95,
+            "technicalPercentile": 64.8,
+            "researchPercentile": 76.14,
+            "liquidityPercentile": 73.77,
+            "supportResistancePercentile": 49.43,
+            "structuralRrPercentile": 29.71,
+            "riskSafetyPercentile": 82.29,
+            "crossSectionalScore": 64.07,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "EFIH",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 62,
+          "unifiedScore": 51.4,
+          "crossSectionalRank": 35,
+          "crossSectionalScore": 66.19,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 23.2495,
+            "entryHigh": 23.5537,
+            "stopLoss": 22.6892,
+            "target1": 23.7267,
+            "target2": 23.7267,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 33.5,
+            "researchScore": 54.7,
+            "liquidityScore": 96.1,
+            "supportResistanceScore": 74.7,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.032,
+            "riskSafetyScore": 65.35,
+            "technicalPercentile": 62.78,
+            "researchPercentile": 76.7,
+            "liquidityPercentile": 78.92,
+            "supportResistancePercentile": 82.95,
+            "structuralRrPercentile": 15.14,
+            "riskSafetyPercentile": 87,
+            "crossSectionalScore": 66.19,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "PRCL",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 63,
+          "unifiedScore": 51.14,
+          "crossSectionalRank": 57,
+          "crossSectionalScore": 60.25,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "DO_NOT_CHASE"
+          ],
+          "tradePlan": {
+            "entryLow": 24.5,
+            "entryHigh": 25.1568,
+            "stopLoss": 23.2901,
+            "target1": 26.771,
+            "target2": 27.5833,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 10,
+            "researchScore": 50.1,
+            "liquidityScore": 99.3,
+            "supportResistanceScore": 67.1,
+            "dataQualityScore": 78,
+            "structuralNetRR": 1.128,
+            "riskSafetyScore": 44.04,
+            "technicalPercentile": 39.24,
+            "researchPercentile": 65.34,
+            "liquidityPercentile": 92.15,
+            "supportResistancePercentile": 51.42,
+            "structuralRrPercentile": 95.43,
+            "riskSafetyPercentile": 29.6,
+            "crossSectionalScore": 60.25,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "PRMH",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 64,
+          "unifiedScore": 50.96,
+          "crossSectionalRank": 130,
+          "crossSectionalScore": 43.5,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "SR_CONFLUENCE_FAIL"
+          ],
+          "tradePlan": {
+            "entryLow": 2.2067,
+            "entryHigh": 2.2632,
+            "stopLoss": 2.1025,
+            "target1": 2.4026,
+            "target2": 2.87,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 0,
+            "researchScore": 49.6,
+            "liquidityScore": 77.8,
+            "supportResistanceScore": 50.5,
+            "dataQualityScore": 78,
+            "structuralNetRR": 3.404,
+            "riskSafetyScore": 45.53,
+            "technicalPercentile": 9.19,
+            "researchPercentile": 63.64,
+            "liquidityPercentile": 26.23,
+            "supportResistancePercentile": 4.55,
+            "structuralRrPercentile": 99.14,
+            "riskSafetyPercentile": 32.29,
+            "crossSectionalScore": 43.5,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "AREH",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 65,
+          "unifiedScore": 50.89,
+          "crossSectionalRank": 52,
+          "crossSectionalScore": 61.32,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "SR_CONFLUENCE_FAIL"
+          ],
+          "tradePlan": {
+            "entryLow": 1.23,
+            "entryHigh": 1.2533,
+            "stopLoss": 1.187,
+            "target1": 1.3124,
+            "target2": 1.32,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 18.8,
+            "researchScore": 50.4,
+            "liquidityScore": 99.1,
+            "supportResistanceScore": 51.9,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.801,
+            "riskSafetyScore": 56.17,
+            "technicalPercentile": 49.1,
+            "researchPercentile": 67.61,
+            "liquidityPercentile": 90.58,
+            "supportResistancePercentile": 6.82,
+            "structuralRrPercentile": 90.86,
+            "riskSafetyPercentile": 55.16,
+            "crossSectionalScore": 61.32,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "ARAB",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 66,
+          "unifiedScore": 50.66,
+          "crossSectionalRank": 54,
+          "crossSectionalScore": 60.78,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 0.24,
+            "entryHigh": 0.2443,
+            "stopLoss": 0.2322,
+            "target1": 0.2506,
+            "target2": 0.2506,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 33.5,
+            "researchScore": 53.5,
+            "liquidityScore": 94.3,
+            "supportResistanceScore": 58.3,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.36,
+            "riskSafetyScore": 58.17,
+            "technicalPercentile": 62.78,
+            "researchPercentile": 75,
+            "liquidityPercentile": 69.73,
+            "supportResistancePercentile": 17.05,
+            "structuralRrPercentile": 58.86,
+            "riskSafetyPercentile": 60.09,
+            "crossSectionalScore": 60.78,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "ZEOT",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 67,
+          "unifiedScore": 50.61,
+          "crossSectionalRank": 47,
+          "crossSectionalScore": 62.88,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 12.2,
+            "entryHigh": 12.4328,
+            "stopLoss": 11.7711,
+            "target1": 12.9867,
+            "target2": 12.9867,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 18.8,
+            "researchScore": 51.8,
+            "liquidityScore": 94.4,
+            "supportResistanceScore": 65.3,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.651,
+            "riskSafetyScore": 55.98,
+            "technicalPercentile": 49.1,
+            "researchPercentile": 71.59,
+            "liquidityPercentile": 71.08,
+            "supportResistancePercentile": 41.48,
+            "structuralRrPercentile": 86.29,
+            "riskSafetyPercentile": 53.36,
+            "crossSectionalScore": 62.88,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "WCDF",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 68,
+          "unifiedScore": 50.6,
+          "crossSectionalRank": 49,
+          "crossSectionalScore": 62.75,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 635.7046,
+            "entryHigh": 650.8619,
+            "stopLoss": 607.7833,
+            "target1": 682.8367,
+            "target2": 682.8367,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 25.3,
+            "researchScore": 53.8,
+            "liquidityScore": 88.5,
+            "supportResistanceScore": 71.4,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.597,
+            "riskSafetyScore": 48.27,
+            "technicalPercentile": 54.71,
+            "researchPercentile": 75.57,
+            "liquidityPercentile": 41.7,
+            "supportResistancePercentile": 75.57,
+            "structuralRrPercentile": 83.43,
+            "riskSafetyPercentile": 38.12,
+            "crossSectionalScore": 62.75,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "ETEL",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 69,
+          "unifiedScore": 50.6,
+          "crossSectionalRank": 53,
+          "crossSectionalScore": 61.12,
+          "scoreCoveragePct": 100,
+          "riskLevel": "MEDIUM",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 135.57,
+            "entryHigh": 137.4399,
+            "stopLoss": 132.1254,
+            "target1": 139.09,
+            "target2": 139.09,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 31.2,
+            "researchScore": 51,
+            "liquidityScore": 89,
+            "supportResistanceScore": 65.9,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.134,
+            "riskSafetyScore": 74.74,
+            "technicalPercentile": 61.66,
+            "researchPercentile": 69.32,
+            "liquidityPercentile": 43.5,
+            "supportResistancePercentile": 45.17,
+            "structuralRrPercentile": 33.14,
+            "riskSafetyPercentile": 97.76,
+            "crossSectionalScore": 61.12,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "RAYA",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 70,
+          "unifiedScore": 50.28,
+          "crossSectionalRank": 51,
+          "crossSectionalScore": 62.42,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 6.33,
+            "entryHigh": 6.4463,
+            "stopLoss": 6.1158,
+            "target1": 6.72,
+            "target2": 6.72,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 18.8,
+            "researchScore": 50.6,
+            "liquidityScore": 98,
+            "supportResistanceScore": 61.4,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.637,
+            "riskSafetyScore": 57.14,
+            "technicalPercentile": 49.1,
+            "researchPercentile": 68.75,
+            "liquidityPercentile": 84.98,
+            "supportResistancePercentile": 26.42,
+            "structuralRrPercentile": 85.14,
+            "riskSafetyPercentile": 56.95,
+            "crossSectionalScore": 62.42,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "OLFI",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 71,
+          "unifiedScore": 50.25,
+          "crossSectionalRank": 28,
+          "crossSectionalScore": 69.28,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 21.3467,
+            "entryHigh": 21.5937,
+            "stopLoss": 20.8915,
+            "target1": 21.9467,
+            "target2": 21.9467,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 18.8,
+            "researchScore": 51.3,
+            "liquidityScore": 99,
+            "supportResistanceScore": 76.9,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.269,
+            "riskSafetyScore": 67.69,
+            "technicalPercentile": 49.1,
+            "researchPercentile": 69.89,
+            "liquidityPercentile": 89.91,
+            "supportResistancePercentile": 88.64,
+            "structuralRrPercentile": 49.71,
+            "riskSafetyPercentile": 91.48,
+            "crossSectionalScore": 69.28,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "ROTO",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 73,
+          "unifiedScore": 49.15,
+          "crossSectionalRank": 42,
+          "crossSectionalScore": 64.1,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 38.4272,
+            "entryHigh": 39.245,
+            "stopLoss": 36.9207,
+            "target1": 41.1133,
+            "target2": 41.1133,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 10,
+            "researchScore": 50.3,
+            "liquidityScore": 96.9,
+            "supportResistanceScore": 76.5,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.638,
+            "riskSafetyScore": 52.41,
+            "technicalPercentile": 39.24,
+            "researchPercentile": 67.05,
+            "liquidityPercentile": 81.39,
+            "supportResistancePercentile": 87.5,
+            "structuralRrPercentile": 85.71,
+            "riskSafetyPercentile": 45.29,
+            "crossSectionalScore": 64.1,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "RACC",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 74,
+          "unifiedScore": 49.13,
+          "crossSectionalRank": 75,
+          "crossSectionalScore": 57.53,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 9.0067,
+            "entryHigh": 9.1238,
+            "stopLoss": 8.7909,
+            "target1": 9.434,
+            "target2": 9.4767,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 7.1,
+            "researchScore": 47.1,
+            "liquidityScore": 87.9,
+            "supportResistanceScore": 65.7,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.769,
+            "riskSafetyScore": 65.47,
+            "technicalPercentile": 31.17,
+            "researchPercentile": 52.84,
+            "liquidityPercentile": 39.69,
+            "supportResistancePercentile": 44.32,
+            "structuralRrPercentile": 90.29,
+            "riskSafetyPercentile": 87.89,
+            "crossSectionalScore": 57.53,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "ACAMD",
+          "source": "ASTRA_NATIVE_WATCH",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 75,
+          "unifiedScore": 49.12,
+          "crossSectionalRank": 55,
+          "crossSectionalScore": 60.56,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 1.9967,
+            "entryHigh": 2.0279,
+            "stopLoss": 1.9391,
+            "target1": 2.05,
+            "target2": 2.05,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 30.6,
+            "researchScore": 51.8,
+            "liquidityScore": 91.9,
+            "supportResistanceScore": 70.2,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.098,
+            "riskSafetyScore": 61.38,
+            "technicalPercentile": 60.54,
+            "researchPercentile": 71.59,
+            "liquidityPercentile": 60.31,
+            "supportResistancePercentile": 65.63,
+            "structuralRrPercentile": 25.14,
+            "riskSafetyPercentile": 74.89,
+            "crossSectionalScore": 60.56,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "NINH",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 76,
+          "unifiedScore": 49.1,
+          "crossSectionalRank": 91,
+          "crossSectionalScore": 54.67,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "SR_CONFLUENCE_FAIL"
+          ],
+          "tradePlan": {
+            "entryLow": 19.0833,
+            "entryHigh": 19.4354,
+            "stopLoss": 18.4349,
+            "target1": 20.3291,
+            "target2": 20.62,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 7.1,
+            "researchScore": 48.7,
+            "liquidityScore": 92.9,
+            "supportResistanceScore": 54.1,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.956,
+            "riskSafetyScore": 57.02,
+            "technicalPercentile": 31.17,
+            "researchPercentile": 62.22,
+            "liquidityPercentile": 63.23,
+            "supportResistancePercentile": 9.66,
+            "structuralRrPercentile": 94.86,
+            "riskSafetyPercentile": 56.05,
+            "crossSectionalScore": 54.67,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "BTFH",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 77,
+          "unifiedScore": 49.04,
+          "crossSectionalRank": 46,
+          "crossSectionalScore": 63.28,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 2.7767,
+            "entryHigh": 2.808,
+            "stopLoss": 2.719,
+            "target1": 2.8467,
+            "target2": 2.8467,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 21.8,
+            "researchScore": 49.9,
+            "liquidityScore": 96.3,
+            "supportResistanceScore": 69,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.207,
+            "riskSafetyScore": 68.15,
+            "technicalPercentile": 52.91,
+            "researchPercentile": 64.2,
+            "liquidityPercentile": 79.6,
+            "supportResistancePercentile": 58.81,
+            "structuralRrPercentile": 40,
+            "riskSafetyPercentile": 92.38,
+            "crossSectionalScore": 63.28,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "MPCO",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 78,
+          "unifiedScore": 49.03,
+          "crossSectionalRank": 83,
+          "crossSectionalScore": 56.53,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 2.4033,
+            "entryHigh": 2.4741,
+            "stopLoss": 2.273,
+            "target1": 2.5133,
+            "target2": 2.5133,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 40,
+            "researchScore": 56,
+            "liquidityScore": 91.3,
+            "supportResistanceScore": 70.4,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.113,
+            "riskSafetyScore": 40.74,
+            "technicalPercentile": 67.94,
+            "researchPercentile": 78.98,
+            "liquidityPercentile": 56.28,
+            "supportResistancePercentile": 68.75,
+            "structuralRrPercentile": 28.29,
+            "riskSafetyPercentile": 23.32,
+            "crossSectionalScore": 56.53,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "DSCW",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 79,
+          "unifiedScore": 48.09,
+          "crossSectionalRank": 56,
+          "crossSectionalScore": 60.51,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "SR_CONFLUENCE_FAIL",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 1.6567,
+            "entryHigh": 1.6798,
+            "stopLoss": 1.6141,
+            "target1": 1.7267,
+            "target2": 1.7267,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 18.8,
+            "researchScore": 48,
+            "liquidityScore": 99.4,
+            "supportResistanceScore": 52.4,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.487,
+            "riskSafetyScore": 64,
+            "technicalPercentile": 49.1,
+            "researchPercentile": 56.82,
+            "liquidityPercentile": 93.5,
+            "supportResistancePercentile": 7.67,
+            "structuralRrPercentile": 73.14,
+            "riskSafetyPercentile": 82.96,
+            "crossSectionalScore": 60.51,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "HRHO",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 80,
+          "unifiedScore": 47.97,
+          "crossSectionalRank": 78,
+          "crossSectionalScore": 57.27,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW",
+            "SR_CONFLUENCE_FAIL",
+            "STRUCTURAL_RR_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 23.8933,
+            "entryHigh": 24.1145,
+            "stopLoss": 23.4859,
+            "target1": 24.4133,
+            "target2": 24.4133,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 27.6,
+            "researchScore": 47.7,
+            "liquidityScore": 97.6,
+            "supportResistanceScore": 47.2,
+            "dataQualityScore": 78,
+            "structuralNetRR": 0.199,
+            "riskSafetyScore": 71.03,
+            "technicalPercentile": 56.95,
+            "researchPercentile": 56.25,
+            "liquidityPercentile": 84.3,
+            "supportResistancePercentile": 1.7,
+            "structuralRrPercentile": 39.14,
+            "riskSafetyPercentile": 95.96,
+            "crossSectionalScore": 57.27,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        },
+        {
+          "ticker": "DAPH",
+          "source": "REJECTED",
+          "selectedByUcp": false,
+          "nearMiss": false,
+          "unifiedRank": 81,
+          "unifiedScore": 47.53,
+          "crossSectionalRank": 102,
+          "crossSectionalScore": 51.56,
+          "scoreCoveragePct": 100,
+          "riskLevel": "HIGH",
+          "morningAtCapture": "WAITING_NEXT_SESSION",
+          "reasonCodes": [
+            "CORE_SCORE_LOW",
+            "RESEARCH_SCORE_LOW"
+          ],
+          "tradePlan": {
+            "entryLow": 94.2533,
+            "entryHigh": 97.4755,
+            "stopLoss": 88.3177,
+            "target1": 105.2697,
+            "target2": 109.4,
+            "roundTripCostPct": 0.6,
+            "slippagePct": 0.15
+          },
+          "features": {
+            "technicalScore": 1.2,
+            "researchScore": 50.1,
+            "liquidityScore": 98.2,
+            "supportResistanceScore": 61.4,
+            "dataQualityScore": 78,
+            "structuralNetRR": 1.164,
+            "riskSafetyScore": 34.82,
+            "technicalPercentile": 19.51,
+            "researchPercentile": 65.34,
+            "liquidityPercentile": 87,
+            "supportResistancePercentile": 26.42,
+            "structuralRrPercentile": 96,
+            "riskSafetyPercentile": 17.49,
+            "crossSectionalScore": 51.56,
+            "regimeScore": 8,
+            "regimeRiskMultiplier": 0.35
+          },
+          "evidenceVersion": 1,
+          "prospectiveOnly": true,
+          "executionAllowed": false,
+          "morningEvidence": [
+            {
+              "observedAt": "2026-10-02T20:27:35.091Z",
+              "status": "WAITING_NEXT_SESSION",
+              "boardSessionDate": "2026-10-01"
+            }
+          ],
+          "outcome": {
+            "status": "OPEN",
+            "targetBeforeStop": null,
+            "entered": false,
+            "entrySession": null,
+            "exitSession": null,
+            "fillPrice": null,
+            "exitPrice": null,
+            "grossReturnPct": null,
+            "netReturnPct": null,
+            "sourceLastSession": "2026-10-01",
+            "sameBarAmbiguity": null,
+            "resolvedAt": null
+          }
+        }
+      ],
+      "captureHash": "0d326eac51e4ac461db26f504da96025d5035a07df7048ce46c096ec25e83e39"
+    }
+  ],
   "summary": {
-    "decisionSessions": 0,
-    "candidatesCaptured": 0,
+    "decisionSessions": 1,
+    "candidatesCaptured": 60,
     "resolvedLabels": 0,
     "positiveOutcomes": 0,
     "negativeOutcomes": 0,
     "notEntered": 0,
-    "open": 0,
-    "observedCalendarDays": 0,
+    "open": 60,
+    "observedCalendarDays": 1,
     "criticalBreaches": 0
   },
   "safety": {
