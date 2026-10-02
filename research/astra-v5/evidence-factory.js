@@ -723,6 +723,57 @@ function observedCalendarDays(cohorts = []) {
   return Math.floor((dates.at(-1) - dates[0]) / 86400000) + 1;
 }
 
+function aggregateStratum(items = []) {
+  const resolved = items.filter(c => typeof c.outcome?.targetBeforeStop === 'boolean');
+  const entered = items.filter(c => c.outcome?.entered === true);
+  const net = resolved.map(c => finite(c.outcome?.netReturnPct)).filter(v => v !== null);
+  const slips = entered.map(c => finite(c.outcome?.entrySlippageProxyPct)).filter(v => v !== null);
+  return {
+    captured: items.length,
+    resolved: resolved.length,
+    positive: resolved.filter(c => c.outcome.targetBeforeStop === true).length,
+    negative: resolved.filter(c => c.outcome.targetBeforeStop === false).length,
+    entered: entered.length,
+    hitRatePct: resolved.length
+      ? round(resolved.filter(c => c.outcome.targetBeforeStop === true).length / resolved.length * 100, 2)
+      : null,
+    averageNetReturnPct: net.length ? round(net.reduce((a, b) => a + b, 0) / net.length, 4) : null,
+    averageEntrySlippageProxyPct: slips.length ? round(slips.reduce((a, b) => a + b, 0) / slips.length, 4) : null
+  };
+}
+
+function stratifiedDiagnostics(ledger) {
+  const rows = (ledger.cohorts || []).flatMap(cohort =>
+    (cohort.candidates || []).map(candidate => ({
+      ...candidate,
+      __regime: cohort.marketRegime?.regime || 'UNKNOWN'
+    }))
+  );
+  const group = (keyFn) => {
+    const map = new Map();
+    for (const row of rows) {
+      const key = String(keyFn(row) || 'UNKNOWN');
+      if (!map.has(key)) map.set(key, []);
+      map.get(key).push(row);
+    }
+    return Object.fromEntries(
+      [...map.entries()]
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map(([key, values]) => [key, aggregateStratum(values)])
+    );
+  };
+  return {
+    bySector: group(row => row.sector),
+    byRegime: group(row => row.__regime),
+    bySetupSource: group(row => row.source),
+    policy: {
+      descriptiveOnly: true,
+      usedAsModelFeature: false,
+      minimumResolvedForInterpretation: 20
+    }
+  };
+}
+
 function summarize(ledger) {
   const candidates = (ledger.cohorts || []).flatMap(c => c.candidates || []);
   const resolved = candidates.filter(c => typeof c.outcome?.targetBeforeStop === 'boolean');
@@ -744,7 +795,8 @@ function summarize(ledger) {
     morningEvidenceCaptured: candidates.filter(c => Array.isArray(c.morningEvidence) && c.morningEvidence.length > 0).length,
     slippageProxyObserved: candidates.filter(c => finite(c.outcome?.entrySlippageProxyPct) !== null).length,
     observedCalendarDays: observedCalendarDays(ledger.cohorts || []),
-    criticalBreaches: 0
+    criticalBreaches: 0,
+    stratifiedDiagnostics: stratifiedDiagnostics(ledger)
   };
 }
 
@@ -855,6 +907,7 @@ module.exports = {
   backfillObservationMetadata,
   trainingRecords,
   summarize,
+  stratifiedDiagnostics,
   finalize,
   cycle
 };
