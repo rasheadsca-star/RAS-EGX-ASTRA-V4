@@ -6,7 +6,7 @@ const retryAttempts = Number(process.env.ASTRA_PROD_RETRY_ATTEMPTS || 12);
 const retryDelayMs = Number(process.env.ASTRA_PROD_RETRY_DELAY_MS || 10000);
 const READY_STATUSES = new Set(['LIVE_READY', 'DELAYED_READY', 'HISTORICAL_READY']);
 const V24_STATUSES = new Set([
-  'NO_CANDIDATES', 'WAITING_NEXT_SESSION', 'WAITING_DATA', 'WATCH',
+  'NO_CANDIDATES', 'WAITING_NEXT_SESSION', 'WAITING_DATA', 'DEGRADED_EVIDENCE', 'WATCH',
   'CONFIRMED_RESEARCH_ONLY', 'REJECTED_PRESENT', 'EXPIRED'
 ]);
 
@@ -147,6 +147,13 @@ function assertUcpShadowContract(ucp) {
   }
   if (v24.evidenceComplete !== true) {
     assert.strictEqual(morning.confirmedSymbols.length, 0, 'Incomplete morning evidence must not confirm candidates');
+  }
+  if (morning.status === 'DEGRADED_EVIDENCE') {
+    assert.strictEqual(ucp.status, 'SHADOW_READY', 'Morning data gaps must not degrade an otherwise healthy UCP');
+    assert.strictEqual(ucp.executionAllowed, false);
+    assert.strictEqual(ucp.recommendationMutationAllowed, false);
+    assert((morning.waitingSymbols || []).length > 0, JSON.stringify(morning));
+    assert(ucp.snapshot.decision.blockers.includes('V2_4_MORNING_CONFIRMATION_PENDING'), JSON.stringify(ucp));
   }
   for (const item of morning.preparedCandidates || []) {
     assert.strictEqual(item.executionAllowed, false, JSON.stringify(item));
