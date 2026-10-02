@@ -19,6 +19,7 @@ function morningStatus(batch, clock, targetSessionDate) {
   if (batch.confirmedSymbols.length) return 'CONFIRMED_RESEARCH_ONLY';
   if (batch.stateCounts.REJECTED) return 'REJECTED_PRESENT';
   if (batch.stateCounts.EXPIRED && batch.stateCounts.EXPIRED === batch.results.length) return 'EXPIRED';
+  if (batch.stateCounts.UNCONFIRMED_DATA_GAP) return 'DEGRADED_EVIDENCE';
   if (batch.stateCounts.WATCH) return 'WATCH';
   return 'WAITING_DATA';
 }
@@ -209,7 +210,10 @@ async function runUcpShadowPipeline({
         'V17 UCP governance is fail-closed and requires an exact current-session snapshot with safe permissions.',
         'External consensus is diagnostic only and cannot make an exact-session V17 snapshot stale.',
         'V2.4 morning confirmation never re-ranks the frozen RC2 list.',
-        'Missing or delayed 10:20-10:45 Cairo evidence becomes WAITING_DATA, never an inferred rejection.',
+        'Morning evidence is evaluated by market-data time, not collector wall-clock time.',
+        'A known 15-minute delayed feed is allowed a wall-clock grace window through 11:10 Cairo while preserving the 10:20-10:45 market-evidence window.',
+        'Missing or delayed morning evidence becomes WAITING_DATA or UNCONFIRMED_DATA_GAP, never an inferred rejection and never an application outage.',
+        'The after-close PREPARED candidate set remains visible even when morning evidence cannot be collected.',
         'Full-day OHLC/volume is never substituted for a first-20-30-minute morning baseline.',
         'Champion eligibility uses only prospective UCP forward evidence collected after deployment.',
         'Automatic Champion promotion and execution remain permanently disabled by policy.'
@@ -295,7 +299,11 @@ async function runUcpShadowPipeline({
         evidenceSource: morningEvidence.source || null,
         evidenceReason: morningEvidence.reason || null,
         marketCoveragePct: morningEvidence.marketCoveragePct ?? null,
-        latestSourceMinute: morningEvidence.latestSourceMinute ?? null
+        latestSourceMinute: morningEvidence.latestSourceMinute ?? null,
+        collectorMinute: morningEvidence.collectorMinute ?? null,
+        sourceTimingModes: morningEvidence.sourceTimingModes || [],
+        evidencePolicy: morningEvidence.policy || null,
+        resilience: morningEvidence.resilience || null
       }),
       forward: Object.freeze({
         ledgerAvailable: forward.available,

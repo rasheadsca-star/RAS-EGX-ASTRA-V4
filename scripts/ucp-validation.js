@@ -424,11 +424,24 @@ async function main() {
   assert.strictEqual(rejected.lifecycleState, 'REJECTED');
   assert.ok(rejected.reasons.includes('PRICE_ACCEPTANCE_FAILED'));
 
-  const expired = evaluateCandidate(prepared[0], completeMorningEvidence({ volumeBaselineAvailable: false }), {
+  const delayedStillWaiting = evaluateCandidate(prepared[0], completeMorningEvidence({ volumeBaselineAvailable: false }), {
     now: new Date('2026-10-04T07:50:00.000Z')
   });
-  assert.strictEqual(expired.lifecycleState, 'EXPIRED');
-  assert.strictEqual(expired.terminal, true);
+  assert.strictEqual(delayedStillWaiting.lifecycleState, 'WAITING_DATA');
+  assert.strictEqual(delayedStillWaiting.terminal, false);
+
+  const sourceTooLate = evaluateCandidate(prepared[0], completeMorningEvidence({ latestSourceMinute: 650 }), {
+    now: new Date('2026-10-04T08:00:00.000Z')
+  });
+  assert.strictEqual(sourceTooLate.lifecycleState, 'WAITING_DATA');
+  assert.ok(sourceTooLate.reasons.includes('MORNING_SOURCE_TOO_LATE'));
+
+  const degradedDataGap = evaluateCandidate(prepared[0], completeMorningEvidence({ volumeBaselineAvailable: false }), {
+    now: new Date('2026-10-04T08:15:00.000Z')
+  });
+  assert.strictEqual(degradedDataGap.lifecycleState, 'UNCONFIRMED_DATA_GAP');
+  assert.strictEqual(degradedDataGap.terminal, false);
+  assert.ok(degradedDataGap.reasons.includes('MORNING_EVIDENCE_UNAVAILABLE_AFTER_GRACE'));
 
   const terminalRemainsTerminal = evaluateCandidate(prepared[0], completeMorningEvidence({ priceAcceptancePass: false }), {
     now: new Date('2026-10-04T07:30:00.000Z'),
@@ -558,6 +571,25 @@ async function main() {
   assert.strictEqual(challengerShadow.executionAllowed, false);
   assert.strictEqual(challengerShadow.diagnostics.rc2.challenger.available, true);
   assert.strictEqual(challengerShadow.diagnostics.rc2.challenger.candidateCount, 1);
+
+  const morningGapShadow = await runUcpShadowPipeline({
+    generatedAt: '2026-10-04T08:15:00.000Z',
+    rc2Options: { fetchImpl: challengerFetchImpl },
+    qualityOptions: { fetchImpl: challengerFetchImpl },
+    v17Options: { fetchImpl: challengerFetchImpl },
+    morningOptions: { fetchImpl: challengerFetchImpl }
+  });
+
+  assert.strictEqual(morningGapShadow.status, 'SHADOW_READY');
+  assert.strictEqual(morningGapShadow.executionAllowed, false);
+  assert.strictEqual(morningGapShadow.snapshot.morningConfirmation.status, 'DEGRADED_EVIDENCE');
+  assert.strictEqual(morningGapShadow.snapshot.morningConfirmation.stateCounts.UNCONFIRMED_DATA_GAP, 1);
+  assert.deepStrictEqual(morningGapShadow.snapshot.morningConfirmation.confirmedSymbols, []);
+  assert.deepStrictEqual(morningGapShadow.snapshot.morningConfirmation.waitingSymbols, ['BINV']);
+  assert.deepStrictEqual(morningGapShadow.snapshot.decision.watchlist, ['BINV']);
+  assert.deepStrictEqual(morningGapShadow.snapshot.decision.finalRecommendations, []);
+  assert.ok(morningGapShadow.snapshot.decision.blockers.includes('V2_4_MORNING_CONFIRMATION_PENDING'));
+  assert.strictEqual(morningGapShadow.diagnostics.v24.evidenceAvailable, false);
 
   console.log('Rasheed EGX UCP validation passed');
 }

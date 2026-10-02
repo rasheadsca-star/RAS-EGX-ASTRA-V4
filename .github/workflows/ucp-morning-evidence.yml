@@ -8,8 +8,9 @@ on:
       - ".github/workflows/ucp-morning-evidence.yml"
       - "scripts/ucp-morning-evidence-collector.js"
   schedule:
-    # Covers Africa/Cairo UTC+2 and UTC+3. Runtime preflight accepts only 10:20-10:45 Cairo.
-    - cron: "20,30,40,45 7-8 * * 0-4"
+    # Covers Africa/Cairo UTC+2 and UTC+3. Runtime preflight accepts only 10:20-11:10 Cairo.
+    # The wider wall-clock window absorbs the known ~15 minute market-data delay.
+    - cron: "0,10,20,30,40,50 7-9 * * 0-4"
 
 permissions:
   contents: write
@@ -43,17 +44,21 @@ jobs:
           const fs=require('fs');
           const p='data/ucp/morning-evidence.json';
           const x=JSON.parse(fs.readFileSync(p,'utf8'));
-          if(x.schemaVersion!=='rasheed-egx-ucp-morning-evidence/v1') throw new Error('MORNING_EVIDENCE_SCHEMA_MISMATCH');
+          if(x.schemaVersion!=='rasheed-egx-ucp-morning-evidence/v2') throw new Error('MORNING_EVIDENCE_SCHEMA_MISMATCH');
+          if(x.resilience?.appAvailabilityIndependentOfMorningEvidence!==true) throw new Error('MORNING_RESILIENCE_CONTRACT_MISSING');
+          if(x.resilience?.afterCloseCandidatesPreserved!==true) throw new Error('MORNING_PREPARED_SET_NOT_PRESERVED');
+          if(Number(x.policy?.expectedFeedDelayMinutes)!==15) throw new Error('MORNING_EXPECTED_DELAY_MISMATCH');
           if(x.completeSource===true){
             if(!(Number(x.marketCoveragePct)>=90)) throw new Error('COMPLETE_MORNING_EVIDENCE_LOW_COVERAGE');
             for(const [ticker,e] of Object.entries(x.evidenceByTicker||{})){
               if(e.candidatePresent!==true||e.volumeBaselineAvailable!==true) throw new Error(`COMPLETE_EVIDENCE_NOT_READY:${ticker}`);
+              if(!(Number(e.latestSourceMinute)>=620&&Number(e.latestSourceMinute)<=645)) throw new Error(`COMPLETE_EVIDENCE_SOURCE_TIME_OUTSIDE_MARKET_WINDOW:${ticker}`);
               for(const key of ['openingGapPass','priceAcceptancePass','relativeVolumePass','relativeTurnoverPass','marketBreadthPass']){
                 if(typeof e[key]!=='boolean') throw new Error(`COMPLETE_EVIDENCE_CHECK_MISSING:${ticker}:${key}`);
               }
             }
           }
-          console.log(JSON.stringify({sessionDate:x.sessionDate,completeSource:x.completeSource,coverage:x.marketCoveragePct,candidates:Object.keys(x.evidenceByTicker||{}).length}));
+          console.log(JSON.stringify({sessionDate:x.sessionDate,collectorMinute:x.collectorMinute,latestSourceMinute:x.latestSourceMinute,completeSource:x.completeSource,coverage:x.marketCoveragePct,candidates:Object.keys(x.evidenceByTicker||{}).length,sourceTimingModes:x.sourceTimingModes}));
           NODE
 
       - name: Commit prospective morning evidence

@@ -38,6 +38,11 @@ async function handler(req, res) {
       rejected: pipeline.rejected?.length || 0,
       morningConfirmed: Number(pipeline.morningConfirmedCount || 0),
       executionReady: Number(pipeline.executionReadyCount || 0),
+      resilience: {
+        morningEvidenceCriticalToAppAvailability: false,
+        expectedMorningFeedDelayMinutes: 15,
+        morningDataGapBehavior: 'PRESERVE_AFTER_CLOSE_CANDIDATES_AND_FAIL_CLOSED_ON_EXECUTION'
+      },
       healthy: pipeline.status !== 'NO_DATA'
     });
   } catch (error) {
@@ -47,6 +52,10 @@ async function handler(req, res) {
       checkedAt,
       deploymentCommit: process.env.VERCEL_GIT_COMMIT_SHA || null,
       healthy: false,
+      resilience: {
+        morningEvidenceCriticalToAppAvailability: false,
+        expectedMorningFeedDelayMinutes: 15
+      },
       error: error?.message || 'Unknown runtime error'
     });
   }
