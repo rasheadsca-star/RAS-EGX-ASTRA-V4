@@ -31,6 +31,11 @@ function normalizeQuote(quote = {}) {
       ? Number(quote.confidence)
       : null,
     delayed: Boolean(quote.delayed),
+    sourceSessionDate: quote.sourceSessionDate || null,
+    expectedSession: quote.expectedSession || null,
+    sessionVerified: quote.sessionVerified === true,
+    snapshotGeneratedAt: quote.snapshotGeneratedAt || null,
+    snapshotMode: quote.snapshotMode || null,
     intradayCandles: Array.isArray(quote.intradayCandles)
       ? quote.intradayCandles
       : [],
