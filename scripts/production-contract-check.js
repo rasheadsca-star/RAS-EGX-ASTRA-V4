@@ -202,6 +202,16 @@ async function main() {
   const unified = await getJson('/api/unified-opportunities?ci=' + encodeURIComponent(expectedCommit));
 
   assert.strictEqual(recommendations.success, true, JSON.stringify(recommendations));
+  assert(recommendations.marketSessionDate, JSON.stringify(recommendations));
+  assert(recommendations.historySessionDate, JSON.stringify(recommendations));
+  assert.strictEqual(recommendations.sessionAligned, true, JSON.stringify({
+    marketSessionDate: recommendations.marketSessionDate,
+    historySessionDate: recommendations.historySessionDate,
+    snapshotMode: recommendations.snapshotMode
+  }));
+  assert.strictEqual(recommendations.marketSessionDate, recommendations.historySessionDate, JSON.stringify(recommendations));
+  assert.strictEqual(recommendations.snapshotMode, 'LOCAL_ATOMIC_SNAPSHOT', JSON.stringify(recommendations));
+
   assert.strictEqual(recommendations.market, 'EGX', JSON.stringify(recommendations));
   assert(READY_STATUSES.has(recommendations.status), JSON.stringify(recommendations));
   assert(Array.isArray(recommendations.recommendations), JSON.stringify(recommendations));
@@ -213,6 +223,10 @@ async function main() {
   assert.strictEqual(deploymentCommit, expectedCommit, JSON.stringify({ expectedCommit, deploymentCommit }));
 
   assert.strictEqual(health.success, true, JSON.stringify(health));
+  assert.strictEqual(health.sessionAligned, true, JSON.stringify(health));
+  assert.strictEqual(health.marketSessionDate, recommendations.marketSessionDate, JSON.stringify({ health, recommendations }));
+  assert.strictEqual(health.historySessionDate, recommendations.historySessionDate, JSON.stringify({ health, recommendations }));
+  assert.strictEqual(health.snapshotMode, 'LOCAL_ATOMIC_SNAPSHOT', JSON.stringify(health));
   assert.strictEqual(health.market, 'EGX', JSON.stringify(health));
   assert(READY_STATUSES.has(health.engineStatus), JSON.stringify(health));
   assert.strictEqual(system.success, true, JSON.stringify(system));
@@ -295,6 +309,10 @@ async function main() {
     status: recommendations.status,
     mode: recommendations.mode,
     dataSource: recommendations.dataSource,
+    marketSessionDate: recommendations.marketSessionDate,
+    historySessionDate: recommendations.historySessionDate,
+    sessionAligned: recommendations.sessionAligned,
+    snapshotMode: recommendations.snapshotMode,
     entryCandidates: recommendations.count,
     morningConfirmedCount: recommendations.morningConfirmedCount,
     executionReadyCount: recommendations.executionReadyCount,

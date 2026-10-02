@@ -65,6 +65,12 @@ function latestSession(rows) {
     .pop() || null;
 }
 
+function sourceModeToSnapshotMode(sourceMode) {
+  return sourceMode === 'ASTRA_ATOMIC_LOCAL'
+    ? 'LOCAL_ATOMIC_SNAPSHOT'
+    : 'REMOTE_EMERGENCY_FALLBACK';
+}
+
 function normalizeRow(row, expectedSession, metadata = {}) {
   const symbol = String(row?.symbol || row?.ticker || '').trim().toUpperCase();
   const price = Number(row?.price ?? row?.last ?? 0);
@@ -97,7 +103,9 @@ function normalizeRow(row, expectedSession, metadata = {}) {
     sessionVerified,
     atomicHandoff: metadata.atomicHandoff === true,
     sourceGeneratedAt: metadata.generatedAt || null,
-    sourceSessionDataHash: metadata.sourceSessionDataHash || null
+    sourceSessionDataHash: metadata.sourceSessionDataHash || null,
+    snapshotGeneratedAt: metadata.generatedAt || null,
+    snapshotMode: sourceModeToSnapshotMode(metadata.sourceMode)
   };
 }
 
@@ -157,5 +165,6 @@ module.exports = {
   canonicalMarketProvider,
   loadLocalMarket,
   normalizeRow,
-  quotesFromPayload
+  quotesFromPayload,
+  sourceModeToSnapshotMode
 };

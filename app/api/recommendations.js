@@ -139,6 +139,12 @@ async function handler(req, res) {
       historySymbols: pipeline.historySymbols || [],
       morningConfirmedCount: pipeline.morningConfirmedCount || 0,
       executionReadyCount: pipeline.executionReadyCount || 0,
+      marketSessionDate: pipeline.marketSessionDate || null,
+      historySessionDate: pipeline.historySessionDate || null,
+      sessionAligned: pipeline.sessionAligned === true,
+      snapshotMode: pipeline.snapshotMode || null,
+      marketSnapshotGeneratedAt: pipeline.marketSnapshotGeneratedAt || null,
+
       recommendationsReady:
         entryCandidates.length + watchlist.length + rejected.length > 0
     });
