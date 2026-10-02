@@ -107,6 +107,59 @@ function weightedScore(components = {}) {
   };
 }
 
+function percentileRanks(rows = [], key) {
+  const values = rows
+    .map((row, index) => ({ index, value: finite(row[key]) }))
+    .filter((item) => item.value !== null)
+    .sort((a, b) => a.value - b.value);
+
+  const output = new Map();
+  const n = values.length;
+  if (!n) return output;
+
+  let i = 0;
+  while (i < n) {
+    let j = i + 1;
+    while (j < n && values[j].value === values[i].value) j += 1;
+    const averageRank = ((i + 1) + j) / 2;
+    const percentile = n === 1 ? 100 : ((averageRank - 1) / (n - 1)) * 100;
+    for (let k = i; k < j; k += 1) output.set(values[k].index, Number(percentile.toFixed(2)));
+    i = j;
+  }
+  return output;
+}
+
+function breakEvenTargetProbability({
+  entryLow = null,
+  entryHigh = null,
+  stopLoss = null,
+  target1 = null,
+  roundTripCostPct = 0.60
+} = {}) {
+  const entry = finite(entryHigh) ?? finite(entryLow);
+  const stop = finite(stopLoss);
+  const target = finite(target1);
+  const costPct = finite(roundTripCostPct) ?? 0.60;
+  if (!(entry > 0) || !(stop > 0) || !(target > entry) || !(stop < entry)) return null;
+  const cost = entry * costPct / 100;
+  const effectiveRisk = entry - stop + cost;
+  const effectiveReward = target - entry - cost;
+  if (!(effectiveRisk > 0) || !(effectiveReward > 0)) return null;
+  return Number((effectiveRisk / (effectiveRisk + effectiveReward) * 100).toFixed(2));
+}
+
+function metaLabelStatus() {
+  return Object.freeze({
+    status: 'NOT_CALIBRATED',
+    probabilityTarget1Pct: null,
+    expectedValuePct: null,
+    minimumProspectiveResolvedTrades: 30,
+    calibrationRequired: true,
+    usedForSelection: false,
+    reason: 'No probability is published until prospective out-of-sample calibration is sufficient.'
+  });
+}
+
 function sourceState({ rc2Row = {}, rr68Set = new Set(), nativeStatus = 'NONE' } = {}) {
   if (rc2Row.publicationEligible === true && rc2Row.eligible === true) return 'RC2_FROZEN';
   if (rr68Set.has(rc2Row.ticker)) return 'RR68_CHALLENGER';
@@ -220,6 +273,15 @@ function buildUnifiedOpportunityBoard({ runtime = {}, ucp = {} } = {}) {
       stopLoss: finite(rc2.stopLoss ?? native.stopLoss),
       target1: finite(rc2.target1 ?? native.target1),
       target2: finite(rc2.target2 ?? native.target2),
+      roundTripCostPct: finite(rc2.roundTripCostPct) ?? (finite(rc2.structuralNetRR) !== null ? 0.60 : null),
+      breakEvenTargetProbabilityPct: breakEvenTargetProbability({
+        entryLow: finite(rc2.entryLow ?? native.entry),
+        entryHigh: finite(rc2.entryHigh ?? native.entry),
+        stopLoss: finite(rc2.stopLoss ?? native.stopLoss),
+        target1: finite(rc2.target1 ?? native.target1),
+        roundTripCostPct: finite(rc2.roundTripCostPct) ?? 0.60
+      }),
+      metaLabel: metaLabelStatus(),
       nativeStatus: native.nativeStatus || 'NONE',
       morningStatus: morning?.lifecycleState || snapshot?.morningConfirmation?.status || 'NOT_PREPARED',
       reasonCodes: Array.isArray(rc2.reasonCodes) ? rc2.reasonCodes : [],
@@ -227,6 +289,41 @@ function buildUnifiedOpportunityBoard({ runtime = {}, ucp = {} } = {}) {
       formula: Object.freeze({ ...WEIGHTS })
     });
   }
+
+  const percentileKeys = {
+    technicalPercentile: 'technicalScore',
+    researchPercentile: 'researchScore',
+    liquidityPercentile: 'liquidityScore',
+    supportResistancePercentile: 'supportResistanceScore',
+    structuralRrPercentile: 'structuralRrScore',
+    riskSafetyPercentile: 'riskSafetyScore',
+    dataQualityPercentile: 'dataQualityScore'
+  };
+  const percentileMaps = Object.fromEntries(
+    Object.entries(percentileKeys).map(([name, key]) => [name, percentileRanks(rows, key)])
+  );
+
+  rows.forEach((row, index) => {
+    row.crossSectional = {};
+    for (const [name] of Object.entries(percentileKeys)) {
+      row.crossSectional[name] = percentileMaps[name].get(index) ?? null;
+    }
+    const cross = weightedScore({
+      technical: row.crossSectional.technicalPercentile,
+      research: row.crossSectional.researchPercentile,
+      liquidity: row.crossSectional.liquidityPercentile,
+      supportResistance: row.crossSectional.supportResistancePercentile,
+      structuralRR: row.crossSectional.structuralRrPercentile,
+      riskSafety: row.crossSectional.riskSafetyPercentile,
+      dataQuality: row.crossSectional.dataQualityPercentile
+    });
+    row.crossSectionalScore = cross.score;
+    row.crossSectionalCoveragePct = cross.coveragePct;
+  });
+
+  const crossOrder = [...rows]
+    .sort((a, b) => b.crossSectionalScore - a.crossSectionalScore || a.ticker.localeCompare(b.ticker));
+  crossOrder.forEach((row, index) => { row.crossSectionalRank = index + 1; });
 
   rows.sort((a, b) =>
     b.unifiedScore - a.unifiedScore ||
@@ -243,6 +340,15 @@ function buildUnifiedOpportunityBoard({ runtime = {}, ucp = {} } = {}) {
     generatedAt: new Date().toISOString(),
     executionAllowed: false,
     weights: WEIGHTS,
+    marketRegime: Object.freeze({
+      regime: snapshot?.governance?.market?.regime || 'UNKNOWN',
+      score: finite(snapshot?.governance?.market?.score),
+      riskMultiplier: finite(snapshot?.governance?.market?.riskMultiplier),
+      maxTradeRiskPct: finite(snapshot?.governance?.market?.maxTradeRiskPct),
+      affectsHardGatesAutomatically: false,
+      usedForContextOnly: true
+    }),
+    metaLabelPolicy: metaLabelStatus(),
     confidencePolicy: Object.freeze({
       displayed: true,
       usedInUnifiedScore: false,
@@ -261,5 +367,8 @@ module.exports = {
   nativeRiskSafety,
   combinedRiskSafety,
   weightedScore,
+  percentileRanks,
+  breakEvenTargetProbability,
+  metaLabelStatus,
   buildUnifiedOpportunityBoard
 };
