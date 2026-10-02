@@ -1,7 +1,8 @@
 'use strict';
 
 const assert = require('assert');
-const { quotesFromPayload } = require('../data-engine/providers/canonical-market-provider');
+const { quotesFromPayload, sourceModeToSnapshotMode } = require('../data-engine/providers/canonical-market-provider');
+const { validatePair } = require('../data-engine/atomic-remote-store');
 const { normalizeQuote, getMarketSnapshot } = require('../data-engine/egx-adapter');
 
 async function main() {
@@ -33,6 +34,17 @@ async function main() {
       }
     ]
   };
+
+  const pairValidation = validatePair(payload, {
+    schemaVersion: '5.0.0',
+    generatedAt: payload.generatedAt,
+    source: { ...payload.source },
+    coverage: { coveragePct: 95 },
+    symbols: { AAA: { sessions: [{ date: '2026-10-01', close: 10 }] } }
+  });
+  assert.strictEqual(pairValidation.valid, true, JSON.stringify(pairValidation));
+  assert.strictEqual(sourceModeToSnapshotMode('ASTRA_REMOTE_ATOMIC_GITHUB'), 'REMOTE_ATOMIC_SNAPSHOT');
+  assert.strictEqual(sourceModeToSnapshotMode('ASTRA_ATOMIC_LOCAL'), 'LOCAL_ATOMIC_SNAPSHOT');
 
   const quotes = quotesFromPayload(payload, 'ASTRA_ATOMIC_LOCAL');
   assert.strictEqual(quotes.length, 1);
