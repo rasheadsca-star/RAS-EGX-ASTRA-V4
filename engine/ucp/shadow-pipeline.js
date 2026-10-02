@@ -214,7 +214,7 @@ async function runUcpShadowPipeline({
         'A known 15-minute delayed feed is allowed a wall-clock grace window through 11:10 Cairo while preserving the 10:20-10:45 market-evidence window.',
         'Missing or delayed morning evidence becomes WAITING_DATA or UNCONFIRMED_DATA_GAP, never an inferred rejection and never an application outage.',
         'The after-close PREPARED candidate set remains visible even when morning evidence cannot be collected.',
-        'Full-day OHLC/volume is never substituted for a first-20-30-minute morning baseline.'
+        'Full-day OHLC/volume is never substituted for a first-20-30-minute morning baseline.',
         'Champion eligibility uses only prospective UCP forward evidence collected after deployment.',
         'Automatic Champion promotion and execution remain permanently disabled by policy.'
       ]
