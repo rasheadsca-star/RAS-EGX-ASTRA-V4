@@ -129,8 +129,21 @@ function assertUcpShadowContract(ucp) {
   }
 
   const v24 = ucp.diagnostics?.v24;
+  const metaLabel = v24?.metaLabel;
   const morning = ucp.snapshot?.morningConfirmation;
   assert(v24 && typeof v24 === 'object', JSON.stringify(ucp));
+  assert(metaLabel && typeof metaLabel === 'object', JSON.stringify(v24));
+  assert.strictEqual(metaLabel.usedForSelection, false, JSON.stringify(metaLabel));
+  assert.strictEqual(metaLabel.executionAllowed, false, JSON.stringify(metaLabel));
+  assert(Array.isArray(metaLabel.results), JSON.stringify(metaLabel));
+  if (metaLabel.modelStatus !== 'CALIBRATED') {
+    for (const item of metaLabel.results) {
+      assert.strictEqual(item.probabilityTarget1Pct, null, JSON.stringify(item));
+      assert.strictEqual(item.expectedValuePct, null, JSON.stringify(item));
+      assert.strictEqual(item.usedForSelection, false, JSON.stringify(item));
+      assert.strictEqual(item.executionAllowed, false, JSON.stringify(item));
+    }
+  }
   assert(morning && typeof morning === 'object', JSON.stringify(ucp));
   assert.strictEqual(morning.engineId, 'V2_4_MORNING_CONFIRMATION', JSON.stringify(ucp));
   assert.strictEqual(morning.executionAllowed, false, JSON.stringify(ucp));
@@ -220,6 +233,10 @@ async function main() {
   assert.strictEqual(Number(unified.weights?.research), 0.25, JSON.stringify(unified.weights));
   assert.strictEqual(Number(unified.weights?.structuralRR), 0.15, JSON.stringify(unified.weights));
   assert.strictEqual(Number(unified.weights?.riskSafety), 0.15, JSON.stringify(unified.weights));
+  assert.strictEqual(unified.metaLabelPolicy?.status, 'NOT_CALIBRATED', JSON.stringify(unified.metaLabelPolicy));
+  assert.strictEqual(unified.metaLabelPolicy?.probabilityTarget1Pct, null, JSON.stringify(unified.metaLabelPolicy));
+  assert.strictEqual(unified.metaLabelPolicy?.expectedValuePct, null, JSON.stringify(unified.metaLabelPolicy));
+  assert.strictEqual(unified.marketRegime?.affectsHardGatesAutomatically, false, JSON.stringify(unified.marketRegime));
 
   for (let index = 0; index < unified.rows.length; index += 1) {
     const item = unified.rows[index];
@@ -228,6 +245,11 @@ async function main() {
     assert(Number(item.unifiedScore) >= 0 && Number(item.unifiedScore) <= 100, JSON.stringify(item));
     assert(Number(item.scoreCoveragePct) >= 0 && Number(item.scoreCoveragePct) <= 100, JSON.stringify(item));
     assert.strictEqual(item.confidence?.usedInUnifiedScore, false, JSON.stringify(item));
+    assert(Number(item.crossSectionalScore) >= 0 && Number(item.crossSectionalScore) <= 100, JSON.stringify(item));
+    assert(Number(item.crossSectionalRank) >= 1, JSON.stringify(item));
+    assert(item.metaLabel && typeof item.metaLabel === 'object', JSON.stringify(item));
+    assert.strictEqual(item.metaLabel.usedForSelection, false, JSON.stringify(item));
+    assert.strictEqual(item.metaLabel.executionAllowed, false, JSON.stringify(item));
     if (index > 0) {
       assert(Number(unified.rows[index - 1].unifiedScore) >= Number(item.unifiedScore), 'Unified rows must remain score-sorted');
     }
@@ -301,6 +323,8 @@ async function main() {
     ucpV24TargetSession: ucp.diagnostics?.v24?.targetSessionDate,
     ucpV24Prepared: ucp.diagnostics?.v24?.preparedCount,
     ucpV24EvidenceComplete: ucp.diagnostics?.v24?.evidenceComplete,
+    ucpMetaLabelStatus: ucp.diagnostics?.v24?.metaLabel?.modelStatus,
+    ucpMetaLabelCalibrated: ucp.diagnostics?.v24?.metaLabel?.calibrated,
     ucpForwardSessions: ucp.diagnostics?.forward?.summary?.forwardSessions,
     ucpForwardResolvedTrades: ucp.diagnostics?.forward?.summary?.resolvedTrades,
     ucpPromotionEligible: ucp.diagnostics?.forward?.promotion?.eligible,
