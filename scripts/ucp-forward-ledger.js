@@ -4,7 +4,10 @@ const fs = require('fs');
 const path = require('path');
 const {
   FORWARD_POLICY,
+  RR68_CHALLENGER_ID,
+  RR68_CALIBRATION_SESSION,
   summarizeForwardLedger,
+  summarizeRr68Challenger,
   evaluatePromotionEligibility
 } = require('../engine/ucp/forward-governance');
 
@@ -75,12 +78,16 @@ function readLedger() {
 function safeCandidate(candidate = {}) {
   return {
     ticker: candidate.ticker || candidate.symbol || null,
+    candidateSource: candidate.candidateSource || null,
+    challengerResearchOnly: candidate.challengerResearchOnly === true,
     publicationState: candidate.publicationState || candidate.decision || null,
     researchScore: round(candidate.researchScore),
     fusionRankScore: round(candidate.fusionRankScore),
     liquidityScore: round(candidate.liquidityScore),
     srScore: round(candidate.srScore),
     structuralNetRR: round(candidate.structuralNetRR),
+    entryLow: round(candidate.entryLow ?? candidate.entry, 6),
+    entryHigh: round(candidate.entryHigh ?? candidate.entry, 6),
     entry: round(candidate.entry, 6),
     stopLoss: round(candidate.stopLoss, 6),
     target1: round(candidate.target1, 6),
