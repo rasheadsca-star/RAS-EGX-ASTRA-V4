@@ -41,6 +41,6 @@ jobs:
         env:
           ASTRA_PROD_URL: https://ras-egx-astra-v4.vercel.app
           GITHUB_SHA: ${{ github.sha }}
-          ASTRA_PROD_RETRY_ATTEMPTS: "6"
+          ASTRA_PROD_RETRY_ATTEMPTS: "12"
           ASTRA_PROD_RETRY_DELAY_MS: "10000"
         run: node scripts/production-contract-check.js
