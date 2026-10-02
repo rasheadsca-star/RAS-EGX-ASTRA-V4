@@ -67,9 +67,9 @@ function latestSession(rows) {
 }
 
 function sourceModeToSnapshotMode(sourceMode) {
-  return sourceMode === 'ASTRA_ATOMIC_LOCAL'
-    ? 'LOCAL_ATOMIC_SNAPSHOT'
-    : 'REMOTE_EMERGENCY_FALLBACK';
+  if (sourceMode === 'ASTRA_REMOTE_ATOMIC_GITHUB') return 'REMOTE_ATOMIC_SNAPSHOT';
+  if (sourceMode === 'ASTRA_ATOMIC_LOCAL') return 'LOCAL_ATOMIC_SNAPSHOT';
+  return 'REMOTE_EMERGENCY_FALLBACK';
 }
 
 function normalizeRow(row, expectedSession, metadata = {}) {
