@@ -579,6 +579,71 @@
     "inferenceMinimumConfidence": 80,
     "inferredSectorsForStratificationOnly": true,
     "inferredSectorsAllowedAsModelFeature": false,
-    "unknownsRemainExplicit": true
+    "unknownsRemainExplicit": true,
+    "publicVerifiedPreferredOverInference": true,
+    "publicVerifiedSectorsForStratificationOnly": true,
+    "publicVerifiedSectorsAllowedAsModelFeature": false
+  },
+  "publicVerifiedSymbolToSector": {
+    "BINV": {
+      "sector": "خدمات مالية غير مصرفية",
+      "source": "MUBASHER_PROFILE",
+      "sourceUrl": "https://english.mubasher.info/markets/EGX/stocks/BINV/profile"
+    },
+    "NCCW": {
+      "sector": "صناعة وطاقة وبنية تحتية",
+      "source": "MUBASHER_PROFILE",
+      "sourceUrl": "https://english.mubasher.info/markets/EGX/stocks/NCCW/profile"
+    },
+    "UEFM": {
+      "sector": "أغذية ومشروبات",
+      "source": "MUBASHER_PROFILE",
+      "sourceUrl": "https://english.mubasher.info/markets/EGX/stocks/UEFM/profile"
+    },
+    "AMIA": {
+      "sector": "استثمارات قابضة ومتنوعة",
+      "source": "MUBASHER_PROFILE",
+      "sourceUrl": "https://english.mubasher.info/markets/EGX/stocks/AMIA/profile"
+    },
+    "ACGC": {
+      "sector": "منسوجات وملابس",
+      "source": "MUBASHER_PROFILE",
+      "sourceUrl": "https://english.mubasher.info/markets/EGX/stocks/ACGC/profile"
+    },
+    "RUBX": {
+      "sector": "بتروكيماويات وكيماويات",
+      "source": "MUBASHER_PROFILE",
+      "sourceUrl": "https://english.mubasher.info/markets/EGX/stocks/RUBX/profile"
+    },
+    "LCSW": {
+      "sector": "أسمنت ومواد بناء",
+      "source": "MUBASHER_PROFILE",
+      "sourceUrl": "https://english.mubasher.info/markets/EGX/stocks/LCSW/profile"
+    },
+    "PRMH": {
+      "sector": "خدمات مالية غير مصرفية",
+      "source": "MUBASHER_PROFILE",
+      "sourceUrl": "https://english.mubasher.info/markets/EGX/stocks/PRMH/profile"
+    },
+    "ZEOT": {
+      "sector": "أغذية ومشروبات",
+      "source": "MUBASHER_PROFILE",
+      "sourceUrl": "https://english.mubasher.info/markets/EGX/stocks/ZEOT/profile"
+    },
+    "WCDF": {
+      "sector": "أغذية ومشروبات",
+      "source": "MUBASHER_PROFILE",
+      "sourceUrl": "https://english.mubasher.info/markets/EGX/stocks/WCDF/profile"
+    },
+    "RACC": {
+      "sector": "اتصالات وإعلام وتكنولوجيا",
+      "source": "MUBASHER_PROFILE",
+      "sourceUrl": "https://english.mubasher.info/markets/EGX/stocks/RACC/profile"
+    },
+    "NINH": {
+      "sector": "رعاية صحية ودواء",
+      "source": "MUBASHER_PROFILE",
+      "sourceUrl": "https://english.mubasher.info/markets/EGX/stocks/NINH/profile"
+    }
   }
 }
