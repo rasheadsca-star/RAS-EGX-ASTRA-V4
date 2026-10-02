@@ -156,6 +156,7 @@ function metaLabelStatus() {
     minimumProspectiveResolvedTrades: 30,
     calibrationRequired: true,
     usedForSelection: false,
+    executionAllowed: false,
     reason: 'No probability is published until prospective out-of-sample calibration is sufficient.'
   });
 }
