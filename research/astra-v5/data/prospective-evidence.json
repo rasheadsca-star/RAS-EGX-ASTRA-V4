@@ -1,7 +1,7 @@
 {
   "schemaVersion": "astra-v5-prospective-evidence/v2",
   "policyVersion": "astra-v5-prospective-evidence-policy/v2",
-  "updatedAt": "2026-10-02T21:06:40.586Z",
+  "updatedAt": "2026-10-02T21:08:15.720Z",
   "cohorts": [
     {
       "schemaVersion": "astra-v5-prospective-cohort/v1",
@@ -277,8 +277,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "خدمات مالية غير مصرفية",
+          "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -809,8 +809,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "صناعة وطاقة وبنية تحتية",
+          "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -1661,8 +1661,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "أغذية ومشروبات",
+          "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -3051,8 +3051,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "استثمارات قابضة ومتنوعة",
+          "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -3371,8 +3371,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "منسوجات وملابس",
+          "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -3906,8 +3906,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "بتروكيماويات وكيماويات",
+          "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -4120,8 +4120,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "أسمنت ومواد بناء",
+          "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -4762,8 +4762,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "خدمات مالية غير مصرفية",
+          "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -5083,8 +5083,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "أغذية ومشروبات",
+          "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -5190,8 +5190,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "أغذية ومشروبات",
+          "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -5724,8 +5724,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "اتصالات وإعلام وتكنولوجيا",
+          "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -5938,8 +5938,8 @@
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
-          "sector": "غير مصنف",
-          "sectorSource": "UNCLASSIFIED",
+          "sector": "رعاية صحية ودواء",
+          "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
           "decisionMarketState": {
             "sessionDate": "2026-10-01",
             "generatedAt": "2026-10-02T20:27:36.528Z",
@@ -6508,11 +6508,12 @@
     "negativeOutcomes": 0,
     "notEntered": 0,
     "open": 60,
-    "sectorCoverage": 48,
+    "sectorCoverage": 60,
     "sectorExact": 30,
+    "sectorPublicVerified": 12,
     "sectorInferredHighConfidence": 18,
     "sectorRecorded": 60,
-    "sectorUnclassified": 12,
+    "sectorUnclassified": 0,
     "morningEvidenceCaptured": 60,
     "slippageProxyObserved": 0,
     "observedCalendarDays": 1,
@@ -6520,16 +6521,6 @@
     "stratifiedDiagnostics": {
       "bySector": {
         "أسمنت ومواد بناء": {
-          "captured": 4,
-          "resolved": 0,
-          "positive": 0,
-          "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
-        },
-        "أغذية ومشروبات": {
           "captured": 5,
           "resolved": 0,
           "positive": 0,
@@ -6539,8 +6530,18 @@
           "averageNetReturnPct": null,
           "averageEntrySlippageProxyPct": null
         },
+        "أغذية ومشروبات": {
+          "captured": 8,
+          "resolved": 0,
+          "positive": 0,
+          "negative": 0,
+          "entered": 0,
+          "hitRatePct": null,
+          "averageNetReturnPct": null,
+          "averageEntrySlippageProxyPct": null
+        },
         "اتصالات وإعلام وتكنولوجيا": {
-          "captured": 2,
+          "captured": 3,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
@@ -6550,7 +6551,7 @@
           "averageEntrySlippageProxyPct": null
         },
         "استثمارات قابضة ومتنوعة": {
-          "captured": 1,
+          "captured": 2,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
@@ -6560,7 +6561,7 @@
           "averageEntrySlippageProxyPct": null
         },
         "بتروكيماويات وكيماويات": {
-          "captured": 3,
+          "captured": 4,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
@@ -6610,7 +6611,7 @@
           "averageEntrySlippageProxyPct": null
         },
         "خدمات مالية غير مصرفية": {
-          "captured": 3,
+          "captured": 5,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
@@ -6620,7 +6621,7 @@
           "averageEntrySlippageProxyPct": null
         },
         "رعاية صحية ودواء": {
-          "captured": 3,
+          "captured": 4,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
@@ -6650,7 +6651,7 @@
           "averageEntrySlippageProxyPct": null
         },
         "صناعة وطاقة وبنية تحتية": {
-          "captured": 3,
+          "captured": 4,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
@@ -6661,16 +6662,6 @@
         },
         "عقارات وإنشاءات": {
           "captured": 9,
-          "resolved": 0,
-          "positive": 0,
-          "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
-        },
-        "غير مصنف": {
-          "captured": 12,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
@@ -6690,7 +6681,7 @@
           "averageEntrySlippageProxyPct": null
         },
         "منسوجات وملابس": {
-          "captured": 2,
+          "captured": 3,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
