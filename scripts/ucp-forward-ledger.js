@@ -249,31 +249,65 @@ function netReturn(entryPrice, exitPrice) {
   return round(((exitPrice - entryPrice) / entryPrice) * 100 - FORWARD_POLICY.roundTripCostPct, 4);
 }
 
+function rangeFill(row, entryLow, entryHigh) {
+  const open = Number(row.open);
+  const low = Number(row.low);
+  const high = Number(row.high);
+  if (open >= entryLow && open <= entryHigh) return open;
+  if (open > entryHigh && low <= entryHigh) return entryHigh;
+  if (open < entryLow) return null;
+  if (low <= entryHigh && high >= entryLow) return entryHigh;
+  return null;
+}
+
 function resolveCandidate(entry, candidate, rows, previous = {}) {
   const ticker = candidate.ticker;
   const targetSession = dateOnly(entry.targetSessionDate);
-  const entryPrice = Number(candidate.entry);
+  const entryLow = Number(candidate.entryLow ?? candidate.entry);
+  const entryHigh = Number(candidate.entryHigh ?? candidate.entry);
   const stop = Number(candidate.stopLoss);
   const target1 = Number(candidate.target1);
   const sourceLastSession = rows.at(-1)?.date || null;
 
-  if (!targetSession || !(entryPrice > 0) || !(stop > 0) || !(target1 > entryPrice) || !(stop < entryPrice)) {
+  if (!targetSession || !(entryLow > 0) || !(entryHigh >= entryLow) || !(stop > 0) || !(target1 > entryLow) || !(stop < entryLow)) {
     return {
       ...previous,
       ticker,
       outcome: 'UNRESOLVABLE',
       entered: false,
-      entryPrice: Number.isFinite(entryPrice) ? entryPrice : null,
+      entryPrice: null,
+      plannedEntryLow: Number.isFinite(entryLow) ? entryLow : null,
+      plannedEntryHigh: Number.isFinite(entryHigh) ? entryHigh : null,
       sourceLastSession,
       resolutionReason: 'TRADE_PLAN_INCOMPLETE'
     };
   }
 
   const future = rows.filter((row) => row.date >= targetSession);
-  if (!future.length) return { ...previous, ticker, outcome: 'OPEN', entered: false, entryPrice, sourceLastSession };
+  if (!future.length) {
+    return {
+      ...previous,
+      ticker,
+      outcome: 'OPEN',
+      entered: false,
+      entryPrice: null,
+      plannedEntryLow: entryLow,
+      plannedEntryHigh: entryHigh,
+      sourceLastSession
+    };
+  }
 
   const entryWindow = future.slice(0, FORWARD_POLICY.entryExpirySessions);
-  const entryIndexInWindow = entryWindow.findIndex((row) => row.low <= entryPrice && row.high >= entryPrice);
+  let fill = null;
+  let entryIndexInWindow = -1;
+  for (let i = 0; i < entryWindow.length; i += 1) {
+    const price = rangeFill(entryWindow[i], entryLow, entryHigh);
+    if (price !== null) {
+      fill = price;
+      entryIndexInWindow = i;
+      break;
+    }
+  }
 
   if (entryIndexInWindow < 0) {
     if (future.length >= FORWARD_POLICY.entryExpirySessions) {
@@ -284,17 +318,29 @@ function resolveCandidate(entry, candidate, rows, previous = {}) {
         entered: false,
         entrySession: null,
         exitSession: entryWindow.at(-1)?.date || null,
-        entryPrice,
+        entryPrice: null,
+        plannedEntryLow: entryLow,
+        plannedEntryHigh: entryHigh,
         exitPrice: null,
         netReturnPct: 0,
         resolvedAt: new Date().toISOString(),
         sourceLastSession
       };
     }
-    return { ...previous, ticker, outcome: 'OPEN', entered: false, entryPrice, sourceLastSession };
+    return {
+      ...previous,
+      ticker,
+      outcome: 'OPEN',
+      entered: false,
+      entryPrice: null,
+      plannedEntryLow: entryLow,
+      plannedEntryHigh: entryHigh,
+      sourceLastSession
+    };
   }
 
   const entryRow = entryWindow[entryIndexInWindow];
+  const entryPrice = fill;
   const absoluteEntryIndex = future.findIndex((row) => row.date === entryRow.date);
   const holdRows = future.slice(absoluteEntryIndex, absoluteEntryIndex + FORWARD_POLICY.maxHoldSessions);
 
@@ -308,6 +354,8 @@ function resolveCandidate(entry, candidate, rows, previous = {}) {
         entered: true,
         entrySession: entryRow.date,
         exitSession: row.date,
+        plannedEntryLow: entryLow,
+        plannedEntryHigh: entryHigh,
         entryPrice,
         exitPrice: stop,
         netReturnPct: netReturn(entryPrice, stop),
@@ -323,6 +371,8 @@ function resolveCandidate(entry, candidate, rows, previous = {}) {
         entered: true,
         entrySession: entryRow.date,
         exitSession: row.date,
+        plannedEntryLow: entryLow,
+        plannedEntryHigh: entryHigh,
         entryPrice,
         exitPrice: target1,
         netReturnPct: netReturn(entryPrice, target1),
@@ -341,6 +391,8 @@ function resolveCandidate(entry, candidate, rows, previous = {}) {
       entered: true,
       entrySession: entryRow.date,
       exitSession: exit.date,
+      plannedEntryLow: entryLow,
+      plannedEntryHigh: entryHigh,
       entryPrice,
       exitPrice: exit.close,
       netReturnPct: netReturn(entryPrice, exit.close),
@@ -350,7 +402,17 @@ function resolveCandidate(entry, candidate, rows, previous = {}) {
     };
   }
 
-  return { ...previous, ticker, outcome: 'OPEN', entered: true, entrySession: entryRow.date, entryPrice, sourceLastSession };
+  return {
+    ...previous,
+    ticker,
+    outcome: 'OPEN',
+    entered: true,
+    entrySession: entryRow.date,
+    plannedEntryLow: entryLow,
+    plannedEntryHigh: entryHigh,
+    entryPrice,
+    sourceLastSession
+  };
 }
 
 async function resolve(ledger) {
@@ -464,6 +526,7 @@ module.exports = {
   safeCandidate,
   historyRows,
   netReturn,
+  rangeFill,
   resolveCandidate,
   finalizeLedger,
   waitForProductionSnapshot
