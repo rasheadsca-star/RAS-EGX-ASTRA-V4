@@ -3,6 +3,9 @@
 const fs = require('fs');
 const path = require('path');
 
+const RR68_CHALLENGER_ID = 'TFE_V20_FUSION_RC2_RR68_CHALLENGER';
+const RR68_CALIBRATION_SESSION = '2026-10-01';
+
 const FORWARD_POLICY = Object.freeze({
   version: 'ucp-forward-promotion/v1',
   minForwardSessions: 30,
@@ -113,27 +116,50 @@ function evaluatePromotionEligibility(summary = {}, policy = FORWARD_POLICY) {
   });
 }
 
+function summarizeRr68Challenger(ledger = {}) {
+  const entries = Array.isArray(ledger.challengerEntries)
+    ? ledger.challengerEntries.filter((entry) => entry?.challengerId === RR68_CHALLENGER_ID)
+    : [];
+  const promotionEntries = entries.filter((entry) => entry?.promotionEvidenceEligible === true);
+  const observationSummary = summarizeForwardLedger({ entries });
+  const summary = summarizeForwardLedger({ entries: promotionEntries });
+  const promotion = evaluatePromotionEligibility(summary);
+  return Object.freeze({
+    id: RR68_CHALLENGER_ID,
+    calibrationSession: RR68_CALIBRATION_SESSION,
+    available: entries.length > 0,
+    entries: Object.freeze(entries),
+    observationSummary,
+    promotionEvidenceSummary: summary,
+    promotion
+  });
+}
+
 function loadForwardLedger(filePath = path.join(process.cwd(), 'data', 'ucp', 'forward-ledger.json')) {
   try {
     const ledger = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     const summary = summarizeForwardLedger(ledger);
     const promotion = evaluatePromotionEligibility(summary);
+    const challenger = summarizeRr68Challenger(ledger);
     return Object.freeze({
       available: true,
       schemaVersion: ledger.schemaVersion || null,
       updatedAt: ledger.updatedAt || null,
       entries: Array.isArray(ledger.entries) ? ledger.entries : [],
       summary,
-      promotion
+      promotion,
+      challenger
     });
   } catch (error) {
     const summary = summarizeForwardLedger({ entries: [] });
+    const challenger = summarizeRr68Challenger({ challengerEntries: [] });
     return Object.freeze({
       available: false,
       updatedAt: null,
       entries: Object.freeze([]),
       summary,
       promotion: evaluatePromotionEligibility(summary),
+      challenger,
       error: error?.message || 'FORWARD_LEDGER_UNAVAILABLE'
     });
   }
@@ -141,7 +167,10 @@ function loadForwardLedger(filePath = path.join(process.cwd(), 'data', 'ucp', 'f
 
 module.exports = {
   FORWARD_POLICY,
+  RR68_CHALLENGER_ID,
+  RR68_CALIBRATION_SESSION,
   summarizeForwardLedger,
   evaluatePromotionEligibility,
+  summarizeRr68Challenger,
   loadForwardLedger
 };
