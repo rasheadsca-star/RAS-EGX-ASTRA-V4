@@ -52,6 +52,11 @@ function normalizeLiveQuote(quote = {}, now = new Date()) {
     low: Number(quote.low || 0),
     source: quote.source || 'LIVE',
     sourceUrl: quote.sourceUrl || null,
+    sourceSessionDate: quote.sourceSessionDate || null,
+    expectedSession: quote.expectedSession || null,
+    sessionVerified: quote.sessionVerified === true,
+    snapshotGeneratedAt: quote.snapshotGeneratedAt || null,
+    snapshotMode: quote.snapshotMode || null,
     sourceVerified: quote.sourceVerified === true,
     sourceLatencySeconds: Number.isFinite(Number(quote.sourceLatencySeconds))
       ? Number(quote.sourceLatencySeconds)
@@ -167,6 +172,22 @@ async function loadLiveSnapshot() {
   }
 }
 
+function latestHistorySession(histories = {}) {
+  return Object.values(histories)
+    .flatMap((rows) => Array.isArray(rows) && rows.length ? [rows.at(-1)?.date] : [])
+    .filter(Boolean)
+    .sort()
+    .pop() || null;
+}
+
+function latestMarketSession(quotes = []) {
+  return quotes
+    .map((item) => item?.sourceSessionDate || item?.expectedSession || null)
+    .filter(Boolean)
+    .sort()
+    .pop() || null;
+}
+
 async function buildRuntimeRecommendations(snapshot = {}) {
   const now = new Date();
   const liveSnapshot = snapshot?.liveSnapshot || snapshot;
@@ -204,6 +225,14 @@ async function buildRuntimeRecommendations(snapshot = {}) {
       sourceSessionDataHash: liveSnapshot?.sourceSessionDataHash || null
     };
   }
+
+  const marketSessionDate = latestMarketSession(liveQuotes);
+  const historySessionDate = latestHistorySession(histories);
+  const sessionAligned = Boolean(
+    marketSessionDate &&
+    historySessionDate &&
+    marketSessionDate === historySessionDate
+  );
 
   const analysis = analyze({
     symbols: normalizedSymbols,
@@ -303,5 +332,7 @@ module.exports = {
   runRuntimePipeline,
   buildNormalizedSymbols,
   getLatestHistory,
-  normalizeLiveQuote
+  normalizeLiveQuote,
+  latestHistorySession,
+  latestMarketSession
 };
