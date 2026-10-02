@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "astra-v5-prospective-evidence/v1",
+  "policyVersion": "astra-v5-prospective-evidence-policy/v1",
+  "updatedAt": null,
+  "cohorts": [],
+  "summary": {
+    "decisionSessions": 0,
+    "candidatesCaptured": 0,
+    "resolvedLabels": 0,
+    "positiveOutcomes": 0,
+    "negativeOutcomes": 0,
+    "notEntered": 0,
+    "open": 0,
+    "observedCalendarDays": 0,
+    "criticalBreaches": 0
+  },
+  "safety": {
+    "prospectiveOnly": true,
+    "retrospectiveRowsAccepted": false,
+    "usedForCurrentAppSelection": false,
+    "executionAllowed": false,
+    "writesToProductionData": false
+  }
+}
