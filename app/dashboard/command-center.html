@@ -57,14 +57,18 @@ th{color:#94a3b8;font-size:11px;text-transform:uppercase}
         <th>Liq.</th>
         <th>S/R</th>
         <th>Struct. RR</th>
+        <th>Entry Zone</th>
+        <th>Stop</th>
+        <th>Target 1</th>
+        <th>Target 2</th>
         <th>Morning</th>
       </tr>
     </thead>
     <tbody id="unifiedBoard">
-      <tr><td colspan="12">Loading unified opportunity board...</td></tr>
+      <tr><td colspan="16">Loading unified opportunity board...</td></tr>
     </tbody>
   </table>
-  <div class="small">Unified weights: Technical 20% · Research 25% · Liquidity 10% · S/R 10% · Structural RR 15% · Risk Safety 15% · Data Quality 5%. This is a research ranking, not an execution instruction.</div>
+  <div class="small">Unified weights: Technical 20% · Research 25% · Liquidity 10% · S/R 10% · Structural RR 15% · Risk Safety 15% · Data Quality 5%. Entry/Stop/Targets are the research trade plan when available. This is not an execution instruction.</div>
 </div>
 
 <div class="card">
@@ -119,6 +123,22 @@ function sourceBadge(source){
 function scoreCell(value){
   if(value===null||value===undefined) return '-';
   return Number(value).toFixed(1);
+}
+
+function priceCell(value){
+  if(value===null||value===undefined||!Number.isFinite(Number(value))) return '-';
+  return Number(value).toFixed(4).replace(/0+$/,'').replace(/.$/,'');
+}
+
+function entryZoneCell(item){
+  const low=item.entryLow;
+  const high=item.entryHigh;
+  if(low==null&&high==null) return '-';
+  if(low!=null&&high!=null){
+    if(Number(low)===Number(high)) return priceCell(low);
+    return priceCell(low)+' – '+priceCell(high);
+  }
+  return priceCell(low??high);
 }
 
 function paperCell(item){
@@ -179,10 +199,14 @@ async function loadSignals(){
             '<td>'+scoreCell(x.liquidityScore)+'</td>'+
             '<td>'+scoreCell(x.supportResistanceScore)+'</td>'+
             '<td>'+scoreCell(x.structuralNetRR)+'</td>'+
+            '<td><b>'+esc(entryZoneCell(x))+'</b></td>'+
+            '<td>'+esc(priceCell(x.stopLoss))+'</td>'+
+            '<td>'+esc(priceCell(x.target1))+'</td>'+
+            '<td>'+esc(priceCell(x.target2))+'</td>'+
             '<td>'+esc(morning)+'</td>'+
           '</tr>';
         }).join('')
-      : '<tr><td colspan="12">Unified board unavailable or waiting for the RC2 scoreboard snapshot.</td></tr>';
+      : '<tr><td colspan="16">Unified board unavailable or waiting for the RC2 scoreboard snapshot.</td></tr>';
 
     document.getElementById('signals').innerHTML=rows.length
       ? rows.map(x=>{
@@ -230,7 +254,7 @@ async function loadSignals(){
       'Deployment: '+(data.deploymentCommit||'unknown');
   }catch(e){
     document.getElementById('unifiedBoard').innerHTML=
-      '<tr><td colspan="12">Unified board unavailable</td></tr>';
+      '<tr><td colspan="16">Unified board unavailable</td></tr>';
     document.getElementById('signals').innerHTML=
       '<tr><td colspan="10">Runtime data unavailable</td></tr>';
     document.getElementById('watchlist').innerText='Runtime data unavailable';
