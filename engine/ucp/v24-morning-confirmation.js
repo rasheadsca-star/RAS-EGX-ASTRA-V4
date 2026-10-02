@@ -5,6 +5,7 @@ const TERMINAL_STATES = new Set(['CONFIRMED', 'REJECTED', 'EXPIRED']);
 const POLICY = Object.freeze({
   confirmationStartMinute: 10 * 60 + 20,
   confirmationEndMinute: 10 * 60 + 45,
+  confirmationGraceEndMinute: 11 * 60 + 10,
   minimumMarketCoveragePct: 90,
   requireCandidateCoverage: true,
   requireHistoricalVolumeBaseline: true,
@@ -111,6 +112,9 @@ function evidenceReadiness(evidence = {}, prepared = {}, clock = {}) {
   if (!Number.isFinite(latestSourceMinute) || latestSourceMinute < POLICY.confirmationStartMinute) {
     reasons.push('MORNING_SOURCE_TOO_EARLY');
   }
+  if (Number.isFinite(latestSourceMinute) && latestSourceMinute > POLICY.confirmationEndMinute) {
+    reasons.push('MORNING_SOURCE_TOO_LATE');
+  }
   if (Number.isFinite(latestSourceMinute) && Number.isFinite(observedMinute) && latestSourceMinute > observedMinute) {
     reasons.push('MORNING_SOURCE_FROM_FUTURE');
   }
@@ -166,13 +170,16 @@ function evaluateCandidate(prepared = {}, evidence = null, {
   const readiness = evidenceReadiness(evidence || {}, prepared, clock);
 
   if (!readiness.ready) {
-    const expired = clock.minuteOfDay > POLICY.confirmationEndMinute;
+    const graceExpired = clock.minuteOfDay > POLICY.confirmationGraceEndMinute;
     return Object.freeze({
       ...prepared,
-      lifecycleState: expired ? 'EXPIRED' : 'WAITING_DATA',
+      lifecycleState: graceExpired ? 'UNCONFIRMED_DATA_GAP' : 'WAITING_DATA',
       executionAllowed: false,
-      terminal: expired,
-      reasons: readiness.reasons,
+      terminal: false,
+      reasons: Object.freeze([
+        ...readiness.reasons,
+        ...(graceExpired ? ['MORNING_EVIDENCE_UNAVAILABLE_AFTER_GRACE'] : [])
+      ]),
       evidenceReadiness: readiness
     });
   }
@@ -229,7 +236,7 @@ function evaluateMorningBatch(preparedCandidates = [], evidenceByTicker = {}, op
     results: Object.freeze(results),
     stateCounts: Object.freeze(stateCounts),
     confirmedSymbols: Object.freeze(results.filter((item) => item.lifecycleState === 'CONFIRMED').map((item) => item.ticker)),
-    waitingSymbols: Object.freeze(results.filter((item) => ['PREPARED', 'WAITING_DATA', 'WATCH'].includes(item.lifecycleState)).map((item) => item.ticker)),
+    waitingSymbols: Object.freeze(results.filter((item) => ['PREPARED', 'WAITING_DATA', 'WATCH', 'UNCONFIRMED_DATA_GAP'].includes(item.lifecycleState)).map((item) => item.ticker)),
     rejectedSymbols: Object.freeze(results.filter((item) => item.lifecycleState === 'REJECTED').map((item) => item.ticker)),
     expiredSymbols: Object.freeze(results.filter((item) => item.lifecycleState === 'EXPIRED').map((item) => item.ticker))
   });
