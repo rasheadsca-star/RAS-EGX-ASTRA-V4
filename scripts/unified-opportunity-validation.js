@@ -6,6 +6,7 @@ const {
   stopRiskPct,
   combinedRiskSafety,
   weightedScore,
+  breakEvenTargetProbability,
   buildUnifiedOpportunityBoard
 } = require('../engine/ucp/unified-opportunity');
 
@@ -32,6 +33,14 @@ const full = weightedScore({
 });
 assert.strictEqual(full.coveragePct, 100);
 assert(full.score > 0 && full.score < 100);
+const breakEven = breakEvenTargetProbability({
+  entryLow: 57.52,
+  entryHigh: 59.0013,
+  stopLoss: 54.7913,
+  target1: 62.48,
+  roundTripCostPct: 0.60
+});
+assert(breakEven > 40 && breakEven < 70);
 
 const runtime = {
   recommendations: [{
@@ -64,6 +73,9 @@ const ucp = {
         candidates: [{ ticker: 'BINV' }]
       }]
     },
+    governance: {
+      market: { regime: 'RISK_OFF', score: 8, riskMultiplier: 0.35, maxTradeRiskPct: 0.09 }
+    },
     morningConfirmation: {
       status: 'WAITING_NEXT_SESSION',
       preparedCandidates: [{
@@ -73,6 +85,19 @@ const ucp = {
     }
   },
   diagnostics: {
+    v24: {
+      metaLabel: {
+        results: [{
+          ticker: 'BINV',
+          status: 'NOT_CALIBRATED',
+          calibrated: false,
+          probabilityTarget1Pct: null,
+          expectedValuePct: null,
+          usedForSelection: false,
+          executionAllowed: false
+        }]
+      }
+    },
     rc2: {
       marketScoreboard: [{
         ticker: 'AAA',
@@ -124,6 +149,15 @@ assert.strictEqual(binv.selectedByUcp, true);
 assert.strictEqual(binv.morningStatus, 'PREPARED');
 assert.strictEqual(binv.confidence.source, 'ASTRA_TECHNICAL_PROXY');
 assert.strictEqual(binv.confidence.usedInUnifiedScore, false);
+assert(Number.isFinite(binv.crossSectionalScore));
+assert(Number.isFinite(binv.crossSectionalRank));
+assert.strictEqual(binv.metaLabel.status, 'NOT_CALIBRATED');
+assert.strictEqual(binv.metaLabel.probabilityTarget1Pct, null);
+assert.strictEqual(binv.metaLabel.expectedValuePct, null);
+assert(binv.breakEvenTargetProbabilityPct > 0);
+assert.strictEqual(board.marketRegime.regime, 'RISK_OFF');
+assert.strictEqual(board.marketRegime.riskMultiplier, 0.35);
+assert.strictEqual(board.metaLabelPolicy.status, 'NOT_CALIBRATED');
 assert.strictEqual(aaa.source, 'ASTRA_NATIVE_ENTRY');
 assert.strictEqual(aaa.selectedByUcp, false);
 
