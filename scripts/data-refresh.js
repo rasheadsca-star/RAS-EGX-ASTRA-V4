@@ -13,6 +13,8 @@ const BASE =
 
 const HISTORY_BASE = `${BASE}/history`;
 const TIMEOUT_MS = 15000;
+const FETCH_ATTEMPTS = Number(process.env.ASTRA_REFRESH_FETCH_ATTEMPTS || 3);
+const FETCH_RETRY_MS = Number(process.env.ASTRA_REFRESH_FETCH_RETRY_MS || 2500);
 const CONCURRENCY = 12;
 const HISTORY_SESSIONS = 60;
 const MIN_HISTORY_COVERAGE = 0.80;
@@ -167,6 +169,22 @@ function assertAtomicSource({
   };
 }
 
+function readJsonIfExists(file) {
+  try {
+    if (!fs.existsSync(file)) return null;
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+function compareSession(a, b) {
+  if (!a && !b) return 0;
+  if (!a) return -1;
+  if (!b) return 1;
+  return String(a).localeCompare(String(b));
+}
+
 async function main() {
   const [
     market,
@@ -191,6 +209,9 @@ async function main() {
   ]);
 
   const marketRows = Array.isArray(market?.rows) ? market.rows : [];
+  const existingMarketPath = path.join(__dirname, '..', 'data', 'canonical-market.json');
+  const existingMarket = readJsonIfExists(existingMarketPath);
+  const existingSession = existingMarket?.source?.expectedSession || null;
   const expectedSession =
     fetchStatus?.expectedSession ||
     priceTruth?.expectedSession ||
@@ -201,6 +222,10 @@ async function main() {
       .sort()
       .pop() ||
     null;
+
+  if (compareSession(expectedSession, existingSession) < 0) {
+    throw new Error(`SOURCE_SESSION_REGRESSION_BLOCKED:${expectedSession}<${existingSession}`);
+  }
 
   const currentSessionRows = expectedSession
     ? marketRows.filter(
@@ -372,7 +397,14 @@ async function main() {
         historyCoveragePct: Number((coverage * 100).toFixed(2)),
         v17Session: v17?.sessionDate || null,
         rc2Session: rc2?.sessionDate || null,
-        source: canonicalMarket.source
+        source: canonicalMarket.source,
+        continuity: {
+          existingSession,
+          sourceSession: expectedSession,
+          sessionAdvanced: compareSession(expectedSession, existingSession) > 0,
+          atomicMarketHistoryWrite: true,
+          fetchAttempts: FETCH_ATTEMPTS
+        }
       },
       null,
       2
