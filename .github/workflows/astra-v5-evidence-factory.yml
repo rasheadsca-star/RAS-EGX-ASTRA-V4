@@ -1,0 +1,60 @@
+name: ASTRA V5 Prospective Evidence Factory
+
+on:
+  push:
+    branches:
+      - research/astra-v5-institutional-decision-layer
+    paths:
+      - research/astra-v5/heartbeat.txt
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: astra-v5-prospective-evidence
+  cancel-in-progress: false
+
+jobs:
+  evidence-cycle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout isolated research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/astra-v5-institutional-decision-layer
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate V5 research layer
+        run: |
+          node research/astra-v5/validation.js
+          node research/astra-v5/evidence-factory-validation.js
+
+      - name: Run prospective evidence cycle
+        env:
+          ASTRA_V5_PROD_URL: https://ras-egx-astra-v4.vercel.app
+          ASTRA_V5_HISTORY_BASE: https://raw.githubusercontent.com/rasheadsca-star/RAS-EGX-PRO2026-NEXT/main/data/history
+        run: node research/astra-v5/evidence-factory.js
+
+      - name: Re-validate generated evidence
+        run: |
+          node research/astra-v5/evidence-factory-validation.js
+          node research/astra-v5/shadow-validation.js
+
+      - name: Commit research evidence only
+        shell: bash
+        run: |
+          if git diff --quiet --             research/astra-v5/data/prospective-evidence.json             research/astra-v5/data/training-records.json             research/astra-v5/model.json; then
+            echo "No evidence changes to commit"
+            exit 0
+          fi
+          git config user.name "astra-v5-evidence-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add             research/astra-v5/data/prospective-evidence.json             research/astra-v5/data/training-records.json             research/astra-v5/model.json
+          git commit -m "research(v5): update prospective evidence [skip ci]"
+          git push origin HEAD:research/astra-v5-institutional-decision-layer
