@@ -62,7 +62,8 @@ function buildDecisionSnapshot({
     alpha: {
       engineId: alpha.engineId || REGISTRY.championCandidate.id,
       status: alpha.status || 'NOT_WIRED',
-      candidates: Array.isArray(alpha.candidates) ? alpha.candidates : []
+      candidates: Array.isArray(alpha.candidates) ? alpha.candidates : [],
+      challengers: Array.isArray(alpha.challengers) ? alpha.challengers : []
     },
     governance: {
       engineId: governance.engineId || REGISTRY.governance.id,
