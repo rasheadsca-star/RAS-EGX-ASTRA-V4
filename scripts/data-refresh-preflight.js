@@ -75,6 +75,9 @@ async function evaluate() {
     primary?.sourceSessionDataHash ||
     null;
 
+  const v17FingerprintCurrent = Boolean(sourceFingerprint && v17?.sourceSessionDataHash === sourceFingerprint);
+  const rc2FingerprintCurrent = Boolean(sourceFingerprint && rc2?.sourceSessionDataHash === sourceFingerprint);
+
   const v17RequiredFreshAt = maxTime(
     primary?.generatedAt,
     regime?.generatedAt,
@@ -98,10 +101,10 @@ async function evaluate() {
     regimeSession === expected &&
     v17?.sessionDate === expected &&
     v17?.systemHealth?.sessionAligned === true &&
-    time(v17?.generatedAt) >= v17RequiredFreshAt &&
+    (sourceFingerprint ? v17FingerprintCurrent : time(v17?.generatedAt) >= v17RequiredFreshAt) &&
     rc2?.sessionDate === expected &&
     rc2?.sessionAligned === true &&
-    time(rc2?.generatedAt) >= rc2RequiredFreshAt
+    (sourceFingerprint ? rc2FingerprintCurrent : time(rc2?.generatedAt) >= rc2RequiredFreshAt)
   );
 
   const localSession = local?.source?.expectedSession || null;
@@ -130,9 +133,9 @@ async function evaluate() {
   if (primary?.sessionDate !== expected || primary?.selectedModel?.id !== 'V16_9_EQUAL_WEIGHT_BASKET') blockers.push('V169_PRIMARY_NOT_READY');
   if (regimeSession !== expected) blockers.push('REGIME_SESSION_MISMATCH');
   if (v17?.sessionDate !== expected || v17?.systemHealth?.sessionAligned !== true) blockers.push('V17_SESSION_NOT_ALIGNED');
-  if (time(v17?.generatedAt) < v17RequiredFreshAt) blockers.push('V17_STALE_WITHIN_SESSION');
+  if (sourceFingerprint ? !v17FingerprintCurrent : time(v17?.generatedAt) < v17RequiredFreshAt) blockers.push('V17_STALE_WITHIN_SESSION');
   if (rc2?.sessionDate !== expected || rc2?.sessionAligned !== true) blockers.push('RC2_SESSION_NOT_ALIGNED');
-  if (time(rc2?.generatedAt) < rc2RequiredFreshAt) blockers.push('RC2_STALE_WITHIN_SESSION');
+  if (sourceFingerprint ? !rc2FingerprintCurrent : time(rc2?.generatedAt) < rc2RequiredFreshAt) blockers.push('RC2_STALE_WITHIN_SESSION');
 
   return {
     expectedSession: expected,
