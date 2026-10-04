@@ -6,6 +6,9 @@ const crypto = require('crypto');
 
 const { trainProspectiveModel } = require('./prospective-calibration');
 const { DEFAULT_POLICY: MODEL_POLICY } = require('./institutional-decision-engine');
+const { runRuntimePipeline } = require('../../engine/runtime-pipeline');
+const { runUcpShadowPipeline } = require('../../engine/ucp/shadow-pipeline');
+const { buildUnifiedOpportunityBoard } = require('../../engine/ucp/unified-opportunity');
 const SECTOR_MAP = require('./sector-map.json');
 
 const ROOT = __dirname;
@@ -286,15 +289,52 @@ function assertUcp(ucp = {}) {
   if (ucp.recommendationMutationAllowed !== false) throw new Error('UCP_RECOMMENDATION_MUTATION_BREACH');
 }
 
-async function fetchProductionEvidence() {
-  const stamp = Date.now();
-  const [board, ucp] = await Promise.all([
-    fetchJson(`${PROD_URL.replace(/\/$/, '')}/api/unified-opportunities?v5=${stamp}`),
-    fetchJson(`${PROD_URL.replace(/\/$/, '')}/api/ucp-shadow?v5=${stamp}`)
-  ]);
+function nextEgxTradingSession(sessionDate) {
+  const base = dateOnly(sessionDate);
+  if (!base) return null;
+  const d = new Date(base + 'T12:00:00Z');
+  for (let i = 0; i < 7; i += 1) {
+    d.setUTCDate(d.getUTCDate() + 1);
+    const day = d.getUTCDay();
+    if (day !== 5 && day !== 6) return d.toISOString().slice(0, 10);
+  }
+  return null;
+}
+
+async function fetchResearchLocalEvidence() {
+  const [runtime, ucp] = await Promise.all([runRuntimePipeline(), runUcpShadowPipeline()]);
+  const board = buildUnifiedOpportunityBoard({ runtime, ucp });
   assertProductionBoard(board);
   assertUcp(ucp);
-  return { board, ucp };
+  return { board, ucp, runtime };
+}
+
+async function fetchProductionEvidence() {
+  const stamp = Date.now();
+  const base = PROD_URL.replace(/\/$/, '');
+  const productionPromise = Promise.all([
+    fetchJson(base + '/api/unified-opportunities?v5=' + stamp),
+    fetchJson(base + '/api/ucp-shadow?v5=' + stamp)
+  ]).then(([board, ucp]) => {
+    assertProductionBoard(board);
+    assertUcp(ucp);
+    return { board, ucp, source: 'PRODUCTION_API' };
+  });
+
+  const localPromise = fetchResearchLocalEvidence()
+    .then(({ board, ucp, runtime }) => ({ board, ucp, runtime, source: 'RESEARCH_LOCAL_RUNTIME' }))
+    .catch(error => ({ error }));
+
+  const [production, local] = await Promise.all([productionPromise, localPromise]);
+  const prodSession = dateOnly(production.board && production.board.sessionDate);
+  const localSession = dateOnly(local.board && local.board.sessionDate);
+
+  if (local.board && localSession && (!prodSession || localSession > prodSession)) {
+    console.log('ASTRA V5 FRESHER LOCAL BOARD SELECTED', JSON.stringify({ prodSession, localSession, source: local.source }));
+    return { board: local.board, ucp: local.ucp, runtime: local.runtime, evidenceSource: local.source };
+  }
+
+  return { ...production, evidenceSource: production.source };
 }
 
 function sourceIdentity(board = {}, ucp = {}) {
@@ -303,7 +343,7 @@ function sourceIdentity(board = {}, ucp = {}) {
     ucpDecisionHash: ucp?.snapshot?.decisionHash || null,
     boardSessionDate: board.sessionDate || null,
     ucpSessionDate: ucp?.snapshot?.sessionDate || null,
-    targetSessionDate: ucp?.snapshot?.morningConfirmation?.targetSessionDate || null,
+    targetSessionDate: dateOnly(ucp?.snapshot?.morningConfirmation?.targetSessionDate) || nextEgxTradingSession(board?.sessionDate),
     ucpStatus: ucp.status || null
   });
 }
