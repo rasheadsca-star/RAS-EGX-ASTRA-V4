@@ -1,6 +1,6 @@
 {
   "schemaVersion": "astra-v5-training-records/v2",
-  "generatedAt": "2026-10-04T15:07:42.175Z",
+  "generatedAt": "2026-10-04T15:37:44.885Z",
   "prospectiveOnly": true,
   "target": "TARGET1_BEFORE_STOP_WITHIN_MAX_HOLD",
   "count": 15,
@@ -46,9 +46,9 @@
         "liquidityScore": 94
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
@@ -137,9 +137,9 @@
         "liquidityScore": 94
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
@@ -228,9 +228,9 @@
         "liquidityScore": 90.1
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
@@ -319,9 +319,9 @@
         "liquidityScore": 90.2
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
@@ -410,9 +410,9 @@
         "liquidityScore": 95.3
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
@@ -501,9 +501,9 @@
         "liquidityScore": 89.4
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
@@ -592,9 +592,9 @@
         "liquidityScore": 93.2
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
@@ -683,9 +683,9 @@
         "liquidityScore": 96.1
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
@@ -774,9 +774,9 @@
         "liquidityScore": 83
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
@@ -865,9 +865,9 @@
         "liquidityScore": 100
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
@@ -956,9 +956,9 @@
         "liquidityScore": 95.3
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
@@ -1047,9 +1047,9 @@
         "liquidityScore": 100
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
@@ -1138,9 +1138,9 @@
         "liquidityScore": 91.3
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
@@ -1229,9 +1229,9 @@
         "liquidityScore": 99
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
@@ -1320,9 +1320,9 @@
         "liquidityScore": 94.4
       },
       "morningEvidence": {
-        "observedAt": "2026-10-02T20:43:22.429Z",
-        "status": "WAITING_NEXT_SESSION",
-        "targetSessionDate": "2026-10-04",
+        "observedAt": "2026-10-04T15:37:44.885Z",
+        "status": "WAITING_DATA",
+        "targetSessionDate": null,
         "sourceSessionDate": null,
         "source": null,
         "generatedAt": null,
