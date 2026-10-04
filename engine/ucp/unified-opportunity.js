@@ -211,6 +211,10 @@ function confidenceDescriptor(native = {}) {
   };
 }
 
+function latestSessionDate(...values) {
+  return values.filter(Boolean).map(String).sort().at(-1) || null;
+}
+
 function buildUnifiedOpportunityBoard({ runtime = {}, ucp = {} } = {}) {
   const snapshot = ucp?.snapshot || {};
   const rc2Rows = ucp?.diagnostics?.rc2?.marketScoreboard || [];
@@ -342,7 +346,11 @@ function buildUnifiedOpportunityBoard({ runtime = {}, ucp = {} } = {}) {
 
   return Object.freeze({
     schemaVersion: 'rasheed-egx-unified-opportunity-board/v1',
-    sessionDate: snapshot.sessionDate || ucp?.diagnostics?.rc2?.sessionDate || null,
+    sessionDate: latestSessionDate(
+      runtime?.marketSessionDate,
+      snapshot.sessionDate,
+      ucp?.diagnostics?.rc2?.sessionDate
+    ),
     generatedAt: new Date().toISOString(),
     executionAllowed: false,
     weights: WEIGHTS,
