@@ -283,6 +283,12 @@ function assertProductionBoard(board = {}) {
   if (!Array.isArray(board.rows) || !board.rows.length) throw new Error('UNIFIED_BOARD_ROWS_MISSING');
 }
 
+function assertResearchLocalBoard(board = {}) {
+  if (board.executionAllowed !== false) throw new Error('LOCAL_BOARD_EXECUTION_PERMISSION_BREACH');
+  if (!board.sessionDate) throw new Error('LOCAL_BOARD_SESSION_MISSING');
+  if (!Array.isArray(board.rows) || !board.rows.length) throw new Error('LOCAL_BOARD_ROWS_MISSING');
+}
+
 function assertUcp(ucp = {}) {
   if (ucp.success !== true) throw new Error('UCP_NOT_SUCCESSFUL');
   if (ucp.executionAllowed !== false) throw new Error('UCP_EXECUTION_PERMISSION_BREACH');
@@ -304,7 +310,7 @@ function nextEgxTradingSession(sessionDate) {
 async function fetchResearchLocalEvidence() {
   const [runtime, ucp] = await Promise.all([runRuntimePipeline(), runUcpShadowPipeline()]);
   const board = buildUnifiedOpportunityBoard({ runtime, ucp });
-  assertProductionBoard(board);
+  assertResearchLocalBoard(board);
   assertUcp(ucp);
   return { board, ucp, runtime };
 }
