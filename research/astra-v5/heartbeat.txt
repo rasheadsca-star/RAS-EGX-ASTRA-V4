@@ -5,3 +5,4 @@ market-fix-trigger: 2026-10-04T15:45:00Z
 unified-session-validation
 fresher-local-board-validation
 local-board-assert-fix-validation
+zero-cohort-repair-validation
