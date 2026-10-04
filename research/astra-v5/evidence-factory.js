@@ -359,16 +359,27 @@ function captureCohort(ledger, board, ucp, now = new Date().toISOString()) {
   if (!sessionDate) throw new Error('CAPTURE_SESSION_INVALID');
 
   const existing = (ledger.cohorts || []).find(x => x.decisionSessionDate === sessionDate);
-  if (existing) return { changed: false, reason: 'SESSION_ALREADY_FROZEN', cohort: existing };
 
   const candidates = eligibleObservationRows(board);
   const identity = sourceIdentity(board, ucp);
+
+  if (existing && Number(existing.candidateCount || 0) > 0) {
+    return { changed: false, reason: 'SESSION_ALREADY_FROZEN', cohort: existing };
+  }
+
+  if (existing && Number(existing.candidateCount || 0) === 0 && candidates.length === 0) {
+    return { changed: false, reason: 'ZERO_COHORT_STILL_EMPTY', cohort: existing };
+  }
+
   const frozen = {
     schemaVersion: 'astra-v5-prospective-cohort/v1',
     cohortId: `${sessionDate}:${hashObject({ sessionDate, identity, candidates }).slice(0, 16)}`,
     decisionSessionDate: sessionDate,
     targetSessionDate: dateOnly(identity.targetSessionDate),
     capturedAt: now,
+    repairedFromZeroCohort: Boolean(existing && Number(existing.candidateCount || 0) === 0),
+    repairReason: existing && Number(existing.candidateCount || 0) === 0 ? 'STALE_SOURCE_ZERO_COHORT_REPAIR_BEFORE_TARGET_SESSION' : null,
+    priorZeroCohortId: existing && Number(existing.candidateCount || 0) === 0 ? existing.cohortId : null,
     boardGeneratedAt: board.generatedAt || null,
     sourceIdentity: identity,
     marketRegime: board.marketRegime || {},
@@ -390,6 +401,12 @@ function captureCohort(ledger, board, ucp, now = new Date().toISOString()) {
   });
 
   ledger.cohorts = Array.isArray(ledger.cohorts) ? ledger.cohorts : [];
+  if (existing && Number(existing.candidateCount || 0) === 0) {
+    const index = ledger.cohorts.indexOf(existing);
+    ledger.cohorts[index] = frozen;
+    return { changed: true, reason: 'ZERO_COHORT_REPAIRED', cohort: frozen };
+  }
+
   ledger.cohorts.push(frozen);
   return { changed: true, reason: 'COHORT_CAPTURED', cohort: frozen };
 }
@@ -924,7 +941,7 @@ async function cycle() {
     schemaVersion: 'astra-v5-evidence-factory-run/v1',
     generatedAt: now,
     productionSessionDate: board.sessionDate,
-    targetSessionDate: ucp?.snapshot?.morningConfirmation?.targetSessionDate || null,
+    targetSessionDate: dateOnly(ucp?.snapshot?.morningConfirmation?.targetSessionDate) || nextEgxTradingSession(board?.sessionDate),
     productionDeploymentCommit: board.deploymentCommit || ucp.deploymentCommit || null,
     metadataBackfillCount,
     capture: {
