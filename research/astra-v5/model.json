@@ -1,6 +1,6 @@
 {
   "schemaVersion": "astra-v5-prospective-model/v1",
-  "modelVersion": "astra-v5-forward-2026-10-02",
+  "modelVersion": "astra-v5-forward-2026-10-04",
   "status": "NOT_CALIBRATED",
   "prospectiveOnly": true,
   "target": "TARGET1_BEFORE_STOP_WITHIN_MAX_HOLD",
@@ -24,10 +24,10 @@
   ],
   "trainingSample": {
     "prospectiveOnly": true,
-    "resolvedTrades": 0,
-    "forwardSessions": 0,
-    "observedCalendarDays": 0,
-    "positiveOutcomes": 0,
+    "resolvedTrades": 15,
+    "forwardSessions": 1,
+    "observedCalendarDays": 1,
+    "positiveOutcomes": 15,
     "negativeOutcomes": 0
   },
   "intercept": null,

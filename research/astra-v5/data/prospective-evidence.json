@@ -1,7 +1,7 @@
 {
   "schemaVersion": "astra-v5-prospective-evidence/v2",
   "policyVersion": "astra-v5-prospective-evidence-policy/v2",
-  "updatedAt": "2026-10-02T21:08:15.720Z",
+  "updatedAt": "2026-10-04T15:07:42.175Z",
   "cohorts": [
     {
       "schemaVersion": "astra-v5-prospective-cohort/v1",
@@ -122,7 +122,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -266,16 +266,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 59.0013,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 58.26065,
+            "entrySlippageProxyPct": 1.2713,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "خدمات مالية غير مصرفية",
           "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
@@ -295,8 +298,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 1.2713,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -381,7 +384,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -487,7 +490,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -593,7 +596,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -699,7 +702,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -798,16 +801,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 7.2,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 7.2459,
+            "entrySlippageProxyPct": -0.6335,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "صناعة وطاقة وبنية تحتية",
           "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
@@ -827,8 +833,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": -0.6335,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -912,7 +918,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -1010,18 +1016,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 31,
+            "exitPrice": 31.56,
+            "entryReferencePrice": 30.82785,
+            "entrySlippageProxyPct": 0.5584,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 1.8065,
+            "netReturnPct": 1.0565,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "سيارات وتجارة وتوزيع",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -1041,8 +1050,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.5584,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -1118,16 +1127,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 87.02,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 87.52035,
+            "entrySlippageProxyPct": -0.5717,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "بتروكيماويات وكيماويات",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -1147,8 +1159,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": -0.5717,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -1224,16 +1236,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 342,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 342.21185,
+            "entrySlippageProxyPct": -0.0619,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "معادن ومواد أساسية",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -1253,8 +1268,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": -0.0619,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -1330,16 +1345,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 2.2752,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 2.25095,
+            "entrySlippageProxyPct": 1.0773,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "أغذية ومشروبات",
           "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
@@ -1359,8 +1377,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 1.0773,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -1436,16 +1454,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 45.63,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 45.5533,
+            "entrySlippageProxyPct": 0.1684,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "بتروكيماويات وكيماويات",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -1465,8 +1486,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.1684,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -1541,18 +1562,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 6.7867,
+            "exitPrice": 6.9233,
+            "entryReferencePrice": 6.745,
+            "entrySlippageProxyPct": 0.6182,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 2.0128,
+            "netReturnPct": 1.2628,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "استثمارات قابضة ومتنوعة",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -1572,8 +1596,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.6182,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -1650,16 +1674,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 509.97,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 509.84295,
+            "entrySlippageProxyPct": 0.0249,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "أغذية ومشروبات",
           "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
@@ -1679,8 +1706,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.0249,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -1755,18 +1782,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 182.07,
+            "exitPrice": 183.1406,
+            "entryReferencePrice": 181.42535,
+            "entrySlippageProxyPct": 0.3553,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 0.588,
+            "netReturnPct": -0.162,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "أغذية ومشروبات",
           "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
@@ -1786,8 +1816,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.3553,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -1871,7 +1901,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -1969,18 +1999,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 18.5756,
+            "exitPrice": 18.9387,
+            "entryReferencePrice": 18.3878,
+            "entrySlippageProxyPct": 1.0213,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 1.9547,
+            "netReturnPct": 1.2047,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "عقارات وإنشاءات",
           "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
@@ -2000,8 +2033,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 1.0213,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -2085,7 +2118,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -2185,16 +2218,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 27.84,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 27.70235,
+            "entrySlippageProxyPct": 0.4969,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "صناعة وطاقة وبنية تحتية",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -2214,8 +2250,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.4969,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -2290,18 +2326,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 44.2737,
+            "exitPrice": 45.79,
+            "entryReferencePrice": 43.9285,
+            "entrySlippageProxyPct": 0.7858,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 3.4248,
+            "netReturnPct": 2.6748,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "بنوك وخدمات مالية مصرفية",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -2321,8 +2360,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.7858,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -2399,16 +2438,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 9.24,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 9.27765,
+            "entrySlippageProxyPct": -0.4058,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "منسوجات وملابس",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -2428,8 +2470,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": -0.4058,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -2512,7 +2554,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -2612,16 +2654,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 331.03,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 333.41275,
+            "entrySlippageProxyPct": -0.7147,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "رعاية صحية ودواء",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -2641,8 +2686,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": -0.7147,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -2719,16 +2764,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 18.85,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 18.81785,
+            "entrySlippageProxyPct": 0.1708,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "تكنولوجيا ومدفوعات",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -2748,8 +2796,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.1708,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -2824,18 +2872,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 297.2,
+            "exitPrice": 317.7338,
+            "entryReferencePrice": 296.06655,
+            "entrySlippageProxyPct": 0.3828,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 6.9091,
+            "netReturnPct": 6.1591,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "أسمنت ومواد بناء",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -2855,8 +2906,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.3828,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -2931,18 +2982,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 39.29,
+            "exitPrice": 39.6933,
+            "entryReferencePrice": 39.2369,
+            "entrySlippageProxyPct": 0.1353,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 1.0265,
+            "netReturnPct": 0.2765,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "تعليم وخدمات",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -2962,8 +3016,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.1353,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -3038,18 +3092,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 18.43,
+            "exitPrice": 18.7533,
+            "entryReferencePrice": 18.4131,
+            "entrySlippageProxyPct": 0.0918,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 1.7542,
+            "netReturnPct": 1.0042,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "استثمارات قابضة ومتنوعة",
           "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
@@ -3069,8 +3126,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.0918,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -3147,16 +3204,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 84.2803,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 83.5235,
+            "entrySlippageProxyPct": 0.9061,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "سياحة وترفيه",
           "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
@@ -3176,8 +3236,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.9061,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -3260,7 +3320,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -3358,18 +3418,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 14.52,
+            "exitPrice": 14.78,
+            "entryReferencePrice": 14.63255,
+            "entrySlippageProxyPct": -0.7692,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 1.7906,
+            "netReturnPct": 1.0406,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "منسوجات وملابس",
           "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
@@ -3389,8 +3452,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": -0.7692,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -3467,16 +3530,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 20.99,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 20.8184,
+            "entrySlippageProxyPct": 0.8243,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "تعليم وخدمات",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -3496,8 +3562,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.8243,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -3581,7 +3647,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -3679,18 +3745,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 11.7875,
+            "exitPrice": 12.2067,
+            "entryReferencePrice": 11.65575,
+            "entrySlippageProxyPct": 1.1303,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 3.5563,
+            "netReturnPct": 2.8063,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "عقارات وإنشاءات",
           "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
@@ -3710,8 +3779,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 1.1303,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -3788,16 +3857,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 12.8,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 12.7514,
+            "entrySlippageProxyPct": 0.3811,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "عقارات وإنشاءات",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -3817,8 +3889,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.3811,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -3902,7 +3974,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -4000,18 +4072,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 0.49,
+            "exitPrice": 0.5,
+            "entryReferencePrice": 0.4888,
+            "entrySlippageProxyPct": 0.2455,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 2.0408,
+            "netReturnPct": 1.2908,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "عقارات وإنشاءات",
           "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
@@ -4031,8 +4106,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.2455,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -4109,16 +4184,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 33.49,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 33.44605,
+            "entrySlippageProxyPct": 0.1314,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "أسمنت ومواد بناء",
           "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
@@ -4138,8 +4216,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.1314,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -4223,7 +4301,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -4330,7 +4408,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -4430,16 +4508,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 8.26,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 8.2519,
+            "entrySlippageProxyPct": 0.0982,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "تجارة وتوزيع",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -4459,8 +4540,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.0982,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -4535,18 +4616,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 23.4,
+            "exitPrice": 23.7267,
+            "entryReferencePrice": 23.4016,
+            "entrySlippageProxyPct": -0.0068,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 1.3962,
+            "netReturnPct": 0.6462,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "تكنولوجيا ومدفوعات",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -4566,8 +4650,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": -0.0068,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -4651,7 +4735,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -4751,16 +4835,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 2.24,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 2.23495,
+            "entrySlippageProxyPct": 0.226,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "خدمات مالية غير مصرفية",
           "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
@@ -4780,8 +4867,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.226,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -4865,7 +4952,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -4965,16 +5052,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 0.24,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 0.24215,
+            "entrySlippageProxyPct": -0.8879,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "عقارات وإنشاءات",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -4994,8 +5084,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": -0.8879,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -5070,18 +5160,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 12.4328,
+            "exitPrice": 12.9867,
+            "entryReferencePrice": 12.3164,
+            "entrySlippageProxyPct": 0.9451,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 4.4552,
+            "netReturnPct": 3.7052,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "أغذية ومشروبات",
           "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
@@ -5101,8 +5194,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.9451,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -5179,16 +5272,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 650.8619,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 643.28325,
+            "entrySlippageProxyPct": 1.1781,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "أغذية ومشروبات",
           "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
@@ -5208,8 +5304,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 1.1781,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -5293,7 +5389,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -5400,7 +5496,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -5498,18 +5594,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 21.5937,
+            "exitPrice": 21.9467,
+            "entryReferencePrice": 21.4702,
+            "entrySlippageProxyPct": 0.5752,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 1.6347,
+            "netReturnPct": 0.8847,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "أغذية ومشروبات",
           "sectorSource": "LEGACY_SECTOR_MAP_EXACT",
@@ -5529,8 +5628,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 0.5752,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -5607,16 +5706,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 39.245,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 38.8361,
+            "entrySlippageProxyPct": 1.0529,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "سياحة وترفيه",
           "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
@@ -5636,8 +5738,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 1.0529,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -5720,7 +5822,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -5827,7 +5929,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -5927,16 +6029,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 19.25,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 19.25935,
+            "entrySlippageProxyPct": -0.0485,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "رعاية صحية ودواء",
           "sectorSource": "PUBLIC_VERIFIED_MUBASHER_PROFILE",
@@ -5956,8 +6061,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": -0.0485,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -6041,7 +6146,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -6139,18 +6244,21 @@
             }
           ],
           "outcome": {
-            "status": "OPEN",
-            "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
-            "exitSession": null,
-            "fillPrice": null,
-            "exitPrice": null,
-            "grossReturnPct": null,
-            "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "status": "TARGET1",
+            "targetBeforeStop": true,
+            "entered": true,
+            "entrySession": "2026-10-04",
+            "exitSession": "2026-10-04",
+            "fillPrice": 2.4741,
+            "exitPrice": 2.5133,
+            "entryReferencePrice": 2.4387,
+            "entrySlippageProxyPct": 1.4516,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY",
+            "grossReturnPct": 1.5844,
+            "netReturnPct": 0.8344,
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": "2026-10-04T15:07:42.175Z"
           },
           "sector": "أغذية ومشروبات",
           "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
@@ -6170,8 +6278,8 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": 1.4516,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         },
         {
@@ -6256,7 +6364,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -6364,7 +6472,7 @@
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
             "resolvedAt": null
           },
@@ -6463,16 +6571,19 @@
           "outcome": {
             "status": "OPEN",
             "targetBeforeStop": null,
-            "entered": false,
-            "entrySession": null,
+            "entered": true,
+            "entrySession": "2026-10-04",
             "exitSession": null,
-            "fillPrice": null,
+            "fillPrice": 95.02,
             "exitPrice": null,
             "grossReturnPct": null,
             "netReturnPct": null,
-            "sourceLastSession": "2026-10-01",
+            "sourceLastSession": "2026-10-04",
             "sameBarAmbiguity": null,
-            "resolvedAt": null
+            "resolvedAt": null,
+            "entryReferencePrice": 95.8644,
+            "entrySlippageProxyPct": -0.8808,
+            "slippageMeasurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           },
           "sector": "عقارات وإنشاءات",
           "sectorSource": "LEGACY_SECTOR_MAP_INFERRED_HIGH_CONFIDENCE",
@@ -6492,22 +6603,64 @@
           },
           "slippage": {
             "estimatedPct": 0.15,
-            "realizedProxyPct": null,
-            "measurement": "NOT_YET_OBSERVED"
+            "realizedProxyPct": -0.8808,
+            "measurement": "DAILY_OHLC_SIMULATED_FILL_VS_FROZEN_ENTRY_MIDPOINT_PROXY"
           }
         }
       ],
       "captureHash": "0d326eac51e4ac461db26f504da96025d5035a07df7048ce46c096ec25e83e39"
+    },
+    {
+      "schemaVersion": "astra-v5-prospective-cohort/v1",
+      "cohortId": "2026-10-04:1e7fa1262ead16b4",
+      "decisionSessionDate": "2026-10-04",
+      "targetSessionDate": "2026-10-05",
+      "capturedAt": "2026-10-04T15:07:42.175Z",
+      "boardGeneratedAt": "2026-10-04T15:07:45.792Z",
+      "sourceIdentity": {
+        "productionDeploymentCommit": "2688333003ca171b93892154cac6278b58b349bb",
+        "ucpDecisionHash": "7bec13435d025a24900151347450bfc5443b4d8e87e48e3274d3cb3c103fd2c3",
+        "boardSessionDate": "2026-10-04",
+        "ucpSessionDate": "2026-10-04",
+        "targetSessionDate": "2026-10-05",
+        "ucpStatus": "SHADOW_READY"
+      },
+      "marketRegime": {
+        "regime": "UNKNOWN",
+        "score": null,
+        "riskMultiplier": null,
+        "maxTradeRiskPct": null,
+        "affectsHardGatesAutomatically": false,
+        "usedForContextOnly": true
+      },
+      "observationPolicy": {
+        "version": "astra-v5-prospective-evidence-policy/v2",
+        "maxCandidatesPerSession": 60,
+        "minScoreCoveragePct": 70,
+        "minDataQualityScore": 40,
+        "minLiquidityScore": 30,
+        "entryExpirySessions": 3,
+        "maxHoldSessions": 10,
+        "roundTripCostPct": 0.6,
+        "slippagePct": 0.15,
+        "sameBarAmbiguity": "STOP_FIRST",
+        "targetDefinition": "TARGET1_BEFORE_STOP_WITHIN_MAX_HOLD",
+        "prospectiveOnly": true,
+        "executionAllowed": false
+      },
+      "candidateCount": 0,
+      "candidates": [],
+      "captureHash": "3479b6c5c63807e33600ed67f19db2bd94812951b48c3c5afdd95e14db31d3cd"
     }
   ],
   "summary": {
-    "decisionSessions": 1,
+    "decisionSessions": 2,
     "candidatesCaptured": 60,
-    "resolvedLabels": 0,
-    "positiveOutcomes": 0,
+    "resolvedLabels": 15,
+    "positiveOutcomes": 15,
     "negativeOutcomes": 0,
     "notEntered": 0,
-    "open": 60,
+    "open": 45,
     "sectorCoverage": 60,
     "sectorExact": 30,
     "sectorPublicVerified": 12,
@@ -6515,30 +6668,30 @@
     "sectorRecorded": 60,
     "sectorUnclassified": 0,
     "morningEvidenceCaptured": 60,
-    "slippageProxyObserved": 0,
-    "observedCalendarDays": 1,
+    "slippageProxyObserved": 37,
+    "observedCalendarDays": 2,
     "criticalBreaches": 0,
     "stratifiedDiagnostics": {
       "bySector": {
         "أسمنت ومواد بناء": {
           "captured": 5,
-          "resolved": 0,
-          "positive": 0,
+          "resolved": 1,
+          "positive": 1,
           "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "entered": 2,
+          "hitRatePct": 100,
+          "averageNetReturnPct": 6.1591,
+          "averageEntrySlippageProxyPct": 0.2571
         },
         "أغذية ومشروبات": {
           "captured": 8,
-          "resolved": 0,
-          "positive": 0,
+          "resolved": 4,
+          "positive": 4,
           "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "entered": 7,
+          "hitRatePct": 100,
+          "averageNetReturnPct": 1.3156,
+          "averageEntrySlippageProxyPct": 0.8011
         },
         "اتصالات وإعلام وتكنولوجيا": {
           "captured": 3,
@@ -6552,143 +6705,143 @@
         },
         "استثمارات قابضة ومتنوعة": {
           "captured": 2,
-          "resolved": 0,
-          "positive": 0,
+          "resolved": 2,
+          "positive": 2,
           "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "entered": 2,
+          "hitRatePct": 100,
+          "averageNetReturnPct": 1.1335,
+          "averageEntrySlippageProxyPct": 0.355
         },
         "بتروكيماويات وكيماويات": {
           "captured": 4,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
-          "entered": 0,
+          "entered": 2,
           "hitRatePct": null,
           "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "averageEntrySlippageProxyPct": -0.2016
         },
         "بنوك وخدمات مالية مصرفية": {
           "captured": 2,
-          "resolved": 0,
-          "positive": 0,
+          "resolved": 1,
+          "positive": 1,
           "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "entered": 1,
+          "hitRatePct": 100,
+          "averageNetReturnPct": 2.6748,
+          "averageEntrySlippageProxyPct": 0.7858
         },
         "تجارة وتوزيع": {
           "captured": 2,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
-          "entered": 0,
+          "entered": 1,
           "hitRatePct": null,
           "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "averageEntrySlippageProxyPct": 0.0982
         },
         "تعليم وخدمات": {
           "captured": 2,
-          "resolved": 0,
-          "positive": 0,
+          "resolved": 1,
+          "positive": 1,
           "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "entered": 2,
+          "hitRatePct": 100,
+          "averageNetReturnPct": 0.2765,
+          "averageEntrySlippageProxyPct": 0.4798
         },
         "تكنولوجيا ومدفوعات": {
           "captured": 2,
-          "resolved": 0,
-          "positive": 0,
+          "resolved": 1,
+          "positive": 1,
           "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "entered": 2,
+          "hitRatePct": 100,
+          "averageNetReturnPct": 0.6462,
+          "averageEntrySlippageProxyPct": 0.082
         },
         "خدمات مالية غير مصرفية": {
           "captured": 5,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
-          "entered": 0,
+          "entered": 2,
           "hitRatePct": null,
           "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "averageEntrySlippageProxyPct": 0.7487
         },
         "رعاية صحية ودواء": {
           "captured": 4,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
-          "entered": 0,
+          "entered": 2,
           "hitRatePct": null,
           "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "averageEntrySlippageProxyPct": -0.3816
         },
         "سياحة وترفيه": {
           "captured": 2,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
-          "entered": 0,
+          "entered": 2,
           "hitRatePct": null,
           "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "averageEntrySlippageProxyPct": 0.9795
         },
         "سيارات وتجارة وتوزيع": {
           "captured": 1,
-          "resolved": 0,
-          "positive": 0,
+          "resolved": 1,
+          "positive": 1,
           "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "entered": 1,
+          "hitRatePct": 100,
+          "averageNetReturnPct": 1.0565,
+          "averageEntrySlippageProxyPct": 0.5584
         },
         "صناعة وطاقة وبنية تحتية": {
           "captured": 4,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
-          "entered": 0,
+          "entered": 2,
           "hitRatePct": null,
           "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "averageEntrySlippageProxyPct": -0.0683
         },
         "عقارات وإنشاءات": {
           "captured": 9,
-          "resolved": 0,
-          "positive": 0,
+          "resolved": 3,
+          "positive": 3,
           "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "entered": 6,
+          "hitRatePct": 100,
+          "averageNetReturnPct": 1.7673,
+          "averageEntrySlippageProxyPct": 0.1682
         },
         "معادن ومواد أساسية": {
           "captured": 1,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
-          "entered": 0,
+          "entered": 1,
           "hitRatePct": null,
           "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "averageEntrySlippageProxyPct": -0.0619
         },
         "منسوجات وملابس": {
           "captured": 3,
-          "resolved": 0,
-          "positive": 0,
+          "resolved": 1,
+          "positive": 1,
           "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "entered": 2,
+          "hitRatePct": 100,
+          "averageNetReturnPct": 1.0406,
+          "averageEntrySlippageProxyPct": -0.5875
         },
         "نقل وخدمات لوجستية": {
           "captured": 1,
@@ -6704,35 +6857,35 @@
       "byRegime": {
         "RISK_OFF": {
           "captured": 60,
-          "resolved": 0,
-          "positive": 0,
+          "resolved": 15,
+          "positive": 15,
           "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "entered": 37,
+          "hitRatePct": 100,
+          "averageNetReturnPct": 1.6457,
+          "averageEntrySlippageProxyPct": 0.306
         }
       },
       "bySetupSource": {
         "ASTRA_NATIVE_ENTRY": {
           "captured": 2,
-          "resolved": 0,
-          "positive": 0,
+          "resolved": 1,
+          "positive": 1,
           "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "entered": 1,
+          "hitRatePct": 100,
+          "averageNetReturnPct": 1.2628,
+          "averageEntrySlippageProxyPct": 0.6182
         },
         "ASTRA_NATIVE_WATCH": {
           "captured": 25,
-          "resolved": 0,
-          "positive": 0,
+          "resolved": 8,
+          "positive": 8,
           "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "entered": 17,
+          "hitRatePct": 100,
+          "averageNetReturnPct": 1.353,
+          "averageEntrySlippageProxyPct": 0.3519
         },
         "RC2_NEAR_MISS": {
           "captured": 1,
@@ -6746,23 +6899,23 @@
         },
         "REJECTED": {
           "captured": 31,
-          "resolved": 0,
-          "positive": 0,
+          "resolved": 6,
+          "positive": 6,
           "negative": 0,
-          "entered": 0,
-          "hitRatePct": null,
-          "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "entered": 18,
+          "hitRatePct": 100,
+          "averageNetReturnPct": 2.0996,
+          "averageEntrySlippageProxyPct": 0.1917
         },
         "RR68_CHALLENGER": {
           "captured": 1,
           "resolved": 0,
           "positive": 0,
           "negative": 0,
-          "entered": 0,
+          "entered": 1,
           "hitRatePct": null,
           "averageNetReturnPct": null,
-          "averageEntrySlippageProxyPct": null
+          "averageEntrySlippageProxyPct": 1.2713
         }
       },
       "policy": {
