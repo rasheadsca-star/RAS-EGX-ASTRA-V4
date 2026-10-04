@@ -128,6 +128,55 @@ async function fetchHistory(symbol) {
   return remote;
 }
 
+function latestSession(rows = []) {
+  return (Array.isArray(rows) ? rows : [])
+    .map((row) => row?.date || null)
+    .filter(Boolean)
+    .sort()
+    .at(-1) || null;
+}
+
+async function shouldBypassStaleAtomic(remoteAtomic, requested = []) {
+  if (remoteAtomic?.available !== true || !remoteAtomic.expectedSession) return false;
+
+  const probeSymbols = requested.slice(0, Math.min(12, requested.length));
+  if (!probeSymbols.length) return false;
+
+  const probes = await Promise.all(
+    probeSymbols.map(async (symbol) => {
+      const rows = await fetchRemoteHistory(symbol);
+      return { symbol, latestSession: latestSession(rows), rows };
+    })
+  );
+
+  const freshestDirectSession = probes
+    .map((item) => item.latestSession)
+    .filter(Boolean)
+    .sort()
+    .at(-1) || null;
+
+  const bypass = Boolean(
+    freshestDirectSession &&
+    freshestDirectSession > remoteAtomic.expectedSession
+  );
+
+  if (bypass) {
+    console.log(
+      'ASTRA STALE ATOMIC BYPASS',
+      JSON.stringify({
+        atomicSession: remoteAtomic.expectedSession,
+        freshestDirectSession,
+        probedSymbols: probes.length
+      })
+    );
+    for (const probe of probes) {
+      if (probe.rows?.length) CACHE.set(probe.symbol, probe.rows);
+    }
+  }
+
+  return bypass;
+}
+
 function rowsFromIndex(index = {}, symbol) {
   const entry = index?.symbols?.[symbol];
   if (!entry || !Array.isArray(entry.sessions)) return [];
@@ -156,8 +205,9 @@ async function loadLegacyHistory(symbols = WATCHLIST) {
 
   const remoteAtomic = await loadRemoteAtomicPair();
   const entries = [];
+  const bypassStaleAtomic = await shouldBypassStaleAtomic(remoteAtomic, requested);
 
-  if (remoteAtomic.available === true) {
+  if (remoteAtomic.available === true && bypassStaleAtomic !== true) {
     for (const symbol of requested) {
       entries.push([symbol, rowsFromIndex(remoteAtomic.history, symbol)]);
     }
@@ -186,8 +236,14 @@ async function loadLegacyHistory(symbols = WATCHLIST) {
       loadedSymbols: loaded,
       failedSymbols: requested.length - loaded,
       localIndex: fs.existsSync(LOCAL_INDEX_PATH),
-      runtimeHistorySource: remoteAtomic.available === true ? 'REMOTE_ATOMIC_GITHUB' : 'LOCAL_OR_LEGACY_FALLBACK',
+      runtimeHistorySource:
+        remoteAtomic.available === true && bypassStaleAtomic !== true
+          ? 'REMOTE_ATOMIC_GITHUB'
+          : bypassStaleAtomic === true
+            ? 'DIRECT_LEGACY_FRESHNESS_BYPASS'
+            : 'LOCAL_OR_LEGACY_FALLBACK',
       remoteAtomicSession: remoteAtomic.available === true ? remoteAtomic.expectedSession : null,
+      staleAtomicBypassed: bypassStaleAtomic === true,
       remoteAtomicFingerprint: remoteAtomic.available === true ? remoteAtomic.sourceSessionDataHash : null,
       batchSize: BATCH_SIZE
     })
@@ -202,5 +258,7 @@ module.exports = {
   loadLegacyHistory,
   fetchHistory,
   getRegistryMeta,
+  latestSession,
+  shouldBypassStaleAtomic,
   rowsFromIndex
 };
