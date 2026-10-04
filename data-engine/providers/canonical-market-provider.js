@@ -129,36 +129,65 @@ function quotesFromPayload(payload, sourceMode) {
     .filter(quote => !expectedSession || quote.sourceSessionDate === expectedSession);
 }
 
+async function loadFreshRemoteMarketFallback() {
+  const [market, status] = await Promise.all([
+    fetchJson('market.json'),
+    fetchJson('fetch-status.json').catch(() => ({}))
+  ]);
+
+  const payload = {
+    generatedAt: status?.generatedAt || market?.generatedAt || null,
+    source: {
+      expectedSession: status?.expectedSession || latestSession(market?.rows || []),
+      executionGrade: status?.executionGrade === true,
+      atomicHandoff: false,
+      sourceSessionDataHash: null
+    },
+    rows: Array.isArray(market?.rows) ? market.rows : []
+  };
+
+  return payload;
+}
+
 const canonicalMarketProvider = {
   name: 'ASTRA_ATOMIC_CANONICAL',
 
   async fetchQuotes() {
     const remoteAtomic = await loadRemoteAtomicPair();
+
     if (remoteAtomic.available === true) {
+      try {
+        const direct = await loadFreshRemoteMarketFallback();
+        const directSession = direct?.source?.expectedSession || null;
+
+        if (
+          directSession &&
+          remoteAtomic.expectedSession &&
+          directSession > remoteAtomic.expectedSession
+        ) {
+          console.log(
+            'ASTRA STALE ATOMIC MARKET BYPASS',
+            JSON.stringify({
+              atomicSession: remoteAtomic.expectedSession,
+              freshestDirectSession: directSession
+            })
+          );
+          return quotesFromPayload(direct, 'ASTRA_REMOTE_FALLBACK');
+        }
+      } catch (error) {
+        console.log(
+          'ASTRA DIRECT MARKET FRESHNESS PROBE FAILED',
+          error?.message || error
+        );
+      }
+
       return quotesFromPayload(remoteAtomic.market, 'ASTRA_REMOTE_ATOMIC_GITHUB');
     }
 
     const local = loadLocalMarket();
     if (local) return quotesFromPayload(local, 'ASTRA_ATOMIC_LOCAL');
 
-    // Emergency availability fallback only. It is visibly marked non-atomic
-    // and remains non-executable through the existing freshness gates.
-    const [market, status] = await Promise.all([
-      fetchJson('market.json'),
-      fetchJson('fetch-status.json').catch(() => ({}))
-    ]);
-
-    const payload = {
-      generatedAt: status?.generatedAt || market?.generatedAt || null,
-      source: {
-        expectedSession: status?.expectedSession || latestSession(market?.rows || []),
-        executionGrade: status?.executionGrade === true,
-        atomicHandoff: false,
-        sourceSessionDataHash: null
-      },
-      rows: Array.isArray(market?.rows) ? market.rows : []
-    };
-
+    const payload = await loadFreshRemoteMarketFallback();
     return quotesFromPayload(payload, 'ASTRA_REMOTE_FALLBACK');
   },
 
@@ -172,5 +201,6 @@ module.exports = {
   loadLocalMarket,
   normalizeRow,
   quotesFromPayload,
-  sourceModeToSnapshotMode
+  sourceModeToSnapshotMode,
+  loadFreshRemoteMarketFallback
 };
