@@ -1,7 +1,7 @@
 {
   "schemaVersion": "rasheed-egx-ucp-forward-ledger/v1",
   "policyVersion": "ucp-forward-promotion/v1",
-  "updatedAt": "2026-10-08T19:00:23.889Z",
+  "updatedAt": "2026-10-13T19:31:44.349Z",
   "entries": [
     {
       "recordId": "2026-10-01:cc73e3148f39db7f",
@@ -59,18 +59,73 @@
       "candidates": [],
       "outcomes": [],
       "criticalBreaches": []
+    },
+    {
+      "recordId": "2026-10-13:55aacdda307a745e",
+      "capturedAt": "2026-10-13T19:31:44.146Z",
+      "source": "UCP_PRODUCTION_SHADOW",
+      "sessionDate": "2026-10-13",
+      "targetSessionDate": "2026-10-14",
+      "decisionHash": "55aacdda307a745e5a73144bcfae722c23f65025ed42cd0b78ead870e57d19c0",
+      "deploymentCommit": "31fff1f8229188cb42533316bfa2b07211012c79",
+      "alphaEngine": "TFE_V20_FUSION_RC2",
+      "alphaStatus": "SHADOW_READY",
+      "governance": {
+        "status": "GOVERNANCE_READY",
+        "referenceSession": "2026-10-13",
+        "sessionAligned": true,
+        "policySafe": true
+      },
+      "morning": {
+        "status": "WAITING_NEXT_SESSION",
+        "evidenceComplete": false
+      },
+      "blockers": [
+        "FORWARD_VALIDATION_REQUIRED",
+        "V2_4_MORNING_CONFIRMATION_PENDING"
+      ],
+      "candidates": [
+        {
+          "ticker": "ARAB",
+          "publicationState": "RESEARCH_CANDIDATE",
+          "researchScore": 74,
+          "fusionRankScore": 74,
+          "liquidityScore": 98.5,
+          "srScore": 72.1,
+          "structuralNetRR": 0.924,
+          "entry": 0.26235,
+          "stopLoss": 0.2514,
+          "target1": 0.2766,
+          "target2": 0.28
+        }
+      ],
+      "outcomes": [
+        {
+          "ticker": "ARAB",
+          "outcome": "OPEN",
+          "entered": false,
+          "entrySession": null,
+          "exitSession": null,
+          "entryPrice": 0.26235,
+          "exitPrice": null,
+          "netReturnPct": null,
+          "resolvedAt": null,
+          "sourceLastSession": "2026-10-13"
+        }
+      ],
+      "criticalBreaches": []
     }
   ],
   "summary": {
-    "forwardSessions": 2,
+    "forwardSessions": 3,
     "resolvedTrades": 0,
     "wins": 0,
     "losses": 0,
     "notEntered": 0,
-    "open": 0,
+    "open": 1,
     "averageNetReturnPct": null,
     "profitFactor": null,
-    "observedCalendarDays": 8,
+    "observedCalendarDays": 14,
     "criticalBreaches": 0
   },
   "promotion": {
