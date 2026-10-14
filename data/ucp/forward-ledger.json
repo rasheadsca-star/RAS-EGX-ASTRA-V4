@@ -1,7 +1,7 @@
 {
   "schemaVersion": "rasheed-egx-ucp-forward-ledger/v1",
   "policyVersion": "ucp-forward-promotion/v1",
-  "updatedAt": "2026-10-13T19:31:44.349Z",
+  "updatedAt": "2026-10-14T17:35:46.458Z",
   "entries": [
     {
       "recordId": "2026-10-01:cc73e3148f39db7f",
@@ -110,9 +110,36 @@
           "exitPrice": null,
           "netReturnPct": null,
           "resolvedAt": null,
-          "sourceLastSession": "2026-10-13"
+          "sourceLastSession": "2026-10-14"
         }
       ],
+      "criticalBreaches": []
+    },
+    {
+      "recordId": "2026-10-14:31a9a1d17d777380",
+      "capturedAt": "2026-10-14T17:35:46.304Z",
+      "source": "UCP_PRODUCTION_SHADOW",
+      "sessionDate": "2026-10-14",
+      "targetSessionDate": null,
+      "decisionHash": "31a9a1d17d7773804752e6ba0f20f912dfe7e321ea17003ed268a0146e31cd09",
+      "deploymentCommit": "d983267c2e985cf19896d3ca71885c69a9e79da8",
+      "alphaEngine": "TFE_V20_FUSION_RC2",
+      "alphaStatus": "SHADOW_READY",
+      "governance": {
+        "status": "GOVERNANCE_READY",
+        "referenceSession": "2026-10-14",
+        "sessionAligned": true,
+        "policySafe": true
+      },
+      "morning": {
+        "status": "NO_CANDIDATES",
+        "evidenceComplete": false
+      },
+      "blockers": [
+        "FORWARD_VALIDATION_REQUIRED"
+      ],
+      "candidates": [],
+      "outcomes": [],
       "criticalBreaches": []
     }
   ],
