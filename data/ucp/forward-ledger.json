@@ -1,7 +1,7 @@
 {
   "schemaVersion": "rasheed-egx-ucp-forward-ledger/v1",
   "policyVersion": "ucp-forward-promotion/v1",
-  "updatedAt": "2026-10-14T17:35:46.458Z",
+  "updatedAt": "2026-10-15T17:20:45.884Z",
   "entries": [
     {
       "recordId": "2026-10-01:cc73e3148f39db7f",
@@ -103,14 +103,14 @@
         {
           "ticker": "ARAB",
           "outcome": "OPEN",
-          "entered": false,
-          "entrySession": null,
+          "entered": true,
+          "entrySession": "2026-10-15",
           "exitSession": null,
           "entryPrice": 0.26235,
           "exitPrice": null,
           "netReturnPct": null,
           "resolvedAt": null,
-          "sourceLastSession": "2026-10-14"
+          "sourceLastSession": "2026-10-15"
         }
       ],
       "criticalBreaches": []
@@ -141,10 +141,37 @@
       "candidates": [],
       "outcomes": [],
       "criticalBreaches": []
+    },
+    {
+      "recordId": "2026-10-15:3739e982de273c77",
+      "capturedAt": "2026-10-15T17:20:45.667Z",
+      "source": "UCP_PRODUCTION_SHADOW",
+      "sessionDate": "2026-10-15",
+      "targetSessionDate": null,
+      "decisionHash": "3739e982de273c7711eec4f33788b9ed0a5994ea9a2d9bf2c810267b07c840d7",
+      "deploymentCommit": "cb027ddeb44faf5f6e4f048394d873f1c0851054",
+      "alphaEngine": "TFE_V20_FUSION_RC2",
+      "alphaStatus": "SHADOW_READY",
+      "governance": {
+        "status": "GOVERNANCE_READY",
+        "referenceSession": "2026-10-15",
+        "sessionAligned": true,
+        "policySafe": true
+      },
+      "morning": {
+        "status": "NO_CANDIDATES",
+        "evidenceComplete": false
+      },
+      "blockers": [
+        "FORWARD_VALIDATION_REQUIRED"
+      ],
+      "candidates": [],
+      "outcomes": [],
+      "criticalBreaches": []
     }
   ],
   "summary": {
-    "forwardSessions": 3,
+    "forwardSessions": 4,
     "resolvedTrades": 0,
     "wins": 0,
     "losses": 0,
@@ -152,7 +179,7 @@
     "open": 1,
     "averageNetReturnPct": null,
     "profitFactor": null,
-    "observedCalendarDays": 14,
+    "observedCalendarDays": 15,
     "criticalBreaches": 0
   },
   "promotion": {
