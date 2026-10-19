@@ -1,7 +1,7 @@
 {
   "schemaVersion": "rasheed-egx-ucp-forward-ledger/v1",
   "policyVersion": "ucp-forward-promotion/v1",
-  "updatedAt": "2026-10-18T16:08:03.639Z",
+  "updatedAt": "2026-10-19T18:49:45.617Z",
   "entries": [
     {
       "recordId": "2026-10-01:cc73e3148f39db7f",
@@ -102,15 +102,16 @@
       "outcomes": [
         {
           "ticker": "ARAB",
-          "outcome": "OPEN",
+          "outcome": "STOP",
           "entered": true,
           "entrySession": "2026-10-15",
-          "exitSession": null,
+          "exitSession": "2026-10-19",
           "entryPrice": 0.26235,
-          "exitPrice": null,
-          "netReturnPct": null,
-          "resolvedAt": null,
-          "sourceLastSession": "2026-10-15"
+          "exitPrice": 0.2514,
+          "netReturnPct": -4.7738,
+          "resolvedAt": "2026-10-19T18:49:45.617Z",
+          "sourceLastSession": "2026-10-19",
+          "sameBarAmbiguity": null
         }
       ],
       "criticalBreaches": []
@@ -195,18 +196,45 @@
       "candidates": [],
       "outcomes": [],
       "criticalBreaches": []
+    },
+    {
+      "recordId": "2026-10-19:fa36391c8ebd8ce5",
+      "capturedAt": "2026-10-19T18:49:45.530Z",
+      "source": "UCP_PRODUCTION_SHADOW",
+      "sessionDate": "2026-10-19",
+      "targetSessionDate": null,
+      "decisionHash": "fa36391c8ebd8ce5aff902d5583ddfd8aa4b616be86e84e8dad32cb8d124ddbf",
+      "deploymentCommit": "fdccd4c85ec8780d3d609b16c1967d0c49dc51f8",
+      "alphaEngine": "TFE_V20_FUSION_RC2",
+      "alphaStatus": "SHADOW_READY",
+      "governance": {
+        "status": "GOVERNANCE_READY",
+        "referenceSession": "2026-10-19",
+        "sessionAligned": true,
+        "policySafe": true
+      },
+      "morning": {
+        "status": "NO_CANDIDATES",
+        "evidenceComplete": false
+      },
+      "blockers": [
+        "FORWARD_VALIDATION_REQUIRED"
+      ],
+      "candidates": [],
+      "outcomes": [],
+      "criticalBreaches": []
     }
   ],
   "summary": {
-    "forwardSessions": 5,
-    "resolvedTrades": 0,
+    "forwardSessions": 6,
+    "resolvedTrades": 1,
     "wins": 0,
-    "losses": 0,
+    "losses": 1,
     "notEntered": 0,
-    "open": 1,
-    "averageNetReturnPct": null,
-    "profitFactor": null,
-    "observedCalendarDays": 18,
+    "open": 0,
+    "averageNetReturnPct": -4.7738,
+    "profitFactor": 0,
+    "observedCalendarDays": 19,
     "criticalBreaches": 0
   },
   "promotion": {
@@ -218,8 +246,8 @@
       "MIN_FORWARD_SESSIONS_NOT_MET",
       "MIN_RESOLVED_TRADES_NOT_MET",
       "MIN_CALENDAR_DAYS_NOT_MET",
-      "PROFIT_FACTOR_NOT_ESTABLISHED",
-      "AVERAGE_NET_RETURN_NOT_ESTABLISHED"
+      "PROFIT_FACTOR_BELOW_POLICY",
+      "AVERAGE_NET_RETURN_NOT_POSITIVE"
     ],
     "policy": {
       "version": "ucp-forward-promotion/v1",
