@@ -1,7 +1,7 @@
 {
   "schemaVersion": "rasheed-egx-ucp-forward-ledger/v1",
   "policyVersion": "ucp-forward-promotion/v1",
-  "updatedAt": "2026-10-26T18:51:09.903Z",
+  "updatedAt": "2026-10-28T18:29:22.241Z",
   "entries": [
     {
       "recordId": "2026-10-01:cc73e3148f39db7f",
@@ -305,10 +305,39 @@
       "candidates": [],
       "outcomes": [],
       "criticalBreaches": []
+    },
+    {
+      "recordId": "2026-10-28:2341768fbb118d93",
+      "capturedAt": "2026-10-28T18:29:22.240Z",
+      "source": "UCP_PRODUCTION_SHADOW",
+      "sessionDate": "2026-10-28",
+      "targetSessionDate": null,
+      "decisionHash": "2341768fbb118d93b2fe97fe994802c9d2e38648d832640b8afab904ff949009",
+      "deploymentCommit": "08b90c0189841b3638a2999990c7f6b280896b4b",
+      "alphaEngine": "TFE_V20_FUSION_RC2",
+      "alphaStatus": "SHADOW_READY",
+      "governance": {
+        "status": "GOVERNANCE_BLOCKED",
+        "referenceSession": "2026-10-27",
+        "sessionAligned": false,
+        "policySafe": true
+      },
+      "morning": {
+        "status": "NO_CANDIDATES",
+        "evidenceComplete": false
+      },
+      "blockers": [
+        "FORWARD_VALIDATION_REQUIRED",
+        "DATA_QUALITY_GATE_FAILED",
+        "V17_SESSION_ALIGNMENT_REQUIRED"
+      ],
+      "candidates": [],
+      "outcomes": [],
+      "criticalBreaches": []
     }
   ],
   "summary": {
-    "forwardSessions": 9,
+    "forwardSessions": 10,
     "resolvedTrades": 1,
     "wins": 0,
     "losses": 1,
@@ -316,7 +345,7 @@
     "open": 0,
     "averageNetReturnPct": -4.7738,
     "profitFactor": 0,
-    "observedCalendarDays": 26,
+    "observedCalendarDays": 28,
     "criticalBreaches": 0
   },
   "promotion": {
